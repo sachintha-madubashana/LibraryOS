@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane minHeight="600.0" minWidth="1069.0" prefHeight="880.0" prefWidth="1069.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.sachintha_madubashana.libraryos.controller.LoginController">
+   <left>
+      <VBox alignment="CENTER_LEFT" fillWidth="false" prefHeight="880.0" prefWidth="407.0" spacing="8.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="LibraryOS — v0.0.1" />
+            <Label prefWidth="200.0" text="Librarian Management Portal" textOverrun="CLIP" wrapText="true">
+               <font>
+                  <Font size="28.0" />
+               </font>
+            </Label>
+            <Separator prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: green;" />
+            <Label prefWidth="303.0" text="Streamline your library operations — manage books, members, and borrowing records from a single unified dashboard." wrapText="true">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+         </children>
+         <padding>
+            <Insets bottom="52.0" left="52.0" right="52.0" top="52.0" />
+         </padding>
+      </VBox>
+   </left>
+   <center>
+      <VBox alignment="CENTER" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER_RIGHT" maxHeight="68.0" prefHeight="68.0">
+               <children>
+                  <Button fx:id="closeBtn" alignment="CENTER" mnemonicParsing="false" prefHeight="30.0" text="Close" />
+               </children>
+            </HBox>
+            <VBox alignment="CENTER" fillWidth="false">
+               <children>
+                  <VBox alignment="CENTER_LEFT" prefHeight="880.0" prefWidth="380.0" spacing="16.0">
+                     <children>
+                        <Label text="Sign In">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label text="Enter your librarian credentials to continue">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                        <TextField promptText="Username" />
+                        <PasswordField promptText="Password">
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </PasswordField>
+                        <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
+                           <children>
+                              <Button fx:id="loinBtn" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="322.0" text="Login" HBox.hgrow="ALWAYS" />
+                              <Button fx:id="clearBtn" mnemonicParsing="false" text="Clear" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

@@ -54,7 +54,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                io.github.sachintha_madubashana.libraryos/io.github.sachintha_madubashana.libraryos.HelloApplication
+                                io.github.sachintha_madubashana.libraryos/io.github.sachintha_madubashana.libraryos.LibraryOS
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>

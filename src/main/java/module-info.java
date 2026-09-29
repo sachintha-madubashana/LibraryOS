@@ -4,6 +4,7 @@ module io.github.sachintha_madubashana.libraryos {
 
     requires org.kordamp.ikonli.javafx;
 
-    opens io.github.sachintha_madubashana.libraryos to javafx.fxml;
+    opens io.github.sachintha_madubashana.libraryos.controller to javafx.fxml;
     exports io.github.sachintha_madubashana.libraryos;
+    exports io.github.sachintha_madubashana.libraryos.controller;
 }
