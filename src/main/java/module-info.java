@@ -1,0 +1,9 @@
+module io.github.sachintha_madubashana.libraryos {
+    requires javafx.controls;
+    requires javafx.fxml;
+
+    requires org.kordamp.ikonli.javafx;
+
+    opens io.github.sachintha_madubashana.libraryos to javafx.fxml;
+    exports io.github.sachintha_madubashana.libraryos;
+}

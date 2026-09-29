@@ -1,0 +1,48 @@
+# Target - Maven build output
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!.mvn/wrapper/maven-wrapper.properties
+
+# Block any local Maven wrapper runtime downloads or extensions
+.mvn/.develocity/
+.mvn/wrapper/dists/
+
+### Java Files ###
+*.class
+*.jar
+*.war
+*.ear
+hs_err_pid*
+replay_pid*
+.kotlin
+
+### IntelliJ IDEA ###
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+### Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+
+### VS Code ###
+.vscode/
+
+### Operating Systems ###
+.DS_Store
+Thumbs.db
