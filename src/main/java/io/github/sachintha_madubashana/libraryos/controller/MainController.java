@@ -23,6 +23,9 @@ public class MainController {
     private Button addMemberBtn;
 
     @FXML
+    private Button manageMemberBtn;
+
+    @FXML
     private Button issueBookBtn;
 
     @FXML
@@ -45,6 +48,9 @@ public class MainController {
         addMemberBtn.setOnAction((actionEvent)->{
             replaceScene("addMember");
         });
+        manageMemberBtn.setOnAction((actionEvent)->{
+            replaceScene("manageMember");
+        });
         issueBookBtn.setOnAction((actionEvent)->{
             replaceScene("issueBook");
         });
@@ -52,7 +58,7 @@ public class MainController {
             replaceScene("returnBook");
         });
         historyBtn.setOnAction((actionEvent)->{
-            replaceScene("history");
+            replaceScene("borrowingHistory");
         });
     }
 
@@ -60,9 +66,10 @@ public class MainController {
         scenes.put("dashboard", "view/dashboard.fxml");
         scenes.put("addBook", "view/addBook.fxml");
         scenes.put("addMember", "view/addMember.fxml");
+        scenes.put("manageMember", "view/manageMember.fxml");
         scenes.put("issueBook", "view/issueBook.fxml");
         scenes.put("returnBook", "view/returnBook.fxml");
-        scenes.put("history", "view/history.fxml");
+        scenes.put("borrowingHistory", "view/borrowingHistory.fxml");
     }
 
     private void replaceScene(String scene) {
