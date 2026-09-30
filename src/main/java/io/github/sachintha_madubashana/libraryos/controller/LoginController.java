@@ -1,11 +1,17 @@
 package io.github.sachintha_madubashana.libraryos.controller;
 
+import io.github.sachintha_madubashana.libraryos.Launcher;
 import io.github.sachintha_madubashana.libraryos.model.AuthenticationService;
 import io.github.sachintha_madubashana.libraryos.model.User;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
+
+import java.util.Objects;
 
 public class LoginController {
     @FXML
@@ -43,11 +49,22 @@ public class LoginController {
     private void onLoginButtonClick() {
         User credential = new User(usernameField.getText(), passwordField.getText());
         if (authenticationService.authenticate(credential)) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Alert");
-            alert.setHeaderText("Login successful");
-            alert.setContentText("This is the main message content");
-            alert.showAndWait();
+            try {
+                Stage stage = (Stage) loinBtn.getScene().getWindow();
+                stage.close();
+                Stage primaryStage = new Stage();
+                primaryStage.setTitle("Library OS");
+                FXMLLoader fxml = new FXMLLoader(Objects.requireNonNull(Launcher.class.getResource("view/main-view.fxml")));
+                primaryStage.setScene(new Scene(fxml.load(), 1069, 600));
+                primaryStage.show();
+            }catch (Exception e){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Login failed");
+                alert.setContentText(e.getMessage());
+                alert.showAndWait();
+            }
+
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");

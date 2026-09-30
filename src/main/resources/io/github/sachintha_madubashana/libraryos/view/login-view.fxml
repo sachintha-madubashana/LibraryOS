@@ -49,8 +49,8 @@
                               <Font size="13.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="usernameField" promptText="Username" />
-                        <PasswordField fx:id="passwordField" promptText="Password">
+                        <TextField fx:id="usernameField" promptText="Username" text="admin" />
+                        <PasswordField fx:id="passwordField" promptText="Password" text="admin">
                            <font>
                               <Font size="10.0" />
                            </font>
