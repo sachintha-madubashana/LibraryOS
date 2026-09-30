@@ -3,6 +3,7 @@ module io.github.sachintha_madubashana.libraryos {
     requires javafx.fxml;
 
     requires org.kordamp.ikonli.javafx;
+    requires spring.security.crypto;
 
     opens io.github.sachintha_madubashana.libraryos.controller to javafx.fxml;
     exports io.github.sachintha_madubashana.libraryos;
