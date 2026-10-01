@@ -3,6 +3,7 @@ package io.github.sachintha_madubashana.libraryos.controller;
 import io.github.sachintha_madubashana.libraryos.Launcher;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 
@@ -10,56 +11,36 @@ import java.util.HashMap;
 
 public class MainController {
 
+    private final HashMap<String, String> scenes = new HashMap<>();
     @FXML
     private BorderPane root;
-
     @FXML
     private Button dashboardBtn;
-
     @FXML
     private Button addBookBtn;
-
     @FXML
     private Button addMemberBtn;
-
     @FXML
     private Button manageMemberBtn;
-
     @FXML
     private Button issueBookBtn;
-
     @FXML
     private Button returnBookBtn;
-
     @FXML
     private Button historyBtn;
-
-    private final HashMap<String, String> scenes = new HashMap<>();
 
     @FXML
     private void initialize() {
         scenes();
-        dashboardBtn.setOnAction((actionEvent)->{
-            replaceScene("dashboard");
-        });
-        addBookBtn.setOnAction((actionEvent)->{
-            replaceScene("addBook");
-        });
-        addMemberBtn.setOnAction((actionEvent)->{
-            replaceScene("addMember");
-        });
-        manageMemberBtn.setOnAction((actionEvent)->{
-            replaceScene("manageMember");
-        });
-        issueBookBtn.setOnAction((actionEvent)->{
-            replaceScene("issueBook");
-        });
-        returnBookBtn.setOnAction((actionEvent)->{
-            replaceScene("returnBook");
-        });
-        historyBtn.setOnAction((actionEvent)->{
-            replaceScene("borrowingHistory");
-        });
+        dashboardBtn.setOnAction(actionEvent -> replaceScene("dashboard"));
+        addBookBtn.setOnAction(actionEvent -> replaceScene("addBook"));
+        addMemberBtn.setOnAction(actionEvent -> replaceScene("addMember"));
+        manageMemberBtn.setOnAction(actionEvent -> replaceScene("manageMember"));
+        issueBookBtn.setOnAction(actionEvent -> replaceScene("issueBook"));
+        returnBookBtn.setOnAction(actionEvent -> replaceScene("returnBook"));
+        historyBtn.setOnAction(actionEvent -> replaceScene("borrowingHistory"));
+
+        replaceScene("dashboard");
     }
 
     private void scenes() {
@@ -73,11 +54,20 @@ public class MainController {
     }
 
     private void replaceScene(String scene) {
-        FXMLLoader fxmlLoader = new FXMLLoader(Launcher.class.getResource(scenes.get(scene)));
-        try {
-            root.setCenter(fxmlLoader.load());
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (scenes.containsKey(scene)) {
+            Node currentCenter = root.getCenter();
+            if (currentCenter != null && scene.equals(currentCenter.getProperties().get("viewName"))) {
+                return;
+            }
+
+            FXMLLoader fxmlLoader = new FXMLLoader(Launcher.class.getResource(scenes.get(scene)));
+            try {
+                Node newNode = fxmlLoader.load();
+                newNode.getProperties().put("viewName", scene);
+                root.setCenter(newNode);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }
