@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import io.github.sachintha_madubashana.libraryos.controller.component.InputField?>
 
 
-<VBox fx:id="root" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.sachintha_madubashana.libraryos.controller.AddBookController" />
+<HBox fx:id="root" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.sachintha_madubashana.libraryos.controller.AddBookController">
+   <children>
+      <VBox fx:id="card" spacing="24.0">
+         <children>
+         <InputField/>
+            <VBox>
+               <children>
+                  <Label text="Book ID / ISBN" />
+                  <TextField promptText="978-0-00-000000-0" />
+               </children>
+            </VBox>
+         </children>
+         <padding>
+            <Insets bottom="28.0" left="28.0" right="28.0" top="28.0" />
+         </padding>
+      </VBox>
+      <VBox fx:id="tableContainer" />
+   </children>
+</HBox>

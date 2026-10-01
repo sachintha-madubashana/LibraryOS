@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root styleClass="custom-input-field" type="VBox" xmlns="http://javafx.com/javafx/17.0.12"
+         xmlns:fx="http://javafx.com/fxml/1">
+
+    <Label fx:id="label" styleClass="input-label"/>
+
+    <HBox fx:id="container" alignment="CENTER_LEFT" spacing="5" styleClass="input-box">
+        <FontIcon fx:id="icon" iconSize="16" styleClass="input-icon"/>
+        <TextField fx:id="textField" prefHeight="30.0" prefWidth="253.0" styleClass="input-text-field" visible="false"
+                   HBox.hgrow="ALWAYS"/>
+        <PasswordField fx:id="passwordField" prefHeight="30.0" prefWidth="253.0" promptText="Enter your password"
+                       styleClass="input-text-field" visible="false" HBox.hgrow="ALWAYS"/>
+        <Button fx:id="passwordShowHideButton" mnemonicParsing="false" onAction="#changeEye" styleClass="eye-button"
+                visible="false">
+            <graphic>
+                <FontIcon fx:id="passwordShowHideButtonIcon" iconLiteral="far-eye" iconSize="16"
+                          styleClass="eye-button-icon"/>
+            </graphic>
+        </Button>
+
+    </HBox>
+</fx:root>
