@@ -12,6 +12,9 @@ import javafx.scene.control.Separator;
 import javafx.scene.layout.BorderPane;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -59,7 +62,7 @@ public class MainController {
     }
 
     private void scenes() {
-        String date = new SimpleDateFormat("EEEE, MMMM d, yyyy", Locale.ENGLISH).format(new Date());
+        String date = LocalDate.now(ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy", Locale.ENGLISH));
         scenes.put(DASHBOARD, new Route(DASHBOARD, "view/dashboard.fxml", "Dashboard", "Welcome back. Today is " + date));
         scenes.put(ADD_BOOK , new Route(ADD_BOOK, "view/addBook.fxml", "Add Book", "Add a new book to the library."));
         scenes.put(ADD_MEMBER, new Route(ADD_MEMBER, "view/addMember.fxml", "Add Member", "Add a new member to the library."));
@@ -91,7 +94,7 @@ public class MainController {
 
     private void addPageHeader(String title, String subtitle) {
         PageHeader pageHeader = new PageHeader("Library Management System".toUpperCase(), title, subtitle);
-        pageHeader.setPadding(new javafx.geometry.Insets(24));
+        pageHeader.setPadding(new javafx.geometry.Insets(24, 24, 0, 24));
         pageHeader.getChildren().add(new Separator(Orientation.HORIZONTAL));
         contentArea.setTop(pageHeader);
     }
