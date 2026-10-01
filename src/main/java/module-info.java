@@ -8,4 +8,5 @@ module io.github.sachintha_madubashana.libraryos {
     opens io.github.sachintha_madubashana.libraryos.controller to javafx.fxml;
     exports io.github.sachintha_madubashana.libraryos;
     exports io.github.sachintha_madubashana.libraryos.controller;
+    exports io.github.sachintha_madubashana.libraryos.controller.component;
 }
