@@ -21,6 +21,7 @@ public class PageHeader extends VBox {
     }
 
     private void initialize() {
+        this.setSpacing(8);
         this.getChildren().add(new Label(placeholder));
         this.getChildren().add(new Label(title));
         this.getChildren().add(new Label(subtitle));

@@ -1,6 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 
 
-<VBox fx:id="root" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.sachintha_madubashana.libraryos.controller.BorrowingHistoryController" />
+<VBox fx:id="root" spacing="24.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.sachintha_madubashana.libraryos.controller.BorrowingHistoryController">
+   <children>
+      <HBox alignment="CENTER_LEFT" prefWidth="600.0" spacing="8.0">
+         <children>
+            <HBox>
+               <children>
+                <Button mnemonicParsing="false" text="All" />
+                  <Button mnemonicParsing="false" text="Borrowed" />
+                  <Button mnemonicParsing="false" text="Returned" />
+                  <Button mnemonicParsing="false" text="Overdue" />
+               </children>
+            </HBox>
+            <Pane HBox.hgrow="ALWAYS" />
+            <TextField promptText="Search records..." />
+            <Button mnemonicParsing="false" text="Button" />
+         </children>
+      </HBox>
+      <TableView prefHeight="200.0" prefWidth="200.0">
+        <columns>
+          <TableColumn prefWidth="75.0" text="C1" />
+          <TableColumn prefWidth="75.0" text="C2" />
+        </columns>
+      </TableView>
+      <HBox alignment="CENTER_LEFT" prefWidth="200.0">
+         <children>
+            <Label text="6 records shown" />
+            <Pane HBox.hgrow="ALWAYS" />
+            <Button mnemonicParsing="false" text="1" />
+         </children>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="24.0" left="24.0" right="24.0" top="24.0" />
+   </padding>
+</VBox>
