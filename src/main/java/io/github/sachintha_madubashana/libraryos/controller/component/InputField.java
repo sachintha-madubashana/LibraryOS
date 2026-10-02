@@ -15,80 +15,58 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 public class InputField extends VBox {
+    private final StringProperty labelText =
+            new SimpleStringProperty(this, "labelText", "");
+    private final StringProperty iconLiteral =
+            new SimpleStringProperty(this, "iconLiteral", null);
+    private final StringProperty promptText =
+            new SimpleStringProperty(this, "promptText", "");
+    private final ObjectProperty<InputType> inputType =
+            new SimpleObjectProperty<>(this, "inputType", InputType.DEFAULT);
+    private final BooleanProperty iconEnabled =
+            new SimpleBooleanProperty(this, "iconEnabled", true);
+    private final BooleanProperty required =
+            new SimpleBooleanProperty(this, "required", false);
+    private final ObjectProperty<LocalDate> dateValue =
+            new SimpleObjectProperty<>(this, "dateValue", null);
+    private final ObjectProperty<Integer> yearValue =
+            new SimpleObjectProperty<>(this, "yearValue", null);
+    private final StringProperty errorMessage =
+            new SimpleStringProperty(this, "errorMessage", null);
     @FXML
     private HBox labelContainer;
-
     @FXML
     private Label label;
-
     @FXML
     private Label requiredIndicator;
-
-    @FXML
-    private HBox container;
-
-    @FXML
-    private FontIcon icon;
-
-    @FXML
-    private TextField textField;
-
-    @FXML
-    private PasswordField passwordField;
-
-    @FXML
-    private DatePicker datePicker;
-
-    @FXML
-    private TextField yearField;
-
-    @FXML
-    private FontIcon passwordShowHideButtonIcon;
-
-    @FXML
-    private Button passwordShowHideButton;
-
-    @FXML
-    private Label errorLabel;
 
     // -------------------------------------------------------------------------
     // Internal State
     // -------------------------------------------------------------------------
-
-    private TextField currentTextField;
-
-    private boolean passwordVisible = false;
+    @FXML
+    private HBox container;
+    @FXML
+    private FontIcon icon;
 
     // -------------------------------------------------------------------------
     // JavaFX Properties
     // -------------------------------------------------------------------------
-
-    private final StringProperty labelText =
-            new SimpleStringProperty(this, "labelText", "");
-
-    private final StringProperty iconLiteral =
-            new SimpleStringProperty(this, "iconLiteral", null);
-
-    private final StringProperty promptText =
-            new SimpleStringProperty(this, "promptText", "");
-
-    private final ObjectProperty<InputType> inputType =
-            new SimpleObjectProperty<>(this, "inputType", InputType.DEFAULT);
-
-    private final BooleanProperty iconEnabled =
-            new SimpleBooleanProperty(this, "iconEnabled", true);
-
-    private final BooleanProperty required =
-            new SimpleBooleanProperty(this, "required", false);
-
-    private final ObjectProperty<LocalDate> dateValue =
-            new SimpleObjectProperty<>(this, "dateValue", null);
-
-    private final ObjectProperty<Integer> yearValue =
-            new SimpleObjectProperty<>(this, "yearValue", null);
-
-    private final StringProperty errorMessage =
-            new SimpleStringProperty(this, "errorMessage", null);
+    @FXML
+    private TextField textField;
+    @FXML
+    private PasswordField passwordField;
+    @FXML
+    private DatePicker datePicker;
+    @FXML
+    private TextField yearField;
+    @FXML
+    private FontIcon passwordShowHideButtonIcon;
+    @FXML
+    private Button passwordShowHideButton;
+    @FXML
+    private Label errorLabel;
+    private TextField currentTextField;
+    private boolean passwordVisible = false;
 
     // -------------------------------------------------------------------------
     // Constructor
@@ -331,6 +309,14 @@ public class InputField extends VBox {
         }
     }
 
+    @Override
+    public void requestFocus() {
+        if (currentTextField != null) {
+            currentTextField.requestFocus();
+        } else if (datePicker != null) {
+            datePicker.requestFocus();
+        }
+    }
 
     // -------------------------------------------------------------------------
     // Password Visibility
@@ -572,5 +558,13 @@ public class InputField extends VBox {
         String message = errorMessage.get();
 
         return message != null && !message.isBlank();
+    }
+
+    public void clear() {
+        if (currentTextField != null) {
+            currentTextField.clear();
+        }
+        yearField.clear();
+        errorMessage.set(null);
     }
 }

@@ -97,6 +97,7 @@ public class LoginController {
     }
 
     private void onClearButtonClick() {
-        System.out.println("Clear button clicked");
+        usernameField.clear();
+        passwordField.clear();
     }
 }
