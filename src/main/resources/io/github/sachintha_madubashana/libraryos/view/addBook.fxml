@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import io.github.sachintha_madubashana.libraryos.controller.component.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import io.github.sachintha_madubashana.libraryos.controller.component.InputField?>
-
 
 <HBox fx:id="root" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.sachintha_madubashana.libraryos.controller.AddBookController">
    <children>
       <VBox fx:id="card" spacing="24.0">
          <children>
-         <InputField/>
+         <InputField iconLiteral="" isIconEnable="false" labelText="Book ID / ISBN" promptText="978-0-00-000000-0" />
             <VBox>
                <children>
                   <Label text="Book ID / ISBN" />

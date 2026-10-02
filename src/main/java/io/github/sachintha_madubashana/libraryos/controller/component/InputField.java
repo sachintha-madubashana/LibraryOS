@@ -96,14 +96,14 @@ public class InputField extends VBox {
                 currentTextField = textField;
                 textField.setVisible(true);
                 textField.setManaged(true);
-                iconLiteral.set("fas-envelope");
+                iconLiteral.set("fth-mail");
             }
 
             case TEXT -> {
                 currentTextField = textField;
                 textField.setVisible(true);
                 textField.setManaged(true);
-                iconLiteral.set("fas-search");
+                iconLiteral.set("fth-file-text");
             }
 
             case NUMBER -> {
@@ -113,7 +113,7 @@ public class InputField extends VBox {
                 textField.textProperty().addListener((obs, oldV, newV) -> {
                     if (!newV.matches("\\d*")) textField.setText(oldV);
                 });
-                iconLiteral.set("fas-hashtag");
+                iconLiteral.set("fth-hash");
             }
 
             case PASSWORD -> {
@@ -122,7 +122,7 @@ public class InputField extends VBox {
                 passwordField.setManaged(true);
                 passwordShowHideButton.setVisible(true);
                 passwordShowHideButton.setManaged(true);
-                iconLiteral.set("fas-lock");
+                iconLiteral.set("fth-lock");
             }
         }
     }
@@ -147,7 +147,7 @@ public class InputField extends VBox {
             passwordField.setManaged(false);
             textField.setVisible(true);
             textField.setManaged(true);
-            passwordShowHideButtonIcon.setIconLiteral("far-eye-slash");
+            passwordShowHideButtonIcon.setIconLiteral("fth-eye-off");
             isPasswordVisible = true;
         } else {
             // Hide
@@ -156,7 +156,7 @@ public class InputField extends VBox {
             textField.setManaged(false);
             passwordField.setVisible(true);
             passwordField.setManaged(true);
-            passwordShowHideButtonIcon.setIconLiteral("far-eye");
+            passwordShowHideButtonIcon.setIconLiteral("fth-eye");
             isPasswordVisible = false;
         }
     }
