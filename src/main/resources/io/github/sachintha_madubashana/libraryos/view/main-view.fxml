@@ -22,9 +22,9 @@
                      </font>
                   </Label>
                   <Separator prefWidth="200.0">
-                     <padding>
+                     <VBox.margin>
                         <Insets bottom="20.0" top="20.0" />
-                     </padding>
+                     </VBox.margin>
                   </Separator>
                   <Label text="Overview">
                      <font>

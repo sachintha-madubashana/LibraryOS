@@ -184,6 +184,11 @@ public class InputField extends VBox {
                         updateFocus(newValue)
         );
 
+        yearField.focusedProperty().addListener(
+                (obs, oldValue, newValue) ->
+                        updateFocus(newValue)
+        );
+
 
         // Number validation.
         textField.textProperty().addListener(

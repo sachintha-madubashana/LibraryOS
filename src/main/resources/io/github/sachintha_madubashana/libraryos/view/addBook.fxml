@@ -1,27 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.sachintha_madubashana.libraryos.controller.component.*?>
-<?import javafx.geometry.*?>
+<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <HBox fx:id="root" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.sachintha_madubashana.libraryos.controller.AddBookController">
    <children>
-      <VBox fx:id="card" spacing="24.0">
+      <VBox fx:id="card" maxHeight="450.0" maxWidth="400.0" styleClass="card">
          <children>
-         <InputField iconEnabled="false" iconLiteral="" inputType="TEXT" labelText="Book ID / ISBN" promptText="eg : 2026" required="true" />
-         <DropdownSelect fx:id="categoryField" labelText="Category" required="true" />
-            <VBox>
+         <InputField fx:id="bookId" errorMessage="" iconEnabled="false" iconLiteral="" inputType="TEXT" labelText="Book ID / ISBN" promptText="978-0-00-000000-0" required="true" />
+            <InputField fx:id="bookTitle" errorMessage="" iconEnabled="false" iconLiteral="" inputType="TEXT" labelText="Book Title" layoutX="38.0" layoutY="38.0" promptText="Enter book title" required="true" />
+            <HBox alignment="CENTER_LEFT" styleClass="space-24">
                <children>
-                  <Label text="Book ID / ISBN" />
-                  <TextField promptText="978-0-00-000000-0" />
+                  <InputField fx:id="bookAuthor" errorMessage="" iconEnabled="false" iconLiteral="" inputType="TEXT" labelText="Author" promptText="Author full name" required="true" HBox.hgrow="ALWAYS" />
+                  <DropdownSelect fx:id="categoryField" labelText="Category" maxWidth="Infinity" required="true" HBox.hgrow="ALWAYS" />
                </children>
-            </VBox>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="106.0" styleClass="space-24">
+               <children>
+                  <InputField fx:id="bookQty" errorMessage="" iconEnabled="false" iconLiteral="" inputType="NUMBER" labelText="Quantity" promptText="Number of copies" required="true" HBox.hgrow="ALWAYS" />
+                  <InputField fx:id="bookYear" errorMessage="" iconEnabled="false" iconLiteral="" inputType="YEAR" labelText="Published Year" layoutX="10.0" layoutY="10.0" promptText="e.g. 1984" required="true" />
+               </children>
+            </HBox>
+            <Separator prefWidth="200.0" />
+            <HBox>
+               <children>
+                  <Button mnemonicParsing="false" prefHeight="40.0" text="Add Book" HBox.hgrow="ALWAYS" />
+                  <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="80.0" text="Clear" />
+               </children>
+            </HBox>
          </children>
-         <padding>
-            <Insets bottom="28.0" left="28.0" right="28.0" top="28.0" />
-         </padding>
       </VBox>
       <VBox fx:id="tableContainer" />
    </children>
+   <styleClass>
+      <String fx:value="padding-24" />
+      <String fx:value="space-24" />
+   </styleClass>
 </HBox>
