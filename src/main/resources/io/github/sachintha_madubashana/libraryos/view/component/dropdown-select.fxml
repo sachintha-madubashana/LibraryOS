@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root alignment="CENTER_LEFT" styleClass="custom-input-field" type="VBox" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+
+    <HBox fx:id="labelContainer" alignment="CENTER_LEFT" spacing="3">
+        <Label fx:id="label" styleClass="input-label" />
+        <Label fx:id="requiredIndicator" styleClass="required-indicator" text="*" />
+    </HBox>
+   <ComboBox fx:id="comboBox" maxWidth="Infinity" />
+    <Label fx:id="errorLabel" managed="false" styleClass="input-error-label" visible="false" wrapText="true" />
+</fx:root>

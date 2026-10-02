@@ -48,6 +48,9 @@ public class InputField extends VBox {
     @FXML
     private Button passwordShowHideButton;
 
+    @FXML
+    private Label errorLabel;
+
     // -------------------------------------------------------------------------
     // Internal State
     // -------------------------------------------------------------------------
@@ -84,6 +87,8 @@ public class InputField extends VBox {
     private final ObjectProperty<Integer> yearValue =
             new SimpleObjectProperty<>(this, "yearValue", null);
 
+    private final StringProperty errorMessage =
+            new SimpleStringProperty(this, "errorMessage", null);
 
     // -------------------------------------------------------------------------
     // Constructor
@@ -164,6 +169,9 @@ public class InputField extends VBox {
 
             yearValue.set(Integer.parseInt(newValue));
         });
+        errorMessage.addListener(
+                (obs, oldValue, newValue) -> updateErrorState()
+        );
 
         // Focus handling
         textField.focusedProperty().addListener(
@@ -201,6 +209,7 @@ public class InputField extends VBox {
         updateIcon();
 
         switchInputField(inputType.get());
+        updateErrorState();
     }
 
 
@@ -359,6 +368,24 @@ public class InputField extends VBox {
         node.setManaged(visible);
     }
 
+    private void updateErrorState() {
+        String message = errorMessage.get();
+        boolean hasError = message != null && !message.isBlank();
+        errorLabel.setText(hasError ? message : "");
+        setManagedAndVisible(errorLabel, hasError);
+        updateInputErrorStyle(hasError);
+    }
+
+    private void updateInputErrorStyle(boolean hasError) {
+        if (hasError) {
+            if (!container.getStyleClass().contains("input-box-error")) {
+                container.getStyleClass().add("input-box-error");
+            }
+        } else {
+            container.getStyleClass().remove("input-box-error");
+        }
+    }
+
 
     // -------------------------------------------------------------------------
     // Label Text Property
@@ -513,5 +540,32 @@ public class InputField extends VBox {
 
     public ObjectProperty<Integer> yearValueProperty() {
         return yearValue;
+    }
+
+
+    // -------------------------------------------------------------------------
+    // Error Property
+    // -------------------------------------------------------------------------
+
+    public String getErrorMessage() {
+        return errorMessage.get();
+    }
+
+    public void setErrorMessage(String message) {
+        errorMessage.set(message);
+    }
+
+    public StringProperty errorMessageProperty() {
+        return errorMessage;
+    }
+
+    public void clearError() {
+        errorMessage.set(null);
+    }
+
+    public boolean hasError() {
+        String message = errorMessage.get();
+
+        return message != null && !message.isBlank();
     }
 }

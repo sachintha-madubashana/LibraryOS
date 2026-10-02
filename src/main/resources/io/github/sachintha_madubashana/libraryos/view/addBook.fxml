@@ -9,7 +9,8 @@
    <children>
       <VBox fx:id="card" spacing="24.0">
          <children>
-         <InputField iconLiteral="" inputType="YEAR" labelText="Book ID / ISBN" promptText="eg : 2026" required="true" />
+         <InputField iconEnabled="false" iconLiteral="" inputType="TEXT" labelText="Book ID / ISBN" promptText="eg : 2026" required="true" />
+         <DropdownSelect fx:id="categoryField" labelText="Category" required="true" />
             <VBox>
                <children>
                   <Label text="Book ID / ISBN" />

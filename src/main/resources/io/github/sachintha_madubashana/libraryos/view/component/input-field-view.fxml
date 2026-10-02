@@ -33,6 +33,6 @@
                 <FontIcon fx:id="passwordShowHideButtonIcon" iconLiteral="fth-eye" iconSize="16" styleClass="eye-button-icon"/>
             </graphic>
         </Button>
-
     </HBox>
+     <Label fx:id="errorLabel" styleClass="input-error-label" managed="false" visible="false" wrapText="true"/>
 </fx:root>
