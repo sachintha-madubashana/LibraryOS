@@ -1,6 +1,7 @@
 package io.github.sachintha_madubashana.libraryos.controller;
 
 import io.github.sachintha_madubashana.libraryos.Launcher;
+import io.github.sachintha_madubashana.libraryos.controller.component.InputField;
 import io.github.sachintha_madubashana.libraryos.model.AuthenticationService;
 import io.github.sachintha_madubashana.libraryos.model.User;
 import javafx.fxml.FXML;
@@ -10,6 +11,8 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import org.kordamp.ikonli.feather.Feather;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.util.Objects;
 
@@ -24,10 +27,10 @@ public class LoginController {
     private Button clearBtn;
 
     @FXML
-    private TextField usernameField;
+    private InputField usernameField;
 
     @FXML
-    private PasswordField passwordField;
+    private InputField passwordField;
 
     private AuthenticationService authenticationService;
 
@@ -36,6 +39,11 @@ public class LoginController {
         authenticationService = new AuthenticationService();
         usernameField.setOnKeyPressed(this::focusPasswordField);
         passwordField.setOnKeyPressed(this::handleRootKeyPressed);
+
+        FontIcon icon = new FontIcon(Feather.X);
+        icon.setIconSize(16);
+        icon.getStyleClass().add("close-icon");
+        closeBtn.setGraphic(icon);
 
         closeBtn.setOnAction(event -> onCloseButtonClick());
         loinBtn.setOnAction(event -> onLoginButtonClick());
@@ -47,7 +55,7 @@ public class LoginController {
     }
 
     private void onLoginButtonClick() {
-        User credential = new User(usernameField.getText(), passwordField.getText());
+        User credential = new User(usernameField.getInputValue(), passwordField.getInputValue());
         if (authenticationService.authenticate(credential)) {
             try {
                 Stage stage = (Stage) loinBtn.getScene().getWindow();
