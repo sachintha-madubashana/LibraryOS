@@ -1,0 +1,81 @@
+.custom-input-field {
+    -fx-spacing: 5px;
+}
+.custom-input-field .input-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e1e1e;
+}
+.custom-input-field .input-box {
+    -fx-background-color: #efefef;
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-padding: 5px 10px 5px 10px;
+    -fx-border-color: transparent;
+    -fx-border-width: 1px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-spacing: 8px;
+}
+.custom-input-field .input-box-focused {
+    -fx-border-color: #6e6e6e;
+    -fx-effect: dropshadow(gaussian, rgba(178, 178, 178, 0.35), 10, 0, 0, 0);
+}
+.custom-input-field .input-icon {
+    -fx-fill: #4e4e4e;
+    -fx-pref-width: 16px;
+    -fx-pref-height: 16px;
+}
+.custom-input-field .input-text-field {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-prompt-text-fill: #9a9a9a;
+    -fx-text-fill: #1e1e1e;
+    -fx-font-size: 13px;
+    -fx-pref-width: 250px;
+    -fx-alignment: CENTER_LEFT;
+}
+.custom-input-field .eye-button,
+.custom-input-field .eye-button-icon {
+    -fx-background-color: transparent;
+    -fx-font-size: 16px;
+    -fx-cursor: hand;
+    -fx-icon-color: #cbced4;
+    -fx-padding: 4px;
+}
+.custom-input-field .eye-button:hover,
+.custom-input-field .eye-button-icon:hover {
+    -fx-icon-color: #6e6e75;
+}
+.custom-input-field {
+    /* helper when icon is disabled */
+}
+.custom-input-field .icon-hidden {
+    -fx-opacity: 0;
+    -fx-spacing: 0;
+    -fx-max-width: 0;
+    -fx-min-width: 0;
+    -fx-padding: 0;
+}
+.custom-input-field .abc {
+    -fx-text-fill: white;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 4px;
+    -fx-background-color: transparent;
+}
+.input-error-label {
+    -fx-text-fill: #dc2626;
+    -fx-font-size: 12px;
+    -fx-padding: 4px 0 0 0;
+}
+
+.input-box-error {
+    -fx-border-color: #dc2626;
+}
+
+.input-box-focused.input-box-error {
+    -fx-border-color: #dc2626;
+}
+
+.required-indicator {
+    -fx-text-fill: #dc2626;
+}
