@@ -14,7 +14,7 @@
             <HBox alignment="CENTER_LEFT" styleClass="space-24">
                <children>
                   <InputField fx:id="bookAuthor" errorMessage="" iconEnabled="false" iconLiteral="" inputType="TEXT" labelText="Author" promptText="Author full name" required="true" HBox.hgrow="ALWAYS" />
-                  <DropdownSelect fx:id="categoryField" labelText="Category" maxWidth="Infinity" required="true" HBox.hgrow="ALWAYS" />
+                  <DropdownSelect fx:id="categoryField" labelText="Category" maxWidth="400.0" prefWidth="250.0" required="true" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="106.0" styleClass="space-24">
@@ -24,15 +24,27 @@
                </children>
             </HBox>
             <Separator prefWidth="200.0" />
-            <HBox>
+            <HBox styleClass="space-8">
                <children>
-                  <Button mnemonicParsing="false" prefHeight="40.0" text="Add Book" HBox.hgrow="ALWAYS" />
-                  <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="80.0" text="Clear" />
+                  <Button alignment="CENTER" mnemonicParsing="false" prefHeight="40.0" text="Add Book" HBox.hgrow="ALWAYS">
+                     <styleClass>
+                        <String fx:value="button-primary" />
+                        <String fx:value="button-md" />
+                        <String fx:value="button-full" />
+                     </styleClass></Button>
+                  <Button alignment="CENTER" mnemonicParsing="false" prefHeight="40.0" prefWidth="80.0" text="Clear">
+                     <styleClass>
+                        <String fx:value="button-secondary" />
+                        <String fx:value="button-md" />
+                     </styleClass></Button>
                </children>
             </HBox>
          </children>
       </VBox>
-      <VBox fx:id="tableContainer" />
+      <VBox fx:id="tableContainer" styleClass="space-12" HBox.hgrow="ALWAYS">
+         <children>
+            <Label text="Catalog — 6 titles" />
+         </children></VBox>
    </children>
    <styleClass>
       <String fx:value="padding-24" />

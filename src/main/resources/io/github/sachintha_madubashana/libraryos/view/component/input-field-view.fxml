@@ -3,36 +3,31 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import org.kordamp.ikonli.javafx.*?>
-<?import javafx.scene.control.DatePicker?>
 
-<fx:root
-        type="VBox"
-        styleClass="custom-input-field"
-        xmlns="http://javafx.com/javafx/17.0.12"
-        xmlns:fx="http://javafx.com/fxml/1">
+<fx:root styleClass="custom-input-field" type="VBox" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
 
     <HBox fx:id="labelContainer" spacing="3">
-        <Label fx:id="label" styleClass="input-label"/>
-        <Label fx:id="requiredIndicator" text="*" styleClass="required-indicator"/>
+        <Label fx:id="label" styleClass="input-label" />
+        <Label fx:id="requiredIndicator" styleClass="required-indicator" text="*" />
     </HBox>
 
-    <HBox fx:id="container" alignment="CENTER_LEFT"  spacing="5" styleClass="input-box">
+    <HBox fx:id="container" alignment="CENTER_LEFT" spacing="5" styleClass="input-box" VBox.vgrow="ALWAYS">
 
-        <FontIcon fx:id="icon" iconSize="16" styleClass="input-icon"/>
+        <FontIcon fx:id="icon" iconSize="16" styleClass="input-icon" />
 
-        <TextField fx:id="textField" prefHeight="30.0" prefWidth="253.0" styleClass="input-text-field" visible="false" HBox.hgrow="ALWAYS"/>
+        <TextField fx:id="textField" prefHeight="40.0" prefWidth="253.0" styleClass="input-text-field" visible="false" HBox.hgrow="ALWAYS" />
 
-        <PasswordField fx:id="passwordField" prefHeight="30.0" prefWidth="253.0" styleClass="input-text-field" visible="false" HBox.hgrow="ALWAYS"/>
+        <PasswordField fx:id="passwordField" prefHeight="40.0" prefWidth="253.0" styleClass="input-text-field" visible="false" HBox.hgrow="ALWAYS" />
 
-        <DatePicker fx:id="datePicker" prefHeight="30.0" prefWidth="253.0" styleClass="input-date-picker" visible="false" HBox.hgrow="ALWAYS"/>
+        <DatePicker fx:id="datePicker" prefHeight="40.0" prefWidth="253.0" styleClass="input-date-picker" visible="false" HBox.hgrow="ALWAYS" />
 
-        <TextField fx:id="yearField" prefHeight="30.0" prefWidth="253.0" styleClass="input-text-field" visible="false" HBox.hgrow="ALWAYS"/>
+        <TextField fx:id="yearField" prefHeight="40.0" prefWidth="253.0" styleClass="input-text-field" visible="false" HBox.hgrow="ALWAYS" />
 
         <Button fx:id="passwordShowHideButton" mnemonicParsing="false" onAction="#changeEye" styleClass="eye-button" visible="false">
             <graphic>
-                <FontIcon fx:id="passwordShowHideButtonIcon" iconLiteral="fth-eye" iconSize="16" styleClass="eye-button-icon"/>
+                <FontIcon fx:id="passwordShowHideButtonIcon" iconLiteral="fth-eye" iconSize="16" styleClass="eye-button-icon" />
             </graphic>
         </Button>
     </HBox>
-     <Label fx:id="errorLabel" styleClass="input-error-label" managed="false" visible="false" wrapText="true"/>
+     <Label fx:id="errorLabel" managed="false" styleClass="input-error-label" visible="false" wrapText="true" />
 </fx:root>
