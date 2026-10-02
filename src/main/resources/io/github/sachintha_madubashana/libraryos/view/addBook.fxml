@@ -9,7 +9,7 @@
    <children>
       <VBox fx:id="card" spacing="24.0">
          <children>
-         <InputField iconEnabled="false" iconLiteral="" inputType="DATE" labelText="Book ID / ISBN" promptText="978-0-00-000000-0" required="true" />
+         <InputField iconLiteral="" inputType="YEAR" labelText="Book ID / ISBN" promptText="eg : 2026" required="true" />
             <VBox>
                <children>
                   <Label text="Book ID / ISBN" />

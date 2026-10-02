@@ -6,5 +6,6 @@ public enum InputType {
     EMAIL,
     NUMBER,
     PASSWORD,
-    DATE
+    DATE,
+    YEAR
 }

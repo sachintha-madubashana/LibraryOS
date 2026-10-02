@@ -26,6 +26,8 @@
 
         <DatePicker fx:id="datePicker" prefHeight="30.0" prefWidth="253.0" styleClass="input-date-picker" visible="false" HBox.hgrow="ALWAYS"/>
 
+        <TextField fx:id="yearField" prefHeight="30.0" prefWidth="253.0" styleClass="input-text-field" visible="false" HBox.hgrow="ALWAYS"/>
+
         <Button fx:id="passwordShowHideButton" mnemonicParsing="false" onAction="#changeEye" styleClass="eye-button" visible="false">
             <graphic>
                 <FontIcon fx:id="passwordShowHideButtonIcon" iconLiteral="fth-eye" iconSize="16" styleClass="eye-button-icon"/>

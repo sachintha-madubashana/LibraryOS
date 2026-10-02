@@ -2,12 +2,7 @@ package io.github.sachintha_madubashana.libraryos.controller.component;
 
 import io.github.sachintha_madubashana.libraryos.Launcher;
 import io.github.sachintha_madubashana.libraryos.model.InputType;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -43,6 +38,9 @@ public class InputField extends VBox {
 
     @FXML
     private DatePicker datePicker;
+
+    @FXML
+    private TextField yearField;
 
     @FXML
     private FontIcon passwordShowHideButtonIcon;
@@ -82,6 +80,9 @@ public class InputField extends VBox {
 
     private final ObjectProperty<LocalDate> dateValue =
             new SimpleObjectProperty<>(this, "dateValue", null);
+
+    private final ObjectProperty<Integer> yearValue =
+            new SimpleObjectProperty<>(this, "yearValue", null);
 
 
     // -------------------------------------------------------------------------
@@ -123,6 +124,7 @@ public class InputField extends VBox {
         passwordField.promptTextProperty().bind(promptText);
         datePicker.promptTextProperty().bind(promptText);
         datePicker.valueProperty().bindBidirectional(dateValue);
+        yearField.promptTextProperty().bind(promptText);
 
         icon.visibleProperty().bind(iconEnabled);
         icon.managedProperty().bind(iconEnabled);
@@ -144,6 +146,24 @@ public class InputField extends VBox {
                 updateIcon()
         );
 
+        yearField.textProperty().addListener((obs, oldValue, newValue) -> {
+            if (newValue.isBlank()) {
+                yearValue.set(null);
+                return;
+            }
+
+            if (!newValue.matches("\\d{0,4}")) {
+                yearField.setText(oldValue);
+                return;
+            }
+
+            if (Integer.parseInt(newValue) < 1 || Integer.parseInt(newValue) > 9999) {
+                yearField.setText(oldValue);
+                return;
+            }
+
+            yearValue.set(Integer.parseInt(newValue));
+        });
 
         // Focus handling
         textField.focusedProperty().addListener(
@@ -221,6 +241,7 @@ public class InputField extends VBox {
         setManagedAndVisible(textField, false);
         setManagedAndVisible(passwordField, false);
         setManagedAndVisible(datePicker, false);
+        setManagedAndVisible(yearField, false);
         setManagedAndVisible(passwordShowHideButton, false);
 
         if (type != InputType.PASSWORD) {
@@ -253,6 +274,11 @@ public class InputField extends VBox {
             case DATE -> {
                 currentTextField = null;
                 setManagedAndVisible(datePicker, true);
+                setDefaultIcon("fth-calendar");
+            }
+            case YEAR -> {
+                currentTextField = yearField;
+                setManagedAndVisible(yearField, true);
                 setDefaultIcon("fth-calendar");
             }
         }
@@ -465,5 +491,27 @@ public class InputField extends VBox {
 
     public ObjectProperty<LocalDate> dateValueProperty() {
         return dateValue;
+    }
+
+    // -------------------------------------------------------------------------
+    // Year Property
+    // -------------------------------------------------------------------------
+
+    public Integer getYearValue() {
+        return yearValue.get();
+    }
+
+    public void setYearValue(Integer value) {
+        yearValue.set(value);
+
+        if (value == null) {
+            yearField.clear();
+        } else {
+            yearField.setText(String.valueOf(value));
+        }
+    }
+
+    public ObjectProperty<Integer> yearValueProperty() {
+        return yearValue;
     }
 }
