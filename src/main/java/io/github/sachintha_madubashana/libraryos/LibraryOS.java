@@ -12,7 +12,7 @@ import java.util.Objects;
 public class LibraryOS extends javafx.application.Application {
     @Override
     public void start(Stage stage) throws IOException {
-//        Application.setUserAgentStylesheet(Objects.requireNonNull(getClass().getResource("css/main.css")).toExternalForm());
+        Application.setUserAgentStylesheet(Objects.requireNonNull(getClass().getResource("css/main.css")).toExternalForm());
         FXMLLoader fxmlLoader = new FXMLLoader(Launcher.class.getResource("view/login-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1069, 600);
         stage.initStyle(StageStyle.UNDECORATED);

@@ -79,3 +79,162 @@
 .required-indicator {
     -fx-text-fill: #dc2626;
 }
+
+/* --------------------------------------------------------------------------
+   Pagination
+   -------------------------------------------------------------------------- */
+
+.pagination {
+    -fx-alignment: center;
+    -fx-spacing: 8px;
+    -fx-padding: 0;
+}
+
+
+/* --------------------------------------------------------------------------
+   Previous / Next
+   -------------------------------------------------------------------------- */
+
+.pagination-previous,
+.pagination-next {
+    -fx-background-color: transparent;
+    -fx-background-radius: 8px;
+
+    -fx-border-color: transparent;
+    -fx-border-radius: 8px;
+
+    -fx-text-fill: #0F172A;
+
+    -fx-font-family: "Inter";
+    -fx-font-size: 14px;
+
+    -fx-min-width: 109px;
+    -fx-pref-width: 109px;
+    -fx-max-width: 109px;
+
+    -fx-min-height: 40px;
+    -fx-pref-height: 40px;
+    -fx-max-height: 40px;
+
+    -fx-padding: 0;
+    -fx-opacity: 0.5;
+
+    -fx-cursor: hand;
+}
+
+.pagination-previous:hover,
+.pagination-next:hover {
+    -fx-background-color: #F8FAFC;
+    -fx-opacity: 1;
+}
+
+.pagination-previous:pressed,
+.pagination-next:pressed {
+    -fx-background-color: #F1F5F9;
+}
+
+.pagination-previous:disabled,
+.pagination-next:disabled {
+    -fx-opacity: 0.25;
+}
+
+
+/* --------------------------------------------------------------------------
+   Page Container
+   -------------------------------------------------------------------------- */
+
+.pagination > .pagination-page {
+    /* Prevent accidental styling if page buttons are direct children. */
+}
+
+
+/* The HBox containing page buttons */
+.pagination .pagination-page {
+    -fx-alignment: center;
+}
+
+.pagination-pages {
+    -fx-alignment: center;
+    -fx-spacing: 0;
+}
+
+
+/* --------------------------------------------------------------------------
+   Page Buttons
+   -------------------------------------------------------------------------- */
+
+.pagination-page {
+    -fx-background-color: transparent;
+    -fx-background-radius: 8px;
+
+    -fx-border-color: transparent;
+    -fx-border-radius: 8px;
+
+    -fx-text-fill: #0F172A;
+
+    -fx-font-family: "Inter";
+    -fx-font-size: 14px;
+    -fx-font-weight: normal;
+
+    -fx-min-width: 40px;
+    -fx-pref-width: 40px;
+    -fx-max-width: 40px;
+
+    -fx-min-height: 40px;
+    -fx-pref-height: 40px;
+    -fx-max-height: 40px;
+
+    -fx-padding: 0;
+
+    -fx-cursor: hand;
+}
+
+.pagination-page:hover {
+    -fx-background-color: #F8FAFC;
+}
+
+.pagination-page:pressed {
+    -fx-background-color: #F1F5F9;
+}
+
+
+/* --------------------------------------------------------------------------
+   Active Page
+   -------------------------------------------------------------------------- */
+
+.pagination-page.active {
+    -fx-background-color: #FFFFFF;
+
+    -fx-border-color: #c4c6cf;
+    -fx-border-width: 1px;
+
+    -fx-text-fill: #0F172A;
+}
+
+.pagination-page.active:hover {
+    -fx-background-color: #F8FAFC;
+}
+
+
+/* --------------------------------------------------------------------------
+   Ellipsis
+   -------------------------------------------------------------------------- */
+
+.pagination-ellipsis {
+    -fx-text-fill: #0F172A;
+
+    -fx-font-family: "Inter";
+    -fx-font-size: 14px;
+
+    -fx-alignment: center;
+
+    -fx-min-width: 24px;
+    -fx-pref-width: 24px;
+    -fx-max-width: 24px;
+
+    -fx-min-height: 40px;
+    -fx-pref-height: 40px;
+    -fx-max-height: 40px;
+
+    -fx-padding: 0;
+}
