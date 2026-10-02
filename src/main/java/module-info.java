@@ -11,4 +11,6 @@ module io.github.sachintha_madubashana.libraryos {
     exports io.github.sachintha_madubashana.libraryos.model;
     exports io.github.sachintha_madubashana.libraryos.controller;
     exports io.github.sachintha_madubashana.libraryos.controller.component;
+    exports io.github.sachintha_madubashana.libraryos.controller.component.table;
+    opens io.github.sachintha_madubashana.libraryos.controller.component.table to javafx.fxml;
 }

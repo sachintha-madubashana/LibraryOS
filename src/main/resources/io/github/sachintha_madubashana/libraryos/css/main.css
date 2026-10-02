@@ -238,3 +238,212 @@
 
     -fx-padding: 0;
 }
+
+/* --------------------------------------------------------------------------
+   Data Table
+   -------------------------------------------------------------------------- */
+
+.data-table {
+    -fx-background-color: transparent;
+}
+
+
+/* --------------------------------------------------------------------------
+   Table View
+   -------------------------------------------------------------------------- */
+
+.data-table-view {
+    -fx-background-color: transparent;
+
+    -fx-border-color: #E5E7EB;
+    -fx-border-width: 1px;
+    -fx-border-radius: 4px;
+
+    -fx-background-radius: 4px;
+}
+
+
+/* --------------------------------------------------------------------------
+   Header
+   -------------------------------------------------------------------------- */
+
+.data-table-view .column-header-background {
+    -fx-background-color: #F8F8FA;
+
+    -fx-background-radius:
+            4px 4px 0px 0px;
+
+    -fx-border-color: transparent transparent #E5E7EB transparent;
+    -fx-border-width: 0 0 1px 0;
+}
+
+
+.data-table-view .column-header {
+    -fx-background-color: transparent;
+
+    -fx-border-color: transparent;
+}
+
+
+.data-table-view .column-header .label {
+
+    -fx-font-family: "Inter";
+
+    -fx-font-size: 10px;
+
+    -fx-font-weight: 600;
+
+    -fx-text-fill: #6B7280;
+
+    -fx-alignment: CENTER_LEFT;
+
+    -fx-padding:
+            0px 16px 0px 16px;
+}
+
+
+/* --------------------------------------------------------------------------
+   Rows
+   -------------------------------------------------------------------------- */
+
+.data-table-view .table-row-cell {
+
+    -fx-background-color: white;
+
+    -fx-border-color:
+            transparent transparent #E5E7EB transparent;
+
+    -fx-border-width:
+            0 0 1px 0;
+
+    -fx-padding: 0px;
+
+    -fx-cell-size: 38px;
+}
+
+
+.data-table-view .table-row-cell:filled:hover {
+
+    -fx-background-color: #F8FAFC;
+}
+
+
+.data-table-view .table-row-cell:selected {
+
+    -fx-background-color: #F0FDF4;
+}
+
+
+/* --------------------------------------------------------------------------
+   Cells
+   -------------------------------------------------------------------------- */
+
+.data-table-view .table-cell {
+
+    -fx-background-color: transparent;
+
+    -fx-border-color: transparent;
+
+    -fx-padding:
+            0px 16px 0px 16px;
+
+    -fx-font-family: "Inter";
+
+    -fx-font-size: 12px;
+
+    -fx-text-fill: #111827;
+}
+
+
+.data-table-view .table-cell:focused {
+    -fx-border-color: transparent;
+}
+
+
+/* --------------------------------------------------------------------------
+   Secondary text
+   -------------------------------------------------------------------------- */
+
+.data-table-view .secondary-cell {
+
+    -fx-text-fill: #6B7280;
+}
+
+
+/* --------------------------------------------------------------------------
+   Alignment
+   -------------------------------------------------------------------------- */
+
+.data-table-view .align-left {
+    -fx-alignment: CENTER_LEFT;
+}
+
+.data-table-view .align-center {
+    -fx-alignment: CENTER;
+}
+
+.data-table-view .align-right {
+    -fx-alignment: CENTER_RIGHT;
+}
+
+
+/* --------------------------------------------------------------------------
+   Quantity / Warning
+   -------------------------------------------------------------------------- */
+
+.data-table-view .quantity-empty {
+
+    -fx-text-fill: #EF4444;
+
+    -fx-font-weight: 500;
+}
+
+
+/* --------------------------------------------------------------------------
+   Empty State
+   -------------------------------------------------------------------------- */
+
+.data-table-empty {
+
+    -fx-font-family: "Inter";
+
+    -fx-font-size: 12px;
+
+    -fx-text-fill: #9CA3AF;
+
+    -fx-padding: 32px;
+}
+
+
+/* --------------------------------------------------------------------------
+   Scrollbars
+   -------------------------------------------------------------------------- */
+
+.data-table-view .scroll-bar:vertical,
+.data-table-view .scroll-bar:horizontal {
+
+    -fx-background-color: transparent;
+}
+
+
+.data-table-view .scroll-bar .thumb {
+
+    -fx-background-color: #D1D5DB;
+
+    -fx-background-radius: 999px;
+}
+
+
+.data-table-view .scroll-bar .track {
+
+    -fx-background-color: transparent;
+}
+
+
+/* --------------------------------------------------------------------------
+   Remove unnecessary corner
+   -------------------------------------------------------------------------- */
+
+.data-table-view .corner {
+    -fx-background-color: transparent;
+}
