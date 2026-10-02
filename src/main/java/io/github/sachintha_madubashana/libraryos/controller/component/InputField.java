@@ -2,172 +2,347 @@ package io.github.sachintha_madubashana.libraryos.controller.component;
 
 import io.github.sachintha_madubashana.libraryos.Launcher;
 import io.github.sachintha_madubashana.libraryos.model.InputType;
-import javafx.beans.property.*;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 public class InputField extends VBox {
     @FXML
+    private HBox labelContainer;
+
+    @FXML
     private Label label;
+
+    @FXML
+    private Label requiredIndicator;
+
     @FXML
     private HBox container;
+
     @FXML
     private FontIcon icon;
+
     @FXML
     private TextField textField;
+
     @FXML
     private PasswordField passwordField;
+
+    @FXML
+    private DatePicker datePicker;
+
     @FXML
     private FontIcon passwordShowHideButtonIcon;
+
     @FXML
     private Button passwordShowHideButton;
 
+    // -------------------------------------------------------------------------
+    // Internal State
+    // -------------------------------------------------------------------------
+
     private TextField currentTextField;
 
-    private boolean isPasswordVisible = false;
+    private boolean passwordVisible = false;
 
-    private final StringProperty labelText = new SimpleStringProperty(this, "labelText", "");
-    private final StringProperty iconLiteral = new SimpleStringProperty(this, "iconLiteral", null);
-    private final StringProperty promptText = new SimpleStringProperty(this, "promptText", "");
-    private final ObjectProperty<InputType> inputType = new SimpleObjectProperty<>(this, "inputType", InputType.DEFAULT);
-    private final BooleanProperty isIconEnable = new SimpleBooleanProperty(this, "isIconEnable", true);
+    // -------------------------------------------------------------------------
+    // JavaFX Properties
+    // -------------------------------------------------------------------------
+
+    private final StringProperty labelText =
+            new SimpleStringProperty(this, "labelText", "");
+
+    private final StringProperty iconLiteral =
+            new SimpleStringProperty(this, "iconLiteral", null);
+
+    private final StringProperty promptText =
+            new SimpleStringProperty(this, "promptText", "");
+
+    private final ObjectProperty<InputType> inputType =
+            new SimpleObjectProperty<>(this, "inputType", InputType.DEFAULT);
+
+    private final BooleanProperty iconEnabled =
+            new SimpleBooleanProperty(this, "iconEnabled", true);
+
+    private final BooleanProperty required =
+            new SimpleBooleanProperty(this, "required", false);
+
+    private final ObjectProperty<LocalDate> dateValue =
+            new SimpleObjectProperty<>(this, "dateValue", null);
+
+
+    // -------------------------------------------------------------------------
+    // Constructor
+    // -------------------------------------------------------------------------
 
     public InputField() {
-        FXMLLoader fxmlLoader = new FXMLLoader(Launcher.class.getResource("view/component/input-field-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(
+                Launcher.class.getResource(
+                        "view/component/input-field-view.fxml"
+                )
+        );
+
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
 
         try {
             fxmlLoader.load();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(
+                    "Failed to load InputField FXML.",
+                    e
+            );
         }
     }
 
-    public void initialize() {
-        // Default visible input type
-        switchInputField(inputType.get());
 
-        // Listen for changes from FXML attributes
-        inputType.addListener((obs, oldVal, newVal) -> switchInputField(newVal));
+    // -------------------------------------------------------------------------
+    // Initialization
+    // -------------------------------------------------------------------------
 
-        // Bindings
+    @FXML
+    private void initialize() {
+
+        // Property bindings
         label.textProperty().bind(labelText);
-        iconLiteral.addListener((obs, oldVal, newVal) -> icon.setIconLiteral(newVal));
+
         textField.promptTextProperty().bind(promptText);
         passwordField.promptTextProperty().bind(promptText);
+        datePicker.promptTextProperty().bind(promptText);
+        datePicker.valueProperty().bindBidirectional(dateValue);
 
-        // Focus effect
-        textField.focusedProperty().addListener((o, ov, nv) -> updateFocus(nv));
-        passwordField.focusedProperty().addListener((o, ov, nv) -> updateFocus(nv));
+        icon.visibleProperty().bind(iconEnabled);
+        icon.managedProperty().bind(iconEnabled);
 
-        // Hidden eye button for email/text/number fields
+        // Property listeners
+        labelText.addListener((obs, oldValue, newValue) ->
+                updateLabelVisibility()
+        );
+
+        required.addListener((obs, oldValue, newValue) ->
+                updateRequiredIndicator()
+        );
+
+        inputType.addListener((obs, oldValue, newValue) ->
+                switchInputField(newValue)
+        );
+
+        iconLiteral.addListener((obs, oldValue, newValue) ->
+                updateIcon()
+        );
+
+
+        // Focus handling
+        textField.focusedProperty().addListener(
+                (obs, oldValue, newValue) ->
+                        updateFocus(newValue)
+        );
+
+        passwordField.focusedProperty().addListener(
+                (obs, oldValue, newValue) ->
+                        updateFocus(newValue)
+        );
+
+
+        // Number validation.
+        textField.textProperty().addListener(
+                (obs, oldValue, newValue) -> {
+
+                    if (inputType.get() != InputType.NUMBER) {
+                        return;
+                    }
+
+                    if (!newValue.matches("\\d*")) {
+                        textField.setText(oldValue);
+                    }
+                }
+        );
+
+
+        // Initial component state
         passwordShowHideButton.setVisible(false);
         passwordShowHideButton.setManaged(false);
 
-        label.setVisible(false);
-        label.setManaged(false);
+        updateLabelVisibility();
+        updateRequiredIndicator();
+        updateIcon();
+
+        switchInputField(inputType.get());
     }
+
+
+    // -------------------------------------------------------------------------
+    // Label
+    // -------------------------------------------------------------------------
+
+    private void updateLabelVisibility() {
+
+        boolean hasLabel =
+                labelText.get() != null &&
+                        !labelText.get().isBlank();
+
+        setManagedAndVisible(labelContainer, hasLabel);
+    }
+
+    private void updateRequiredIndicator() {
+
+        boolean showRequired =
+                required.get() &&
+                        labelText.get() != null &&
+                        !labelText.get().isBlank();
+
+        setManagedAndVisible(requiredIndicator, showRequired);
+    }
+
+
+    // -------------------------------------------------------------------------
+    // Input Type
+    // -------------------------------------------------------------------------
 
     private void switchInputField(InputType type) {
 
-        textField.setVisible(false);
-        textField.setManaged(false);
-        passwordField.setVisible(false);
-        passwordField.setManaged(false);
-        passwordShowHideButton.setVisible(false);
-        passwordShowHideButton.setManaged(false);
+        if (type == null) {
+            type = InputType.DEFAULT;
+        }
 
-        icon.visibleProperty().bind(isIconEnable);
-        icon.managedProperty().bind(isIconEnable);
+        setManagedAndVisible(textField, false);
+        setManagedAndVisible(passwordField, false);
+        setManagedAndVisible(datePicker, false);
+        setManagedAndVisible(passwordShowHideButton, false);
+
+        if (type != InputType.PASSWORD) {
+            passwordVisible = false;
+        }
 
         switch (type) {
-
+            case DEFAULT, TEXT -> {
+                currentTextField = textField;
+                setManagedAndVisible(textField, true);
+                setDefaultIcon("fth-file-text");
+            }
             case EMAIL -> {
                 currentTextField = textField;
-                textField.setVisible(true);
-                textField.setManaged(true);
-                iconLiteral.set("fth-mail");
+                setManagedAndVisible(textField, true);
+                setDefaultIcon("fth-mail");
             }
-
-            case TEXT -> {
-                currentTextField = textField;
-                textField.setVisible(true);
-                textField.setManaged(true);
-                iconLiteral.set("fth-file-text");
-            }
-
             case NUMBER -> {
                 currentTextField = textField;
-                textField.setVisible(true);
-                textField.setManaged(true);
-                textField.textProperty().addListener((obs, oldV, newV) -> {
-                    if (!newV.matches("\\d*")) textField.setText(oldV);
-                });
-                iconLiteral.set("fth-hash");
+                setManagedAndVisible(textField, true);
+                setDefaultIcon("fth-hash");
             }
-
             case PASSWORD -> {
                 currentTextField = passwordField;
-                passwordField.setVisible(true);
-                passwordField.setManaged(true);
-                passwordShowHideButton.setVisible(true);
-                passwordShowHideButton.setManaged(true);
-                iconLiteral.set("fth-lock");
+                setManagedAndVisible(passwordField, true);
+                setManagedAndVisible(passwordShowHideButton, true);
+                passwordShowHideButtonIcon.setIconLiteral("fth-eye");
+                setDefaultIcon("fth-lock");
+            }
+            case DATE -> {
+                currentTextField = null;
+                setManagedAndVisible(datePicker, true);
+                setDefaultIcon("fth-calendar");
             }
         }
     }
 
-    private void updateFocus(boolean newValue) {
-        if (newValue) {
+
+    // -------------------------------------------------------------------------
+    // Icon
+    // -------------------------------------------------------------------------
+
+    private void setDefaultIcon(String defaultIcon) {
+        if (iconLiteral.get() == null || iconLiteral.get().isBlank()) {
+            iconLiteral.set(defaultIcon);
+        }
+    }
+
+    private void updateIcon() {
+        String literal = iconLiteral.get();
+        if (literal != null && !literal.isBlank()) {
+            icon.setIconLiteral(literal);
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Focus
+    // -------------------------------------------------------------------------
+
+    private void updateFocus(boolean focused) {
+        if (focused) {
             if (!container.getStyleClass().contains("input-box-focused")) {
                 container.getStyleClass().add("input-box-focused");
             }
+
         } else {
             container.getStyleClass().remove("input-box-focused");
         }
-
     }
+
+
+    // -------------------------------------------------------------------------
+    // Password Visibility
+    // -------------------------------------------------------------------------
 
     @FXML
     private void changeEye() {
-        if (!isPasswordVisible) {
-            // Show
-            textField.setText(passwordField.getText());
-            passwordField.setVisible(false);
-            passwordField.setManaged(false);
-            textField.setVisible(true);
-            textField.setManaged(true);
-            passwordShowHideButtonIcon.setIconLiteral("fth-eye-off");
-            isPasswordVisible = true;
+        if (passwordVisible) {
+            hidePassword();
         } else {
-            // Hide
-            passwordField.setText(textField.getText());
-            textField.setVisible(false);
-            textField.setManaged(false);
-            passwordField.setVisible(true);
-            passwordField.setManaged(true);
-            passwordShowHideButtonIcon.setIconLiteral("fth-eye");
-            isPasswordVisible = false;
+            showPassword();
         }
     }
 
+    private void showPassword() {
+        textField.setText(passwordField.getText());
+        setManagedAndVisible(passwordField, false);
+        setManagedAndVisible(textField, true);
+        currentTextField = textField;
+        passwordShowHideButtonIcon.setIconLiteral("fth-eye-off");
+        passwordVisible = true;
+    }
+
+    private void hidePassword() {
+        passwordField.setText(textField.getText());
+        setManagedAndVisible(textField, false);
+        setManagedAndVisible(passwordField, true);
+        currentTextField = passwordField;
+        passwordShowHideButtonIcon.setIconLiteral("fth-eye");
+        passwordVisible = false;
+    }
+
+
+    // -------------------------------------------------------------------------
+    // Utility
+    // -------------------------------------------------------------------------
+
+    private void setManagedAndVisible(Node node, boolean visible) {
+        node.setVisible(visible);
+        node.setManaged(visible);
+    }
+
+
+    // -------------------------------------------------------------------------
+    // Label Text Property
+    // -------------------------------------------------------------------------
+
     public String getLabelText() {
-        return label.getText();
+        return labelText.get();
     }
 
     public void setLabelText(String text) {
-        label.setVisible(true);
-        label.setManaged(true);
         labelText.set(text);
     }
 
@@ -175,8 +350,13 @@ public class InputField extends VBox {
         return labelText;
     }
 
+
+    // -------------------------------------------------------------------------
+    // Icon Property
+    // -------------------------------------------------------------------------
+
     public String getIconLiteral() {
-        return icon.getIconLiteral();
+        return iconLiteral.get();
     }
 
     public void setIconLiteral(String literal) {
@@ -187,8 +367,12 @@ public class InputField extends VBox {
         return iconLiteral;
     }
 
+    // -------------------------------------------------------------------------
+    // Prompt Text Property
+    // -------------------------------------------------------------------------
+
     public String getPromptText() {
-        return currentTextField.getPromptText();
+        return promptText.get();
     }
 
     public void setPromptText(String value) {
@@ -199,13 +383,26 @@ public class InputField extends VBox {
         return promptText;
     }
 
+    // -------------------------------------------------------------------------
+    // Input Value
+    // -------------------------------------------------------------------------
+
     public String getInputValue() {
-        return currentTextField.getText();
+        return currentTextField != null
+                ? currentTextField.getText()
+                : "";
     }
 
     public void setInputValue(String value) {
-        currentTextField.setText(value);
+        if (currentTextField != null) {
+            currentTextField.setText(value);
+        }
     }
+
+
+    // -------------------------------------------------------------------------
+    // Input Type Property
+    // -------------------------------------------------------------------------
 
     public InputType getInputType() {
         return inputType.get();
@@ -219,12 +416,54 @@ public class InputField extends VBox {
         return inputType;
     }
 
-    public boolean getIsIconEnable() {
-        return isIconEnable.get();
+
+    // -------------------------------------------------------------------------
+    // Icon Enabled Property
+    // -------------------------------------------------------------------------
+
+    public boolean isIconEnabled() {
+        return iconEnabled.get();
     }
 
-    public void setIsIconEnable(boolean value) {
-        isIconEnable.set(value);
+    public void setIconEnabled(boolean value) {
+        iconEnabled.set(value);
     }
 
+    public BooleanProperty iconEnabledProperty() {
+        return iconEnabled;
+    }
+
+
+    // -------------------------------------------------------------------------
+    // Required Property
+    // -------------------------------------------------------------------------
+
+    public boolean isRequired() {
+        return required.get();
+    }
+
+    public void setRequired(boolean value) {
+        required.set(value);
+    }
+
+    public BooleanProperty requiredProperty() {
+        return required;
+    }
+
+
+    // -------------------------------------------------------------------------
+    // Date Property
+    // -------------------------------------------------------------------------
+
+    public LocalDate getDateValue() {
+        return dateValue.get();
+    }
+
+    public void setDateValue(LocalDate value) {
+        dateValue.set(value);
+    }
+
+    public ObjectProperty<LocalDate> dateValueProperty() {
+        return dateValue;
+    }
 }
