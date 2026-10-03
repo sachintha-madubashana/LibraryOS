@@ -66,7 +66,7 @@
                               <Font size="13.0" />
                            </font>
                         </Label>
-                        <InputField fx:id="usernameField" errorMessage="" iconEnabled="false" iconLiteral="" inputType="TEXT" inputValue="admin" labelText="Username" layoutX="38.0" layoutY="38.0" promptText="admin" required="true" />
+                        <InputField fx:id="usernameField" errorMessage="" iconLiteral="fth-user" inputType="TEXT" inputValue="admin" labelText="Username" layoutX="38.0" layoutY="38.0" promptText="admin" required="true" />
                         <InputField fx:id="passwordField" errorMessage="" iconEnabled="false" iconLiteral="" inputType="PASSWORD" inputValue="admin" labelText="Password" layoutX="10.0" layoutY="401.0" promptText="123456" required="true" />
                         <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
                            <children>

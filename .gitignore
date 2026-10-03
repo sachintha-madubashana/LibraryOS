@@ -46,3 +46,4 @@ build/
 ### Operating Systems ###
 .DS_Store
 Thumbs.db
+/src/main/resources/io/github/sachintha_madubashana/libraryos/bin/

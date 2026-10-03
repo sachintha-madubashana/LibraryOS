@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.*?>
 
-<fx:root alignment="CENTER_LEFT" styleClass="custom-input-field" type="VBox" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root alignment="CENTER_LEFT" styleClass="dropdown-select" type="VBox" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
 
     <HBox fx:id="labelContainer" alignment="CENTER_LEFT" spacing="3">
         <Label fx:id="label" styleClass="input-label" />
         <Label fx:id="requiredIndicator" styleClass="required-indicator" text="*" />
     </HBox>
-   <ComboBox fx:id="comboBox" maxWidth="Infinity" />
+    <StackPane styleClass="dropdown-container">
+        <ComboBox fx:id="comboBox" maxWidth="Infinity" StackPane.alignment="CENTER_LEFT" />
+        <FontIcon iconLiteral="fth-chevron-down" mouseTransparent="true" styleClass="dropdown-arrow" translateX="-20.0" StackPane.alignment="CENTER_RIGHT" />
+      <VBox.margin>
+         <Insets />
+      </VBox.margin>
+    </StackPane>
     <Label fx:id="errorLabel" managed="false" styleClass="input-error-label" visible="false" wrapText="true" />
 </fx:root>

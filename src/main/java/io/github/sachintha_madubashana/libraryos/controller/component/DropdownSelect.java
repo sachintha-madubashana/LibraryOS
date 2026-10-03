@@ -26,20 +26,12 @@ public class DropdownSelect<T> extends VBox {
     @FXML
     private ComboBox<T> comboBox;
 
-    private final StringProperty labelText =
-            new SimpleStringProperty(this, "labelText", "");
-
-    private final BooleanProperty required =
-            new SimpleBooleanProperty(this, "required", false);
-
-    private final StringProperty error =
-            new SimpleStringProperty(this, "error", "");
+    private final StringProperty labelText = new SimpleStringProperty(this, "labelText", "");
+    private final BooleanProperty required = new SimpleBooleanProperty(this, "required", false);
+    private final StringProperty error = new SimpleStringProperty(this, "error", "");
 
     public DropdownSelect() {
-        FXMLLoader loader = new FXMLLoader(
-                Launcher.class.getResource(
-                        "view/component/dropdown-select.fxml")
-        );
+        FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("view/component/dropdown-select.fxml"));
 
         loader.setRoot(this);
         loader.setController(this);
@@ -54,25 +46,15 @@ public class DropdownSelect<T> extends VBox {
     }
 
     private void initialize() {
-        // Label
         label.textProperty().bind(labelText);
 
-        // Required indicator
         requiredIndicator.visibleProperty().bind(required);
         requiredIndicator.managedProperty().bind(required);
 
-        // Error
         errorLabel.textProperty().bind(error);
+        errorLabel.visibleProperty().bind(error.isNotEmpty());
+        errorLabel.managedProperty().bind(error.isNotEmpty());
 
-        errorLabel.visibleProperty().bind(
-                error.isNotEmpty()
-        );
-
-        errorLabel.managedProperty().bind(
-                error.isNotEmpty()
-        );
-
-        // Error styling
         error.addListener((obs, oldValue, newValue) -> {
             boolean hasError = newValue != null && !newValue.isBlank();
 
