@@ -18,7 +18,7 @@
                   <Label prefWidth="220.0" styleClass="sidebar-brand" text="Librarian Portal" />
                </children>
             </VBox>
-            <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+            <ScrollPane fx:id="sidebarScroll" fitToWidth="true" VBox.vgrow="ALWAYS">
                <content>
                   <VBox styleClass="sidebar-content">
                      <children>

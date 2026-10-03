@@ -10,8 +10,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -58,11 +60,14 @@ public class MainController {
     private Button signOutBtn;
     @FXML
     private Button userBtn;
+    @FXML
+    private ScrollPane sidebarScroll;
 
     @FXML
     private void initialize() {
         scenes();
         initializeIconsMap();
+        configureSidebarScroll(sidebarScroll);
 
         dashboardBtn.setOnAction(actionEvent -> replaceScene(DASHBOARD));
         addBookBtn.setOnAction(actionEvent -> replaceScene(ADD_BOOK));
@@ -167,5 +172,20 @@ public class MainController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void configureSidebarScroll(ScrollPane scrollPane) {
+        scrollPane.addEventFilter(ScrollEvent.SCROLL, event -> {
+            double delta = event.getDeltaY();
+
+            double current = scrollPane.getVvalue();
+            double speed = 0.0015;
+
+            double newValue = current - (delta * speed);
+
+            newValue = Math.max(0, Math.min(1, newValue));
+            scrollPane.setVvalue(newValue);
+            event.consume();
+        });
     }
 }
