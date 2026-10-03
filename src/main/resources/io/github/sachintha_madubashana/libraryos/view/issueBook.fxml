@@ -13,7 +13,12 @@
             <DropdownSelect fx:id="bookDropdown" labelText="Book" layoutX="10.0" layoutY="28.0" maxWidth="400.0" prefWidth="250.0" required="true" />
             <InputField fx:id="issueDateInput" iconEnabled="false" iconLiteral="" inputType="DATE" labelText="Issue Date" promptText="02-10-2026" required="true" />
             <InputField fx:id="dueDateInput" iconEnabled="false" iconLiteral="" inputType="DATE" labelText="Due Date" layoutX="10.0" layoutY="114.0" promptText="03-10-2026" required="true" />
-            <Button alignment="CENTER" mnemonicParsing="false" styleClass="button-primary" text="Issue Book" />
+            <HBox styleClass="container-spacing">
+               <children>
+                  <Button alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="button-primary" text="Issue Book" HBox.hgrow="ALWAYS" />
+                  <Button alignment="CENTER" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-outline" text="Clear" />
+               </children>
+            </HBox>
          </children></VBox>
       <Separator maxHeight="1.7976931348623157E308" orientation="VERTICAL" />
       <VBox maxHeight="1.7976931348623157E308">

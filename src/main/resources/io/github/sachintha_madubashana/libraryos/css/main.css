@@ -1120,6 +1120,196 @@
 }
 
 /* ---------------------------------------------------------
+   RECENT ACTIVITY
+   --------------------------------------------------------- */
+
+.recent-activity {
+    -fx-background-color: -fx-card;
+    -fx-border-color: -fx-border;
+    -fx-border-width: 1px;
+
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+
+    -fx-padding: 0;
+}
+
+/* ---------- Header ---------- */
+
+.activity-header {
+    -fx-min-height: 51px;
+    -fx-pref-height: 51px;
+
+    -fx-padding: 0 16px;
+
+    -fx-border-color: transparent transparent -fx-border transparent;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.activity-header-title {
+    -fx-text-fill: -fx-text-primary;
+    -fx-font-family: -fx-font-family;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.view-all-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+
+    -fx-text-fill: -fx-primary;
+    -fx-font-family: -fx-font-family;
+    -fx-font-size: 13px;
+    -fx-font-weight: normal;
+
+    -fx-padding: 6px 0 6px 6px;
+
+    -fx-cursor: hand;
+}
+
+.view-all-button:hover {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-primary-hover;
+    -fx-underline: true;
+}
+
+.view-all-button:pressed {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-primary-active;
+}
+
+
+/* ---------------------------------------------------------
+   SCROLL PANE
+   --------------------------------------------------------- */
+
+.recent-activity .scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+}
+
+.recent-activity .scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.recent-activity .scroll-pane > .content {
+    -fx-background-color: transparent;
+}
+
+
+/* ---------------------------------------------------------
+   ACTIVITY LIST
+   --------------------------------------------------------- */
+
+.activity-list {
+    -fx-background-color: -fx-card;
+}
+
+
+/* ---------------------------------------------------------
+   ACTIVITY ROW
+   --------------------------------------------------------- */
+
+.activity-row {
+    -fx-min-height: 60px;
+    -fx-pref-height: 60px;
+
+    -fx-background-color: -fx-card;
+
+    -fx-border-color: transparent transparent -fx-border transparent;
+    -fx-border-width: 0 0 1px 0;
+
+    -fx-padding: 12px 20px;
+}
+
+.activity-row:hover {
+    -fx-background-color: -fx-table-row-hover;
+}
+
+
+/* ---------- Book Information ---------- */
+
+.book-title {
+    -fx-text-fill: -fx-text-primary;
+    -fx-font-family: -fx-font-family;
+    -fx-font-size: 14px;
+    -fx-font-weight: normal;
+}
+
+.activity-details {
+    -fx-text-fill: -fx-text-secondary;
+    -fx-font-family: -fx-font-family;
+    -fx-font-size: 12px;
+}
+
+
+/* ---------------------------------------------------------
+   STATUS BADGE
+   --------------------------------------------------------- */
+
+.status-badge {
+    -fx-font-family: -fx-font-family;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+
+    -fx-padding: 6px 10px;
+
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+}
+
+
+/* ---------- Borrowed ---------- */
+
+.status-badge.borrowed {
+    -fx-text-fill: -fx-info;
+    -fx-background-color: derive(-fx-info, 90%);
+}
+
+
+/* ---------- Overdue ---------- */
+
+.status-badge.overdue {
+    -fx-text-fill: -fx-warning;
+    -fx-background-color: derive(-fx-warning, 85%);
+}
+
+
+/* ---------------------------------------------------------
+   SCROLLBARS
+   --------------------------------------------------------- */
+.recent-activity .scroll-bar:vertical,
+.recent-activity .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}
+
+.recent-activity .scroll-bar:vertical {
+    -fx-pref-width: 6px;
+}
+
+.recent-activity .scroll-bar:horizontal {
+    -fx-pref-height: 0;
+}
+
+.recent-activity .scroll-bar .track {
+    -fx-background-color: transparent;
+}
+
+.recent-activity .scroll-bar .thumb {
+    -fx-background-color: -fx-border;
+    -fx-background-radius: 999px;
+}
+
+.recent-activity .scroll-bar .thumb:hover {
+    -fx-background-color: -fx-muted-foreground;
+}
+
+.recent-activity .corner {
+    -fx-background-color: transparent;
+}
+
+/* ---------------------------------------------------------
    UTILITIES
    --------------------------------------------------------- */
 .w-full {

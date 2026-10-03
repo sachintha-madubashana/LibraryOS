@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.sachintha_madubashana.libraryos.controller.component.*?>
+<?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="root" styleClass="dashboard-page" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.sachintha_madubashana.libraryos.controller.DashboardController">
+<VBox fx:id="root" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.sachintha_madubashana.libraryos.controller.DashboardController">
 <children>
       <HBox styleClass="card-container">
          <children>
@@ -12,5 +13,10 @@
             <InfoCard description="active loans" icon="fth-book-open" layoutX="84.0" layoutY="10.0" number="3" title="Currently Borrowed" HBox.hgrow="ALWAYS" />
             <InfoCard description="require attention" icon="fth-pause" layoutX="176.0" layoutY="10.0" number="2" title="Overdue Books" HBox.hgrow="ALWAYS" />
          </children>
-      </HBox></children>
+      </HBox>
+      <HBox fx:id="listContainer" styleClass="container-spacing" /></children>
+   <styleClass>
+      <String fx:value="dashboard-page" />
+      <String fx:value="container-spacing" />
+   </styleClass>
 </VBox>
