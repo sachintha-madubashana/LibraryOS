@@ -7,11 +7,12 @@ import io.github.sachintha_madubashana.libraryos.controller.component.table.Data
 import io.github.sachintha_madubashana.libraryos.controller.component.table.DataTable;
 import io.github.sachintha_madubashana.libraryos.model.Book;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.SelectionMode;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,24 +57,6 @@ public class AddBookController {
     private void generateCard() {
         categoryField.getItems().addAll("Fiction", "Non-Fiction", "Science", "History", "Biography");
         categoryField.setValue("Select");
-
-//        card.setPadding(new Insets(28));
-//        Pagination pagination = new Pagination();
-//
-//        pagination.setPageCount(50);
-//        pagination.setCurrentPage(1);
-//
-//        pagination.currentPageProperty().addListener(
-//                (observable, oldPage, newPage) -> {
-//                    int page = newPage.intValue();
-//
-//                    System.out.println("Current page: " +page);
-//                }
-//        );
-//
-//        card.getChildren().add(pagination);
-//
-//
     }
 
     private void generateTable() {
