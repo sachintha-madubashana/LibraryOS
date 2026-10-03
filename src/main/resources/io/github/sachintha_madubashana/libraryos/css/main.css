@@ -1100,6 +1100,11 @@
     -fx-max-width: Infinity;
 }
 
+.container-spacing-with-padding{
+    -fx-spacing: 24px;
+    -fx-padding: 24px;
+}
+
 .container-spacing{
     -fx-spacing: 24px;
 }

@@ -1,10 +1,15 @@
 package io.github.sachintha_madubashana.libraryos.controller.component.table;
 
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.layout.HBox;
 import javafx.util.Callback;
+import org.kordamp.ikonli.feather.Feather;
+import org.kordamp.ikonli.javafx.FontIcon;
 
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class DataColumn<T, V> {
@@ -34,6 +39,44 @@ public class DataColumn<T, V> {
 
     public static <T, V> DataColumn<T, V> of(String title, Function<T, V> valueProvider) {
         return new DataColumn<>(title, valueProvider);
+    }
+
+    public static <T> DataColumn<T, T> actions(String title, double width, Consumer<T> onEdit, Consumer<T> onDelete) {
+        return new DataColumn<T, T>(title, Function.identity())
+                .width(width)
+                .sortable(false)
+                .resizable(false)
+                .alignment(Pos.CENTER)
+                .cellFactory(column -> new TableCell<>() {
+                    private final Button editButton = new Button();
+                    private final Button deleteButton = new Button();
+
+                    private final HBox container = new HBox(6, editButton, deleteButton);
+
+                    {
+                        editButton.setGraphic(new FontIcon(Feather.EDIT));
+                        deleteButton.setGraphic(new FontIcon(Feather.TRASH));
+
+                        editButton.getStyleClass().addAll("button", "button-outline", "button-sm");
+                        deleteButton.getStyleClass().addAll("button", "button-destructive", "button-sm");
+
+                        container.setAlignment(Pos.CENTER);
+                    }
+
+                    @Override
+                    protected void updateItem(T item, boolean empty) {
+                        super.updateItem(item, empty);
+
+                        if (empty || item == null) {
+                            setGraphic(null);
+                        } else {
+                            editButton.setOnAction(event -> onEdit.accept(item));
+                            deleteButton.setOnAction(event -> onDelete.accept(item));
+
+                            setGraphic(container);
+                        }
+                    }
+                });
     }
 
     // ---------------------------------------------------------

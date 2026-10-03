@@ -6,13 +6,18 @@ import javafx.beans.property.*;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
 public class DropdownSelect<T> extends VBox {
+
+    @FXML
+    private HBox labelContainer;
 
     @FXML
     private Label label;
@@ -48,24 +53,18 @@ public class DropdownSelect<T> extends VBox {
     private void initialize() {
         label.textProperty().bind(labelText);
 
-        requiredIndicator.visibleProperty().bind(required);
-        requiredIndicator.managedProperty().bind(required);
-
         errorLabel.textProperty().bind(error);
-        errorLabel.visibleProperty().bind(error.isNotEmpty());
-        errorLabel.managedProperty().bind(error.isNotEmpty());
 
-        error.addListener((obs, oldValue, newValue) -> {
-            boolean hasError = newValue != null && !newValue.isBlank();
-
-            if (hasError) {
-                if (!comboBox.getStyleClass().contains("input-error")) {
-                    comboBox.getStyleClass().add("input-error");
-                }
-            } else {
-                comboBox.getStyleClass().remove("input-error");
-            }
+        labelText.addListener((obs, oldValue, newValue) -> {
+            updateLabelVisibility();
+            updateRequiredIndicator();
         });
+        required.addListener((obs, oldValue, newValue) -> updateRequiredIndicator());
+        error.addListener((obs, oldValue, newValue) -> updateErrorState());
+
+        updateLabelVisibility();
+        updateRequiredIndicator();
+        updateErrorState();
     }
 
     // -------------------------------------------------------------------------
@@ -118,6 +117,31 @@ public class DropdownSelect<T> extends VBox {
 
     public void clearError() {
         setError("");
+    }
+
+    private void updateLabelVisibility() {
+        boolean hasLabel = labelText.get() != null && !labelText.get().isBlank();
+        setManagedAndVisible(labelContainer, hasLabel);
+    }
+
+    private void updateRequiredIndicator() {
+        boolean showRequired = required.get()
+                && labelText.get() != null
+                && !labelText.get().isBlank();
+        setManagedAndVisible(requiredIndicator, showRequired);
+    }
+
+    private void updateErrorState() {
+        boolean hasError = error.get() != null && !error.get().isBlank();
+        setManagedAndVisible(errorLabel, hasError);
+
+        if (hasError) {
+            if (!comboBox.getStyleClass().contains("input-error")) {
+                comboBox.getStyleClass().add("input-error");
+            }
+        } else {
+            comboBox.getStyleClass().remove("input-error");
+        }
     }
 
 //    // -------------------------------------------------------------------------
@@ -175,5 +199,10 @@ public class DropdownSelect<T> extends VBox {
     @Override
     public void requestFocus() {
         comboBox.requestFocus();
+    }
+
+    private void setManagedAndVisible(Node node, boolean visible) {
+        node.setVisible(visible);
+        node.setManaged(visible);
     }
 }
