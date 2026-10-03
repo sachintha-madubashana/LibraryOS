@@ -1,10 +1,7 @@
 package io.github.sachintha_madubashana.libraryos.controller.component;
 
-import javafx.geometry.Insets;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 
 public class PageHeader extends VBox {
 

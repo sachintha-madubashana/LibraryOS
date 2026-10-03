@@ -1,7 +1,6 @@
 package io.github.sachintha_madubashana.libraryos.controller.component;
 
 import io.github.sachintha_madubashana.libraryos.Launcher;
-import javafx.beans.DefaultProperty;
 import javafx.beans.property.*;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
