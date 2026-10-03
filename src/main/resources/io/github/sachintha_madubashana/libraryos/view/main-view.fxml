@@ -18,7 +18,7 @@
                   <Label prefWidth="220.0" styleClass="sidebar-brand" text="Librarian Portal" />
                </children>
             </VBox>
-            <ScrollPane VBox.vgrow="ALWAYS">
+            <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
                <content>
                   <VBox styleClass="sidebar-content">
                      <children>
@@ -29,28 +29,28 @@
                                     <Font size="9.0" />
                                  </font>
                               </Label>
-                              <Button fx:id="dashboardBtn" alignment="CENTER_LEFT" mnemonicParsing="false" prefWidth="203.0" styleClass="sidebar-item" text="Dashboard" />
+                              <Button fx:id="dashboardBtn" alignment="CENTER_LEFT" mnemonicParsing="false" styleClass="sidebar-item" text="Dashboard" />
                               <Label styleClass="sidebar-section-label" text="Books">
                                  <font>
                                     <Font size="9.0" />
                                  </font>
                               </Label>
-                              <Button fx:id="addBookBtn" alignment="CENTER_LEFT" mnemonicParsing="false" prefWidth="203.0" styleClass="sidebar-item" text="Add Book" />
+                              <Button fx:id="addBookBtn" alignment="CENTER_LEFT" mnemonicParsing="false" styleClass="sidebar-item" text="Add Book" />
                               <Label styleClass="sidebar-section-label" text="Members">
                                  <font>
                                     <Font size="9.0" />
                                  </font>
                               </Label>
-                              <Button fx:id="addMemberBtn" alignment="CENTER_LEFT" mnemonicParsing="false" prefWidth="203.0" styleClass="sidebar-item" text="Add Member" />
-                              <Button fx:id="manageMemberBtn" alignment="CENTER_LEFT" mnemonicParsing="false" prefWidth="203.0" styleClass="sidebar-item" text="Manage Members" />
+                              <Button fx:id="addMemberBtn" alignment="CENTER_LEFT" mnemonicParsing="false" styleClass="sidebar-item" text="Add Member" />
+                              <Button fx:id="manageMemberBtn" alignment="CENTER_LEFT" mnemonicParsing="false" styleClass="sidebar-item" text="Manage Members" />
                               <Label styleClass="sidebar-section-label" text="Circulation">
                                  <font>
                                     <Font size="9.0" />
                                  </font>
                               </Label>
-                              <Button fx:id="issueBookBtn" alignment="CENTER_LEFT" mnemonicParsing="false" prefWidth="203.0" styleClass="sidebar-item" text="Issue Book" />
-                              <Button fx:id="returnBookBtn" alignment="CENTER_LEFT" mnemonicParsing="false" prefWidth="203.0" styleClass="sidebar-item" text="Return Book" />
-                              <Button fx:id="historyBtn" alignment="CENTER_LEFT" mnemonicParsing="false" prefWidth="203.0" styleClass="sidebar-item" text="Borrowing History" />
+                              <Button fx:id="issueBookBtn" alignment="CENTER_LEFT" mnemonicParsing="false" styleClass="sidebar-item" text="Issue Book" />
+                              <Button fx:id="returnBookBtn" alignment="CENTER_LEFT" mnemonicParsing="false" styleClass="sidebar-item" text="Return Book" />
+                              <Button fx:id="historyBtn" alignment="CENTER_LEFT" mnemonicParsing="false" styleClass="sidebar-item" text="Borrowing History" />
                            </children>
                         </VBox>
                      </children>
@@ -59,8 +59,8 @@
             </ScrollPane>
             <VBox prefWidth="100.0" styleClass="sidebar-footer">
                <children>
-                  <Button alignment="CENTER_LEFT" layoutX="10.0" layoutY="44.0" mnemonicParsing="false" prefWidth="203.0" styleClass="sidebar-user" text="Admin" />
-                  <Button fx:id="signout" alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefWidth="203.0" styleClass="sidebar-item" text="Sign Out" />
+                  <Button fx:id="userBtn" alignment="CENTER_LEFT" mnemonicParsing="false" styleClass="sidebar-item" text="Admin" />
+                  <Button fx:id="signOutBtn" alignment="CENTER_LEFT" mnemonicParsing="false" styleClass="sidebar-item" text="Sign Out" />
                </children>
             </VBox>
          </children>

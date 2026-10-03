@@ -7,12 +7,20 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Separator;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.kordamp.ikonli.feather.Feather;
 import org.kordamp.ikonli.javafx.FontIcon;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -46,6 +54,10 @@ public class MainController {
     private Button returnBookBtn;
     @FXML
     private Button historyBtn;
+    @FXML
+    private Button signOutBtn;
+    @FXML
+    private Button userBtn;
 
     @FXML
     private void initialize() {
@@ -59,6 +71,7 @@ public class MainController {
         issueBookBtn.setOnAction(actionEvent -> replaceScene(ISSUE_BOOK));
         returnBookBtn.setOnAction(actionEvent -> replaceScene(RETURN_BOOK));
         historyBtn.setOnAction(actionEvent -> replaceScene(HISTORY));
+        signOutBtn.setOnAction(actionEvent -> signOut());
 
         iconGenerator(dashboardBtn, DASHBOARD);
         iconGenerator(addBookBtn, ADD_BOOK);
@@ -67,6 +80,17 @@ public class MainController {
         iconGenerator(issueBookBtn, ISSUE_BOOK);
         iconGenerator(returnBookBtn, RETURN_BOOK);
         iconGenerator(historyBtn, HISTORY);
+        iconGenerator(signOutBtn, "signOut");
+
+        ImageView userIcon = new ImageView(String.valueOf(Launcher.class.getResource("image/user.png")));
+        userIcon.setFitWidth(18);
+        userIcon.setFitHeight(18);
+        userIcon.setPreserveRatio(true);
+
+        StackPane avatarContainer = new StackPane(userIcon);
+        avatarContainer.getStyleClass().add("sidebar-avatar");
+
+        userBtn.setGraphic(avatarContainer);
 
         replaceScene(DASHBOARD);
     }
@@ -90,7 +114,7 @@ public class MainController {
         iconsMap.put(ISSUE_BOOK, Feather.ARROW_RIGHT);
         iconsMap.put(RETURN_BOOK, Feather.ARROW_LEFT);
         iconsMap.put(HISTORY, Feather.LIST);
-        iconsMap.put("signout", Feather.LOG_OUT);
+        iconsMap.put("signOut", Feather.LOG_OUT);
     }
 
     private void replaceScene(String scene) {
@@ -124,5 +148,24 @@ public class MainController {
         FontIcon icon = new FontIcon(iconsMap.get(sceneName));
         icon.setIconSize(20);
         sceneButton.setGraphic(icon);
+    }
+
+    private void signOut() {
+        try {
+            Stage currentStage = (Stage) signOutBtn.getScene().getWindow();
+
+            FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("view/login-view.fxml"));
+            Stage loginStage = new Stage();
+            Scene loginScene = new Scene(loader.load(), 1069, 600);
+            loginScene.setFill(Color.TRANSPARENT);
+            loginStage.setScene(loginScene);
+            loginStage.initStyle(StageStyle.TRANSPARENT);
+
+            currentStage.close();
+            loginStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
