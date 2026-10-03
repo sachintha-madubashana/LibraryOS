@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane minHeight="600.0" minWidth="1069.0" prefHeight="880.0" prefWidth="1069.0" styleClass="bg-primary" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.sachintha_madubashana.libraryos.controller.LoginController">
+<BorderPane minHeight="600.0" minWidth="1069.0" prefHeight="880.0" prefWidth="1069.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.sachintha_madubashana.libraryos.controller.LoginController">
    <left>
-      <VBox alignment="CENTER_LEFT" fillWidth="false" prefHeight="880.0" prefWidth="407.0" spacing="8.0" styleClass="bg-primary" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER_LEFT" fillWidth="false" prefHeight="880.0" prefWidth="407.0" spacing="8.0" BorderPane.alignment="CENTER">
          <children>
             <Label styleClass="text-caption" text="LibraryOS — v0.0.1" />
             <Label prefWidth="200.0" text="Librarian Management Portal" textOverrun="CLIP" wrapText="true">
@@ -38,15 +38,14 @@
       </VBox>
    </left>
    <center>
-      <VBox alignment="CENTER" styleClass="bg" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER_RIGHT" maxHeight="68.0" prefHeight="68.0" styleClass="padding-8">
+            <HBox alignment="CENTER_RIGHT" maxHeight="68.0" prefHeight="68.0" styleClass="close-button-container">
                <children>
-                  <Button fx:id="closeBtn" alignment="CENTER" cancelButton="true" mnemonicParsing="false" prefHeight="30.0">
+                  <Button fx:id="closeBtn" alignment="CENTER" cancelButton="true" focusTraversable="false" mnemonicParsing="false" prefHeight="30.0">
                      <styleClass>
                         <String fx:value="button-destructive" />
                         <String fx:value="button-icon-sm" />
-                        <String fx:value="rounded-8" />
                      </styleClass></Button>
                </children>
                <VBox.margin>
@@ -80,6 +79,14 @@
                </children>
             </VBox>
          </children>
+         <styleClass>
+            <String fx:value="right-bar" />
+            <String fx:value="bg" />
+         </styleClass>
       </VBox>
    </center>
+   <styleClass>
+      <String fx:value="login-page" />
+      <String fx:value="bg-primary" />
+   </styleClass>
 </BorderPane>
