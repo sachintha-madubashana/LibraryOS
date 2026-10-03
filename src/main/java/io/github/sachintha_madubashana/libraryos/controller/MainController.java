@@ -5,6 +5,7 @@ import io.github.sachintha_madubashana.libraryos.controller.component.PageHeader
 import io.github.sachintha_madubashana.libraryos.model.Route;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -145,7 +146,9 @@ public class MainController {
     private void addPageHeader(String title, String subtitle) {
         PageHeader pageHeader = new PageHeader("Library Management System".toUpperCase(), title, subtitle);
         pageHeader.setPadding(new javafx.geometry.Insets(24, 24, 0, 24));
-        pageHeader.getChildren().add(new Separator(Orientation.HORIZONTAL));
+        Separator separator = new Separator(Orientation.HORIZONTAL);
+        separator.setPadding(new Insets(0, 0, 8, 0));
+        pageHeader.getChildren().add(separator);
         contentArea.setTop(pageHeader);
     }
 

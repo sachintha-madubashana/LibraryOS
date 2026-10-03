@@ -969,6 +969,32 @@
 }
 
 /* ---------------------------------------------------------
+   PAGE HEADER
+   --------------------------------------------------------- */
+.page-header {
+    -fx-spacing: 4px;
+}
+
+/* ---------- Placeholder / Breadcrumb ---------- */
+.page-header-placeholder {
+    -fx-text-fill: -fx-text-muted;
+    -fx-font-size: 10px;
+}
+
+/* ---------- Title ---------- */
+.page-header-title {
+    -fx-text-fill: -fx-text-primary;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+/* ---------- Subtitle ---------- */
+.page-header-subtitle {
+    -fx-text-fill: -fx-text-secondary;
+    -fx-font-size: 12px;
+}
+
+/* ---------------------------------------------------------
    UTILITIES
    --------------------------------------------------------- */
 .w-full {
