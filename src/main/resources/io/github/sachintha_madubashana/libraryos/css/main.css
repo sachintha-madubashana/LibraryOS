@@ -1310,6 +1310,125 @@
 }
 
 /* ---------------------------------------------------------
+   BOOK AVAILABILITY
+   --------------------------------------------------------- */
+.book-availability {
+    -fx-background-color: -fx-card;
+    -fx-border-color: -fx-border;
+    -fx-border-width: 1px;
+
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+
+    -fx-padding: 0
+}
+
+/* ---------- Header ---------- */
+.book-header {
+    -fx-min-height: 51px;
+    -fx-pref-height: 51px;
+
+    -fx-padding: 0 16px;
+
+    -fx-border-color: transparent transparent -fx-border transparent;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.book-header-title {
+    -fx-text-fill: -fx-text-primary;
+    -fx-font-family: -fx-font-family;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+/* ---------- Book List ---------- */
+.book-list {
+    -fx-spacing: 0;
+    -fx-background-color: -fx-card;
+}
+
+/* ---------- Book Row ---------- */
+.book-availability-row {
+    -fx-min-height: 60px;
+    -fx-pref-height: 60px;
+
+    -fx-background-color: -fx-card;
+
+    -fx-border-color: transparent transparent -fx-border transparent;
+    -fx-border-width: 0 0 1px 0;
+
+    -fx-padding: 12px 20px;
+}
+
+.book-availability-row:hover {
+    -fx-background-color: -fx-table-row-hover;
+}
+
+/* ---------- Book Information ---------- */
+.book-author {
+    -fx-text-fill: -fx-text-secondary;
+    -fx-font-family: -fx-font-family;
+    -fx-font-size: 13px;
+}
+
+/* ---------- Availability ---------- */
+.book-availability-row .available {
+    -fx-text-fill: -fx-success;
+}
+
+.book-availability-row .unavailable {
+    -fx-text-fill: -fx-destructive;
+}
+
+.book-availability-row Label.available,
+.book-availability-row Label.unavailable {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+/* ---------- ScrollPane ---------- */
+.book-availability .scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.book-availability .scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.book-availability .scroll-pane .content {
+    -fx-background-color: transparent;
+}
+
+/* ---------- Scrollbar ---------- */
+.book-availability .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-pref-width: 6px;
+}
+
+.book-availability .scroll-bar:horizontal {
+    -fx-opacity: 0;
+    -fx-pref-height: 0;
+}
+
+.book-availability .scroll-bar .track {
+    -fx-background-color: transparent;
+}
+
+.book-availability .scroll-bar .thumb {
+    -fx-background-color: -fx-border;
+    -fx-background-radius: 999px;
+}
+
+.book-availability .scroll-bar .thumb:hover {
+    -fx-background-color: -fx-muted-foreground;
+}
+
+.book-availability .corner {
+    -fx-background-color: transparent;
+}
+
+/* ---------------------------------------------------------
    UTILITIES
    --------------------------------------------------------- */
 .w-full {

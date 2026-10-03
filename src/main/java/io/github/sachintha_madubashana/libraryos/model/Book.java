@@ -8,56 +8,66 @@ public class Book implements Serializable {
     private String title;
     private String author;
     private String category;
-    private int quantity;
+    private int totalQuantity;
+    private int availableQuantity;
 
     public Book() {
     }
 
-    public Book(String id, String title, String author, String category, int quantity) {
+    public Book(String id, String title, String author, String category, int totalQuantity, int availableQuantity) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.category = category;
-        this.quantity = quantity;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+        this.totalQuantity = totalQuantity;
+        this.availableQuantity = availableQuantity;
     }
 
     public String getId() {
         return id;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getTitle() {
         return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getAuthor() {
         return author;
     }
 
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
     public String getCategory() {
         return category;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public int getTotalQuantity() {
+        return totalQuantity;
+    }
+
+    public void setTotalQuantity(int totalQuantity) {
+        this.totalQuantity = totalQuantity;
+    }
+
+    public int getAvailableQuantity() {
+        return availableQuantity;
+    }
+
+    public void setAvailableQuantity(int availableQuantity) {
+        this.availableQuantity = availableQuantity;
     }
 }
