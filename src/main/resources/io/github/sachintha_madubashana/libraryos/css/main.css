@@ -1094,6 +1094,32 @@
 }
 
 /* ---------------------------------------------------------
+   ALERT
+   --------------------------------------------------------- */
+.alert-message {
+    -fx-background-color: derive(-fx-success, 100%);
+    -fx-border-color: derive(-fx-success, 65%);
+    -fx-border-width: 1px;
+
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+
+    -fx-padding: 12px 14px;
+    -fx-spacing: 4px;
+}
+
+.alert-message .alert-title {
+    -fx-text-fill: -fx-success;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.alert-message .alert-message-text {
+    -fx-text-fill: derive(-fx-success, 20%);
+    -fx-font-size: 13px;
+}
+
+/* ---------------------------------------------------------
    UTILITIES
    --------------------------------------------------------- */
 .w-full {

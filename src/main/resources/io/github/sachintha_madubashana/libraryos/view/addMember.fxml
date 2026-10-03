@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import io.github.sachintha_madubashana.libraryos.controller.component.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<VBox fx:id="root" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.sachintha_madubashana.libraryos.controller.AddMemberController" />
+<VBox fx:id="parent" styleClass="container-spacing-with-padding" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.sachintha_madubashana.libraryos.controller.AddMemberController">
+   <children>
+      <VBox fx:id="root" fillWidth="true" maxWidth="600.0" styleClass="card">
+         <children>
+            <Label fx:id="generatedIdLabel" text="Member ID (auto-assigned): MEM007" />
+            <InputField fx:id="nameField" iconEnabled="false" iconLiteral="" labelText="Full Name" promptText="First and last name" required="true" />
+            <HBox styleClass="container-spacing">
+               <children>
+                  <InputField fx:id="emailField" iconEnabled="false" iconLiteral="" labelText="Email Address" promptText="member@email.com" required="true" HBox.hgrow="ALWAYS" />
+                  <InputField fx:id="numberField" iconEnabled="false" iconLiteral="" labelText="Phone Number" promptText="077-1234567" required="true" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
+            <InputField fx:id="addressField" iconEnabled="false" iconLiteral="" labelText="Address" promptText="Street, City." required="true" />
+            <Separator prefWidth="200.0" />
+            <HBox alignment="CENTER_LEFT" styleClass="container-spacing">
+               <children>
+                  <Button fx:id="registerBtn" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="button-primary" text="Register Member" HBox.hgrow="ALWAYS" />
+                  <Button fx:id="clearBtn" mnemonicParsing="false" styleClass="button-outline" text="Clear" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</VBox>
