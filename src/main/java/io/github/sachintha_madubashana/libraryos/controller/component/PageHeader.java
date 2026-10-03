@@ -41,7 +41,6 @@ public class PageHeader extends VBox {
         subtitleLabel.getStyleClass().add("page-header-subtitle");
 
         setSpacing(4);
-        subtitleLabel.setPadding(new Insets(0, 0, 8, 0));
 
         getChildren().addAll(placeholderLabel, titleLabel, subtitleLabel);
     }

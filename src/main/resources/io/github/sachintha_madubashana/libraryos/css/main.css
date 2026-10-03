@@ -347,6 +347,10 @@
 
 /* ---------- Input Container ---------- */
 .custom-input-field .input-box {
+    -fx-pref-height: 40px;
+    -fx-min-height: 40px;
+    -fx-max-height: 40px;
+
     -fx-background-color: -fx-background;
     -fx-border-color: -fx-input;
     -fx-border-width: 1px;
@@ -752,8 +756,8 @@
     -fx-border-color: -fx-border;
     -fx-border-width: 1px;
 
-    -fx-background-radius: 28px;
-    -fx-border-radius: 28px;
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
 
     -fx-padding: 28px;
     -fx-spacing: 24px;
@@ -1070,10 +1074,34 @@
 }
 
 /* ---------------------------------------------------------
+   ADD BOOK
+   --------------------------------------------------------- */
+
+.add-book-page{
+    -fx-padding: 24px;
+    -fx-spacing: 16px;
+}
+
+.table-container{
+    -fx-padding: 0 8px;
+    -fx-spacing: 8px;
+}
+
+.table-container .label{
+    -fx-text-fill: -fx-text-secondary;
+    -fx-font-size: 13px;
+    -fx-padding: 0 4px;
+}
+
+/* ---------------------------------------------------------
    UTILITIES
    --------------------------------------------------------- */
 .w-full {
     -fx-max-width: Infinity;
+}
+
+.container-spacing{
+    -fx-spacing: 24px;
 }
 
 .rounded-full {

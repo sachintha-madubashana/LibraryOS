@@ -10,8 +10,8 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.SelectionMode;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +48,7 @@ public class AddBookController {
 
     @FXML
     private void initialize() {
+        card.setMaxHeight(Region.USE_PREF_SIZE);
         generateCard();
         generateTable();
     }
@@ -77,7 +78,7 @@ public class AddBookController {
 
     private void generateTable() {
         DataTable<Book> table = new DataTable<>();
-        table.setMaxHeight(360);
+        table.setMinHeight(360);
 
         table.addColumns(
                 DataColumn.of("ID", Book::getId).width(70),
@@ -121,7 +122,9 @@ public class AddBookController {
         paginationContainer.setAlignment(Pos.CENTER_RIGHT);
         paginationContainer.getChildren().add(pagination);
 
-        tableContainer.getChildren().add(table);
-        tableContainer.getChildren().add(paginationContainer);
+        table.setMaxHeight(Double.MAX_VALUE);
+        VBox.setVgrow(table, Priority.ALWAYS);
+
+        tableContainer.getChildren().addAll(table, paginationContainer);
     }
 }

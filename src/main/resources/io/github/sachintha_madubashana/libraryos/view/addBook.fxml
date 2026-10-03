@@ -5,26 +5,26 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<HBox fx:id="root" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.sachintha_madubashana.libraryos.controller.AddBookController">
+<HBox fx:id="root" fillHeight="true" styleClass="add-book-page" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.sachintha_madubashana.libraryos.controller.AddBookController">
    <children>
-      <VBox fx:id="card" maxHeight="450.0" maxWidth="400.0" styleClass="card">
+      <VBox fx:id="card" styleClass="card">
          <children>
          <InputField fx:id="bookId" errorMessage="" iconEnabled="false" iconLiteral="" inputType="TEXT" labelText="Book ID / ISBN" promptText="978-0-00-000000-0" required="true" />
             <InputField fx:id="bookTitle" errorMessage="" iconEnabled="false" iconLiteral="" inputType="TEXT" labelText="Book Title" layoutX="38.0" layoutY="38.0" promptText="Enter book title" required="true" />
-            <HBox alignment="CENTER_LEFT" styleClass="space-24">
+            <HBox alignment="CENTER_LEFT" styleClass="container-spacing">
                <children>
                   <InputField fx:id="bookAuthor" errorMessage="" iconEnabled="false" iconLiteral="" inputType="TEXT" labelText="Author" promptText="Author full name" required="true" HBox.hgrow="ALWAYS" />
                   <DropdownSelect fx:id="categoryField" labelText="Category" maxWidth="400.0" prefWidth="250.0" required="true" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
-            <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="106.0" styleClass="space-24">
+            <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="106.0" styleClass="container-spacing">
                <children>
                   <InputField fx:id="bookQty" errorMessage="" iconEnabled="false" iconLiteral="" inputType="NUMBER" labelText="Quantity" promptText="Number of copies" required="true" HBox.hgrow="ALWAYS" />
                   <InputField fx:id="bookYear" errorMessage="" iconEnabled="false" iconLiteral="" inputType="YEAR" labelText="Published Year" layoutX="10.0" layoutY="10.0" promptText="e.g. 1984" required="true" />
                </children>
             </HBox>
             <Separator prefWidth="200.0" />
-            <HBox styleClass="space-8">
+            <HBox styleClass="container-spacing">
                <children>
                   <Button alignment="CENTER" mnemonicParsing="false" prefHeight="40.0" text="Add Book" HBox.hgrow="ALWAYS">
                      <styleClass>
@@ -41,13 +41,9 @@
             </HBox>
          </children>
       </VBox>
-      <VBox fx:id="tableContainer" styleClass="space-12" HBox.hgrow="ALWAYS">
+      <VBox fx:id="tableContainer" styleClass="table-container" HBox.hgrow="ALWAYS">
          <children>
             <Label text="Catalog — 6 titles" />
          </children></VBox>
    </children>
-   <styleClass>
-      <String fx:value="padding-24" />
-      <String fx:value="space-24" />
-   </styleClass>
 </HBox>
