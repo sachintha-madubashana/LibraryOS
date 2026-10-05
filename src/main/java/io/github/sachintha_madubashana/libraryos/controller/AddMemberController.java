@@ -99,7 +99,8 @@ public class AddMemberController {
     private void registerMember(Member member) {
         AlertMessage alert = new AlertMessage(
                 "Member registered",
-                "Member registered successfully."
+                "Member registered successfully.",
+                AlertMessage.Type.SUCCESS
         );
         parent.getChildren().add(0, alert);
         Thread thread = new Thread(() -> {

@@ -1094,11 +1094,11 @@
 }
 
 /* ---------------------------------------------------------
-   ALERT
+   ALERT MESSAGE
    --------------------------------------------------------- */
+
+/* ---------- Base ---------- */
 .alert-message {
-    -fx-background-color: derive(-fx-success, 100%);
-    -fx-border-color: derive(-fx-success, 65%);
     -fx-border-width: 1px;
 
     -fx-background-radius: 8px;
@@ -1108,15 +1108,87 @@
     -fx-spacing: 4px;
 }
 
+/* ---------- Title ---------- */
 .alert-message .alert-title {
-    -fx-text-fill: -fx-success;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
 }
 
+/* ---------- Message ---------- */
 .alert-message .alert-message-text {
-    -fx-text-fill: derive(-fx-success, 20%);
     -fx-font-size: 13px;
+}
+
+
+/* ---------------------------------------------------------
+   SUCCESS
+   --------------------------------------------------------- */
+
+.alert-message.alert-success {
+    -fx-background-color: derive(-fx-success, 100%);
+    -fx-border-color: derive(-fx-success, 65%);
+}
+
+.alert-message.alert-success .alert-title {
+    -fx-text-fill: -fx-success;
+}
+
+.alert-message.alert-success .alert-message-text {
+    -fx-text-fill: derive(-fx-success, 20%);
+}
+
+
+/* ---------------------------------------------------------
+   ERROR
+   --------------------------------------------------------- */
+
+.alert-message.alert-error {
+    -fx-background-color: derive(-fx-destructive, 100%);
+    -fx-border-color: derive(-fx-destructive, 65%);
+}
+
+.alert-message.alert-error .alert-title {
+    -fx-text-fill: -fx-destructive;
+}
+
+.alert-message.alert-error .alert-message-text {
+    -fx-text-fill: derive(-fx-destructive, 20%);
+}
+
+
+/* ---------------------------------------------------------
+   WARNING
+   --------------------------------------------------------- */
+
+.alert-message.alert-warning {
+    -fx-background-color: derive(-fx-warning, 100%);
+    -fx-border-color: derive(-fx-warning, 65%);
+}
+
+.alert-message.alert-warning .alert-title {
+    -fx-text-fill: -fx-warning;
+}
+
+.alert-message.alert-warning .alert-message-text {
+    -fx-text-fill: derive(-fx-warning, 20%);
+}
+
+
+/* ---------------------------------------------------------
+   INFO
+   --------------------------------------------------------- */
+
+.alert-message.alert-info {
+    -fx-background-color: derive(-fx-info, 100%);
+    -fx-border-color: derive(-fx-info, 65%);
+}
+
+.alert-message.alert-info .alert-title {
+    -fx-text-fill: -fx-info;
+}
+
+.alert-message.alert-info .alert-message-text {
+    -fx-text-fill: derive(-fx-info, 20%);
 }
 
 /* ---------------------------------------------------------
