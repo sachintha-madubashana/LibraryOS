@@ -4,7 +4,6 @@ import io.github.sachintha_madubashana.libraryos.controller.component.AlertMessa
 import io.github.sachintha_madubashana.libraryos.controller.component.InputField;
 import io.github.sachintha_madubashana.libraryos.model.Member;
 import io.github.sachintha_madubashana.libraryos.model.MemberValidator;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -102,16 +101,7 @@ public class AddMemberController {
                 "Member registered successfully.",
                 AlertMessage.Type.SUCCESS
         );
-        parent.getChildren().add(0, alert);
-        Thread thread = new Thread(() -> {
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            Platform.runLater(() -> parent.getChildren().remove(alert));
-        });
-        thread.start();
+        alert.showIn(parent);
         clearForm();
     }
 
