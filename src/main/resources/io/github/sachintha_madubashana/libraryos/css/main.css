@@ -309,6 +309,8 @@
     -fx-min-height: 36px;
     -fx-pref-width: 36px;
     -fx-pref-height: 36px;
+
+    -fx-fill: -fx-background;
 }
 
 .button-icon-sm {
@@ -766,7 +768,7 @@
 /* ---------------------------------------------------------
    SEPARATOR
    --------------------------------------------------------- */
-.separator .line {
+.separator:horizontal  .line {
     -fx-border-color: -fx-border;
     -fx-border-width: 1px 0 0 0;
 }
@@ -776,6 +778,10 @@
     -fx-border-width: 1px 0 0 0;
 }
 
+.separator:vertical  .line {
+    -fx-border-color: -fx-border;
+    -fx-border-width: 0 0 0 1px;
+}
 
 /* ---------------------------------------------------------
    SIDEBAR
@@ -1544,6 +1550,73 @@
 }
 
 .book-availability .corner {
+    -fx-background-color: transparent;
+}
+
+/* ---------------------------------------------------------
+   RETURN DETAILS Section
+   --------------------------------------------------------- */
+
+.return-page {
+    -fx-background-color: -fx-background;
+    -fx-spacing: 24px;
+    -fx-padding: 0;
+}
+
+
+/* ---------- Page Heading ---------- */
+
+.return-page-title {
+    -fx-text-fill: -fx-muted-foreground;
+    -fx-font-family: "Monospaced";
+    -fx-font-size: 16px;
+    -fx-font-weight: normal;
+    -fx-letter-spacing: 2px;
+}
+
+
+/* ---------- Cards ---------- */
+
+.return-card {
+    -fx-background-color: -fx-card;
+
+    -fx-border-color: -fx-border;
+    -fx-border-width: 1px;
+
+    -fx-background-radius: 12px;
+    -fx-border-radius: 12px;
+
+    -fx-padding: 18px;
+    -fx-spacing: 16px;
+}
+
+
+/* ---------- Section Heading ---------- */
+
+.return-section-title {
+    -fx-text-fill: -fx-muted-foreground;
+    -fx-font-family: "Monospaced";
+    -fx-font-size: 16px;
+    -fx-font-weight: normal;
+    -fx-letter-spacing: 1.5px;
+}
+
+
+/* ---------- Information Labels ---------- */
+
+.return-field-label {
+    -fx-text-fill: -fx-muted-foreground;
+    -fx-font-family: "Monospaced";
+    -fx-font-size: 14px;
+    -fx-font-weight: normal;
+    -fx-letter-spacing: 1px;
+}
+
+/* ---------------------------------------------------------
+   RESPONSIVE SPACING
+   --------------------------------------------------------- */
+
+.return-spacer {
     -fx-background-color: transparent;
 }
 

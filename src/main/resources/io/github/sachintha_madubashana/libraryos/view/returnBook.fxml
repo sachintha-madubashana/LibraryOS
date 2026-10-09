@@ -1,6 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import io.github.sachintha_madubashana.libraryos.controller.component.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<HBox fx:id="root" styleClass="container-spacing-with-padding" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.sachintha_madubashana.libraryos.controller.ReturnBookController">
+   <children>
+      <VBox fx:id="column1" maxWidth="410.0" minWidth="400.0" spacing="8.0">
+         <HBox alignment="CENTER_LEFT" spacing="8.0">
+            <children>
+            <InputField fx:id="issueDateInput" iconEnabled="false" iconLiteral="" inputType="TEXT" promptText="Search by name, ID, or email..." HBox.hgrow="ALWAYS" />
+               <Button fx:id="searchBtn" mnemonicParsing="false" styleClass="button-primary" />
+            </children>
+         </HBox>
+         <Label text="Active Loans — 6" />
+      </VBox>
+      <Separator maxHeight="1.7976931348623157E308" maxWidth="10.0" orientation="VERTICAL" />
+      <VBox fx:id="column2" maxWidth="430.0" minWidth="400.0" styleClass="return-page" HBox.hgrow="ALWAYS">
+         <children>
+            <!-- Page heading -->
+                <Label styleClass="return-page-title" text="RETURN DETAILS" />
 
-<VBox fx:id="root" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.sachintha_madubashana.libraryos.controller.ReturnBookController" />
+                <!-- Loan details card -->
+                <VBox styleClass="return-card">
+
+                    <Label styleClass="return-section-title" text="LOAN DETAILS" />
+
+                    <!-- Loan information -->
+                    <GridPane hgap="32" vgap="22">
+
+                        <columnConstraints>
+                            <ColumnConstraints hgrow="ALWAYS" percentWidth="50" />
+                            <ColumnConstraints hgrow="ALWAYS" percentWidth="50" />
+                        </columnConstraints>
+
+                        <!-- Record ID -->
+                        <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <Label styleClass="return-field-label" text="RECORD ID" />
+
+                            <Label fx:id="recordIdLabel" styleClass="return-field-value" text="BR002" />
+                        </VBox>
+
+                        <!-- Book -->
+                        <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <Label styleClass="return-field-label" text="BOOK" />
+
+                            <Label fx:id="bookTitleLabel" styleClass="return-field-value" text="1984" />
+                        </VBox>
+
+                        <!-- Borrowed date -->
+                        <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                            <Label styleClass="return-field-label" text="BORROWED DATE" />
+
+                            <Label fx:id="borrowedDateLabel" styleClass="return-field-value" text="2026-09-05" />
+                        </VBox>
+
+                        <!-- Due date -->
+                        <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <Label styleClass="return-field-label" text="DUE DATE" />
+
+                            <Label fx:id="dueDateLabel" styleClass="return-field-value" text="2026-09-19" />
+                        </VBox>
+                  <rowConstraints>
+                     <RowConstraints />
+                     <RowConstraints />
+                  </rowConstraints>
+
+                    </GridPane>
+               <VBox fx:id="alertContainer" />
+
+                </VBox>
+
+                <!-- Flexible space pushes the return form down -->
+                <Region minHeight="24" styleClass="return-spacer" VBox.vgrow="ALWAYS" />
+
+                <!-- Return form card -->
+                <VBox styleClass="return-card">
+<InputField fx:id="returnDatePicker" errorMessage="" iconEnabled="false" iconLiteral="fth-user" inputType="DATE" labelText="Return Date" layoutX="38.0" layoutY="38.0" promptText="20-05-2026" required="true" />
+                    <Button fx:id="confirmReturnButton" alignment="CENTER" maxWidth="Infinity" onAction="#handleConfirmReturn" styleClass="button-primary" text="CONFIRM RETURN" textAlignment="CENTER" />
+
+                </VBox>
+
+         </children></VBox>
+      <VBox fx:id="column3" layoutX="10.0" layoutY="10.0" maxWidth="410.0" minWidth="400.0">
+         <children>
+            <Label text="RetMember Infourn Details" />
+         </children></VBox>
+   </children>
+</HBox>
