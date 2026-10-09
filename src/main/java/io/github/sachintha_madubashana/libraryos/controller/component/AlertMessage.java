@@ -23,6 +23,7 @@ public class AlertMessage extends HBox {
     private Duration dismissDuration;
 
     public AlertMessage(String title, String message, Type type) {
+        Label messageLabel1;
         getStyleClass().add("alert-message");
 
         FontIcon fontIcon = new FontIcon();
@@ -32,22 +33,29 @@ public class AlertMessage extends HBox {
 
         titleLabel = new Label(title);
         titleLabel.getStyleClass().add("alert-title");
+        titleLabel.setMaxWidth(Double.MAX_VALUE);
 
-        messageLabel = new Label(message);
-        messageLabel.getStyleClass().add("alert-message-text");
-        messageLabel.setWrapText(true);
+        VBox messageBox = null;
+        if (message != null) {
+            messageLabel1 = new Label(message);
+            messageLabel1.getStyleClass().add("alert-message-text");
+            messageLabel1.setWrapText(true);
 
-        VBox messageBox = new VBox(4);
-        HBox.setHgrow(messageBox, Priority.ALWAYS);
-        messageBox.getChildren().addAll(titleLabel,messageLabel);
+            messageBox = new VBox(4);
+            HBox.setHgrow(messageBox, Priority.ALWAYS);
+            messageBox.getChildren().addAll(titleLabel, messageLabel1);
+        }else {
+            messageLabel1 = null;
+            HBox.setHgrow(titleLabel, Priority.ALWAYS);
+        }
 
-
+        messageLabel = messageLabel1;
         Button closeButton = new Button();
         closeButton.setGraphic(new FontIcon(Feather.X));
         closeButton.getStyleClass().add("alert-close-button");
         closeButton.setOnAction(event -> dismiss());
 
-        getChildren().addAll(fontIcon, messageBox,closeButton);
+        getChildren().addAll(fontIcon, (messageBox == null)? titleLabel : messageBox,closeButton);
 
         setType(type);
         setOnMouseEntered(event -> pause());
@@ -73,6 +81,10 @@ public class AlertMessage extends HBox {
 
     public void setMessage(String message) {
         messageLabel.setText(message);
+    }
+
+    public void showIn(Pane parent, Boolean isDismissTimerOn){
+        showIn(parent, Boolean.TRUE.equals(isDismissTimerOn) ? DEFAULT_DISMISS_DURATION : null);
     }
 
     public void showIn(Pane parent) {
@@ -107,8 +119,10 @@ public class AlertMessage extends HBox {
             dismissTimeline.stop();
         }
 
-        dismissTimeline = new Timeline(new KeyFrame(dismissDuration, event -> dismiss()));
-        dismissTimeline.play();
+        if(dismissDuration != null){
+            dismissTimeline = new Timeline(new KeyFrame(dismissDuration, event -> dismiss()));
+            dismissTimeline.play();
+        }
     }
 
     public void restart() {
