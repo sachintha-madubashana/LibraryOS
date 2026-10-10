@@ -16,7 +16,7 @@
          <Label text="Active Loans — 6" />
       </VBox>
       <Separator maxHeight="1.7976931348623157E308" maxWidth="10.0" orientation="VERTICAL" />
-      <VBox fx:id="column2" maxWidth="430.0" minWidth="400.0" styleClass="return-page" HBox.hgrow="ALWAYS">
+      <VBox fx:id="column2" maxWidth="430.0" minWidth="300.0" styleClass="return-page" HBox.hgrow="ALWAYS">
          <children>
             <!-- Page heading -->
                 <Label styleClass="return-page-title" text="RETURN DETAILS" />

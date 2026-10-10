@@ -5,6 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import org.kordamp.ikonli.feather.Feather;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 public class InfoCard extends HBox {
@@ -20,7 +21,11 @@ public class InfoCard extends HBox {
         this("", "", "", "");
     }
 
-    public InfoCard(String iconLiteral,String number, String title, String description) {
+    public InfoCard(Feather icon, String number, String title, String description) {
+        this(icon.getDescription(), number, title, description);
+    }
+
+    public InfoCard(String iconLiteral, String number, String title, String description) {
         getStyleClass().add("info-card");
 
         icon = new FontIcon();
