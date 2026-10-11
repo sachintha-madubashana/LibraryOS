@@ -1,0 +1,77 @@
+/* ---------------------------------------------------------
+   RECENT ACTIVITY ROW
+   --------------------------------------------------------- */
+
+.recent-activity-row {
+    -fx-min-height: 60px;
+    -fx-pref-height: 60px;
+
+    -fx-padding: 12px 20px;
+
+    -fx-background-color: -fx-card;
+
+    -fx-border-color: transparent transparent -fx-border transparent;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.recent-activity-row:hover {
+    -fx-background-color: -fx-table-row-hover;
+}
+
+/* ---------- Book Title ---------- */
+
+.recent-activity-title {
+    -fx-text-fill: -fx-text-primary;
+    -fx-font-family: -fx-font-family;
+    -fx-font-size: 14px;
+    -fx-font-weight: normal;
+}
+
+/* ---------- Member and Date ---------- */
+
+.recent-activity-details {
+    -fx-text-fill: -fx-text-secondary;
+    -fx-font-family: -fx-font-family;
+    -fx-font-size: 12px;
+}
+
+/* ---------- Status Badge ---------- */
+
+.recent-activity-status {
+    -fx-font-family: -fx-font-family;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+
+    -fx-padding: 6px 10px;
+
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+}
+
+/* ---------- Overdue ---------- */
+
+.recent-activity-status.status-overdue {
+    -fx-background-color:  derive(-fx-warning, 85%);
+    -fx-text-fill: -fx-warning;
+}
+
+/* ---------- Borrowed ---------- */
+
+.recent-activity-status.status-borrowed {
+    -fx-background-color: derive(-fx-info, 90%);
+    -fx-text-fill: -fx-info;
+}
+
+/* ---------- Returned ---------- */
+
+.recent-activity-status.status-returned {
+    -fx-background-color:  derive(-fx-success, 90%);
+    -fx-text-fill: -fx-success;
+}
+
+/* ---------- Default ---------- */
+
+.recent-activity-status.status-default {
+    -fx-background-color: -fx-secondary;
+    -fx-text-fill: -fx-secondary-foreground;
+}

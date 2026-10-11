@@ -1,79 +1,124 @@
 package io.github.sachintha_madubashana.libraryos.controller.component;
 
-import javafx.event.ActionEvent;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 public class ScrollableList extends VBox {
 
-    private final VBox itemList;
-    private final List<Node> items;
+    private final ListView<Node> listView;
+    private final ObservableList<Node> items;
+    private HBox header;
 
-    public ScrollableList(List<Node> items) {
-        itemList = new VBox();
-        this.items = items;
+    public ScrollableList() {
+        getStyleClass().add("scrollable-list");
+        items = FXCollections.observableArrayList();
 
-        //TODO: Add css for root
-        getStyleClass().add("recent-activity");
+        listView = new ListView<>(items);
+        listView.getStyleClass().add("scrollable-list-view");
 
-        ScrollPane scrollPane = new ScrollPane(itemList);
-        scrollPane.setFitToWidth(true);
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        listView.setCellFactory(cellListView -> new ListCell<>() {
+            @Override
+            protected void updateItem(Node item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(item);
+                }
+            }
+        });
 
-        //TODO: Add css for item list Container
-        itemList.getStyleClass().add("activity-list");
-
-        VBox.setVgrow(scrollPane, Priority.ALWAYS);
-        getChildren().add(scrollPane);
-
-        addItems();
+        VBox.setVgrow(listView, Priority.ALWAYS);
+        getChildren().add(listView);
     }
 
-    private void addItems(){
-        items.forEach(item -> itemList.getChildren().add(item));
+    public ScrollableList(List items) {
+        this();
+        setItems(items);
     }
 
-    public void setHeaderText(String text){
-        setHeaderText(text,null);
+    public void setHeaderText(String text) {
+        setHeaderText(text, null);
     }
 
-    public void setHeaderText(String text, Button headerBtn){
-        getChildren().add(0, createHeader(text, headerBtn));
-    }
-
-    private HBox createHeader(String text, Button headerBtn){
-        Label title = new Label(text);
-        title.getStyleClass().add("book-header-title");
-
-        HBox header = new HBox(title);
-
-        if(headerBtn != null) {
-            Button addBtn = createHeaderBtn(headerBtn);
-            Region spacer = new Region();
-            HBox.setHgrow(spacer, Priority.ALWAYS);
-            header = new HBox(title, spacer, addBtn);
+    public void setHeaderText(String text, Button headerButton) {
+        if (header != null) {
+            getChildren().remove(header);
         }
 
-        header.setAlignment(Pos.CENTER_LEFT);
-        header.getStyleClass().add("book-header");
-
-        return header;
+        header = createHeader(text, headerButton);
+        getChildren().add(0, header);
     }
 
-    private Button createHeaderBtn(Button headerBtn){
-        headerBtn.getStyleClass().add("view-all-button");
-        return headerBtn;
+    public void removeHeader() {
+        if (header != null) {
+            getChildren().remove(header);
+            header = null;
+        }
+    }
+
+    private HBox createHeader(String text, Button headerButton) {
+        Label title = new Label(text);
+        title.getStyleClass().add("scrollable-list-header-title");
+
+        HBox headerHBox = new HBox();
+        headerHBox.getStyleClass().add("scrollable-list-header");
+        headerHBox.setAlignment(Pos.CENTER_LEFT);
+
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        headerHBox.getChildren().addAll(title, spacer);
+
+        if (headerButton != null) {
+            headerButton.getStyleClass().add("scrollable-list-header-button");
+            headerHBox.getChildren().add(headerButton);
+        }
+
+        return headerHBox;
+    }
+
+    public void setItems(List<? extends Node> newItems) {
+        items.setAll(newItems);
+    }
+
+    public void addItems(List newItems) {
+        items.addAll(newItems);
+    }
+
+    public void addItem(Node item) {
+        items.add(item);
+    }
+
+    public boolean removeItem(Node item) {
+        return items.remove(item);
+    }
+
+    public void clearItems() {
+        items.clear();
+    }
+
+    public int getItemCount() {
+        return items.size();
+    }
+
+    public ListView<Node> getListView() {
+        return listView;
+    }
+
+    public ObservableList<Node> getItems() {
+        return items;
     }
 }

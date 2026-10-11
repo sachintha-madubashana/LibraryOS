@@ -1,0 +1,123 @@
+/* ---------------------------------------------------------
+   SCROLLABLE LIST
+   --------------------------------------------------------- */
+
+.scrollable-list {
+    -fx-background-color: -fx-card;
+
+    -fx-border-color: -fx-border;
+    -fx-border-width: 1px;
+
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+
+    -fx-padding: 0;
+}
+
+/* ---------------------------------------------------------
+   HEADER
+   --------------------------------------------------------- */
+
+.scrollable-list-header {
+    -fx-min-height: 64px;
+    -fx-pref-height: 64px;
+
+    -fx-padding: 0 20px;
+
+    -fx-border-color: transparent transparent -fx-border transparent;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.scrollable-list-header-title {
+    -fx-text-fill: -fx-text-primary;
+    -fx-font-family: -fx-font-family;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.scrollable-list-header-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+
+    -fx-text-fill: -fx-info;
+    -fx-font-size: 13px;
+
+    -fx-padding: 6px 0 6px 6px;
+
+    -fx-cursor: hand;
+}
+
+.scrollable-list-header-button:hover {
+    -fx-background-color: transparent;
+    -fx-underline: true;
+}
+
+/* ---------------------------------------------------------
+   LIST VIEW
+   --------------------------------------------------------- */
+
+.scrollable-list .scrollable-list-view {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+/* List background */
+
+.scrollable-list .scrollable-list-view .virtual-flow {
+    -fx-background-color: transparent;
+}
+
+/* List cells */
+
+.scrollable-list .scrollable-list-view .list-cell {
+    -fx-background-color: -fx-card;
+
+    -fx-padding: 0;
+
+    -fx-border-color: transparent transparent -fx-border transparent;
+    -fx-border-width: 0 0 1px 0;
+}
+
+/* Remove default selected-cell appearance */
+
+.scrollable-list .scrollable-list-view .list-cell:filled:selected {
+    -fx-background-color: -fx-card;
+}
+
+/* Hover */
+
+.scrollable-list .scrollable-list-view .list-cell:filled:hover {
+    -fx-background-color: -fx-table-row-hover;
+}
+
+/* Empty cells */
+
+.scrollable-list .scrollable-list-view .list-cell:empty {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+/* Scrollbars */
+
+.scrollable-list .scroll-bar:vertical,
+.scrollable-list .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}
+
+.scrollable-list .scroll-bar .track {
+    -fx-background-color: transparent;
+}
+
+.scrollable-list .scroll-bar .thumb {
+    -fx-background-color: -fx-border;
+    -fx-background-radius: 999px;
+}
+
+.scrollable-list .scroll-bar .thumb:hover {
+    -fx-background-color: -fx-muted-foreground;
+}
+
+.scrollable-list .corner {
+    -fx-background-color: transparent;
+}
