@@ -22,11 +22,11 @@ public class ScrollableList extends VBox {
     private HBox header;
 
     public ScrollableList() {
-        getStyleClass().add("scrollable-list");
+        getStyleClass().setAll("scrollable-list");
         items = FXCollections.observableArrayList();
 
         listView = new ListView<>(items);
-        listView.getStyleClass().add("scrollable-list-view");
+        listView.getStyleClass().setAll("scrollable-list-view");
 
         listView.setCellFactory(cellListView -> new ListCell<>() {
             @Override
@@ -71,10 +71,10 @@ public class ScrollableList extends VBox {
 
     private HBox createHeader(String text, Button headerButton) {
         Label title = new Label(text);
-        title.getStyleClass().add("scrollable-list-header-title");
+        title.getStyleClass().setAll("scrollable-list-header-title");
 
         HBox headerHBox = new HBox();
-        headerHBox.getStyleClass().add("scrollable-list-header");
+        headerHBox.getStyleClass().setAll("scrollable-list-header");
         headerHBox.setAlignment(Pos.CENTER_LEFT);
 
         Region spacer = new Region();
@@ -83,7 +83,7 @@ public class ScrollableList extends VBox {
         headerHBox.getChildren().addAll(title, spacer);
 
         if (headerButton != null) {
-            headerButton.getStyleClass().add("scrollable-list-header-button");
+            headerButton.getStyleClass().setAll("scrollable-list-header-button");
             headerHBox.getChildren().add(headerButton);
         }
 
