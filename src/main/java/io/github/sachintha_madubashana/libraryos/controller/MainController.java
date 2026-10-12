@@ -31,13 +31,13 @@ import java.util.Locale;
 
 public class MainController {
 
-    private static final String DASHBOARD = "dashboard";
-    private static final String ADD_BOOK = "addBook";
-    private static final String ADD_MEMBER = "addMember";
-    private static final String MANAGE_MEMBER = "manageMember";
-    private static final String ISSUE_BOOK = "issueBook";
-    private static final String RETURN_BOOK = "returnBook";
-    private static final String HISTORY = "borrowingHistory";
+    public static final String DASHBOARD = "dashboard";
+    public static final String ADD_BOOK = "addBook";
+    public static final String ADD_MEMBER = "addMember";
+    public static final String MANAGE_MEMBER = "manageMember";
+    public static final String ISSUE_BOOK = "issueBook";
+    public static final String RETURN_BOOK = "returnBook";
+    public static final String HISTORY = "borrowingHistory";
     private final HashMap<String, Route> scenes = new HashMap<>();
     private final HashMap<String, Feather> iconsMap = new HashMap<>();
     @FXML
