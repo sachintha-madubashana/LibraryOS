@@ -61,6 +61,7 @@
     -fx-scale-x: 0.9;
     -fx-scale-y: 0.9;
 }
+
 .scrollable-list-header-button:focused {
     -fx-background-color: transparent;
     -fx-border-width: 0;
@@ -69,7 +70,6 @@
 /* ---------------------------------------------------------
    LIST VIEW
    --------------------------------------------------------- */
-
 .scrollable-list .scrollable-list-view {
     -fx-background-color: transparent;
     -fx-background-insets: 0;
@@ -77,13 +77,11 @@
 }
 
 /* List background */
-
 .scrollable-list .scrollable-list-view .virtual-flow {
     -fx-background-color: transparent;
 }
 
 /* List cells */
-
 .scrollable-list .scrollable-list-view .list-cell {
     -fx-background-color: -fx-card;
 
@@ -94,26 +92,22 @@
 }
 
 /* Remove default selected-cell appearance */
-
 .scrollable-list .scrollable-list-view .list-cell:filled:selected {
     -fx-background-color: -fx-card;
 }
 
 /* Hover */
-
 .scrollable-list .scrollable-list-view .list-cell:filled:hover {
     -fx-background-color: -fx-table-row-hover;
 }
 
 /* Empty cells */
-
 .scrollable-list .scrollable-list-view .list-cell:empty {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
 }
 
 /* Scrollbars */
-
 .scrollable-list .scroll-bar:vertical,
 .scrollable-list .scroll-bar:horizontal {
     -fx-background-color: transparent;
