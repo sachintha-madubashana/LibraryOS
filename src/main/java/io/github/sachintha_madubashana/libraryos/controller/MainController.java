@@ -2,6 +2,7 @@ package io.github.sachintha_madubashana.libraryos.controller;
 
 import io.github.sachintha_madubashana.libraryos.Launcher;
 import io.github.sachintha_madubashana.libraryos.controller.component.PageHeader;
+import io.github.sachintha_madubashana.libraryos.event.NavigationEvent;
 import io.github.sachintha_madubashana.libraryos.model.Route;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -68,6 +69,11 @@ public class MainController {
         scenes();
         initializeIconsMap();
         configureSidebarScroll(sidebarScroll);
+
+        contentArea.addEventHandler(NavigationEvent.NAVIGATE, event -> {
+            replaceScene(event.getTargetScene());
+            event.consume();
+        });
 
         dashboardBtn.setOnAction(actionEvent -> replaceScene(DASHBOARD));
         addBookBtn.setOnAction(actionEvent -> replaceScene(ADD_BOOK));

@@ -3,6 +3,7 @@ package io.github.sachintha_madubashana.libraryos.controller;
 import io.github.sachintha_madubashana.libraryos.controller.component.ScrollableList;
 import io.github.sachintha_madubashana.libraryos.controller.component.rows.BookAvailabilityRow;
 import io.github.sachintha_madubashana.libraryos.controller.component.rows.RecentActivityRow;
+import io.github.sachintha_madubashana.libraryos.event.NavigationEvent;
 import io.github.sachintha_madubashana.libraryos.model.Activity;
 import io.github.sachintha_madubashana.libraryos.model.ActivityStatus;
 import io.github.sachintha_madubashana.libraryos.model.Book;
@@ -37,9 +38,10 @@ public class DashboardController {
     private ScrollableList createBookAvailability() {
         ScrollableList bookAvailability = new ScrollableList();
         Button bookHeaderBtn = new Button("Add Book   →");
-        bookHeaderBtn.setOnAction(e ->
-                System.out.println("Add book clicked")
-        );
+        bookHeaderBtn.setOnAction(e ->{
+                root.fireEvent(new NavigationEvent(MainController.ADD_BOOK));
+                e.consume();
+        });
 
         bookAvailability.setHeaderText("Book Availability", bookHeaderBtn);
         bookAvailability.setItems(List.of(
@@ -64,8 +66,8 @@ public class DashboardController {
         ScrollableList recentActivity = new ScrollableList();
         Button headerBtn = new Button("VIEW ALL   →");
         headerBtn.setOnAction(e -> {
-            System.out.println("View all button clicked");
-            goToBorrowedBooks();
+            root.fireEvent(new NavigationEvent(MainController.HISTORY));
+            e.consume();
         });
 
         recentActivity.setHeaderText("Recent Activity", headerBtn);
@@ -86,9 +88,4 @@ public class DashboardController {
         ));
         return recentActivity;
     }
-
-    private void goToBorrowedBooks() {
-        System.out.println("Go to Borrowed Books Btn Clicked");
-    }
-
 }
