@@ -14,28 +14,32 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 import java.util.List;
+import java.util.function.Function;
 
-public class ScrollableList extends VBox {
+public class ScrollableList<T> extends VBox {
 
-    private final ListView<Node> listView;
-    private final ObservableList<Node> items;
+    private final ListView<T> listView;
+    private final ObservableList<T> items;
     private HBox header;
 
-    public ScrollableList() {
+    public ScrollableList(List<? extends T> items, Function<T, Node> itemFactory) {
         getStyleClass().setAll("scrollable-list");
-        items = FXCollections.observableArrayList();
+        this.items = FXCollections.observableArrayList();
+        this.items.addAll(items);
 
-        listView = new ListView<>(items);
+        listView = new ListView<>(this.items);
         listView.getStyleClass().setAll("scrollable-list-view");
 
         listView.setCellFactory(cellListView -> new ListCell<>() {
             @Override
-            protected void updateItem(Node item, boolean empty) {
+            protected void updateItem(T item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty || item == null) {
                     setGraphic(null);
                 } else {
-                    setGraphic(item);
+                    Node row = itemFactory.apply(item);
+                    setGraphic(row);
+                    setText(null);
                 }
             }
         });
@@ -44,9 +48,8 @@ public class ScrollableList extends VBox {
         getChildren().add(listView);
     }
 
-    public ScrollableList(List items) {
-        this();
-        setItems(items);
+    public ScrollableList(Function<T, Node> itemFactory) {
+        this(List.of(), itemFactory);
     }
 
     public void setHeaderText(String text) {
@@ -90,19 +93,19 @@ public class ScrollableList extends VBox {
         return headerHBox;
     }
 
-    public void setItems(List<? extends Node> newItems) {
+    public void setItems(List<? extends T> newItems) {
         items.setAll(newItems);
     }
 
-    public void addItems(List newItems) {
+    public void addItems(List<? extends T> newItems) {
         items.addAll(newItems);
     }
 
-    public void addItem(Node item) {
+    public void addItem(T item) {
         items.add(item);
     }
 
-    public boolean removeItem(Node item) {
+    public boolean removeItem(T item) {
         return items.remove(item);
     }
 
@@ -114,11 +117,11 @@ public class ScrollableList extends VBox {
         return items.size();
     }
 
-    public ListView<Node> getListView() {
+    public ListView<T> getListView() {
         return listView;
     }
 
-    public ObservableList<Node> getItems() {
+    public ObservableList<T> getItems() {
         return items;
     }
 }
