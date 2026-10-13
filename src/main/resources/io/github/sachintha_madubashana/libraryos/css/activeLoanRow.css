@@ -1,0 +1,108 @@
+/* ---------------------------------------------------------
+   ACTIVE LOAN ROW
+   --------------------------------------------------------- */
+
+.active-loan-row {
+    -fx-min-height: 76px;
+
+    -fx-background-color: -fx-card;
+
+    -fx-padding: 12px 20px;
+
+    -fx-spacing: 16px;
+    -fx-alignment: TOP_LEFT;
+
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-radius: 8px;
+}
+
+.active-loan-row:hover {
+    -fx-background-color: -fx-accent;
+}
+
+    /* ---------- Loan Details ---------- */
+.active-loan-details {
+    -fx-spacing: 8px;
+}
+
+/* ---------- Book Title ---------- */
+.active-loan-title {
+    -fx-text-fill: -fx-text-primary;
+    -fx-font-family: -fx-font-family;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+/* ---------- Borrower ---------- */
+.active-loan-borrower {
+    -fx-text-fill: -fx-text-secondary;
+    -fx-font-size: 11px;
+}
+
+/* ---------- Due Date ---------- */
+.active-loan-due-date {
+    -fx-text-fill: -fx-text-secondary;
+    -fx-font-family: "Monospaced";
+    -fx-font-size: 11px;
+}
+
+/* ---------- Overdue Date ---------- */
+.active-loan-due-date.overdue {
+    -fx-text-fill: -fx-destructive;
+}
+
+/* ---------------------------------------------------------
+   STATUS BADGE
+   --------------------------------------------------------- */
+.active-loan-status {
+    -fx-padding: 6px 10px;
+
+    -fx-font-family: -fx-font-family;
+    -fx-font-size: 11px;
+    -fx-font-weight: normal;
+
+    -fx-background-radius: 6px;
+    /*-fx-border-radius: 6px;*/
+}
+
+/* ---------- Borrowed ---------- */
+.active-loan-status.status-borrowed {
+    -fx-background-color: derive(-fx-info, 90%);
+    -fx-text-fill: -fx-info;
+}
+
+/* ---------- Overdue ---------- */
+.active-loan-status.status-overdue {
+    -fx-background-color: derive(-fx-warning, 85%);
+    -fx-text-fill: -fx-warning;
+}
+
+/* ---------- Returned ---------- */
+.active-loan-status.status-returned {
+    -fx-background-color: derive(-fx-success, 90%);
+    -fx-text-fill: -fx-success;
+}
+
+/* ---------------------------------------------------------
+   ROW STATES
+   --------------------------------------------------------- */
+
+/* Overdue Row */
+.active-loan-row.loan-overdue {
+    -fx-background-color:  derive(-fx-warning, 99%);
+}
+
+.active-loan-row.loan-overdue:hover {
+    -fx-background-color: derive(-fx-warning, 90%);
+}
+
+/* Selected Row */
+.active-loan-row.loan-selected {
+    -fx-border-color: transparent transparent transparent -fx-info;
+    -fx-border-width: 0 0 0 5px;
+}
+
+.active-loan-row.loan-selected:hover {
+    -fx-background-color: -fx-accent;
+}

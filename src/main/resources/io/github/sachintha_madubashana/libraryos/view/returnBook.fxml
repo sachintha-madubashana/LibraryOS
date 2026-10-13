@@ -6,7 +6,7 @@
 
 <HBox fx:id="root" styleClass="container-spacing-with-padding" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.sachintha_madubashana.libraryos.controller.ReturnBookController">
    <children>
-      <VBox fx:id="column1" maxWidth="410.0" minWidth="400.0" spacing="8.0">
+      <VBox fx:id="column1" maxHeight="1.7976931348623157E308" maxWidth="410.0" minWidth="400.0" spacing="8.0">
          <HBox alignment="CENTER_LEFT" spacing="8.0">
             <children>
             <InputField fx:id="issueDateInput" iconEnabled="false" iconLiteral="" inputType="TEXT" promptText="Search by name, ID, or email..." HBox.hgrow="ALWAYS" />

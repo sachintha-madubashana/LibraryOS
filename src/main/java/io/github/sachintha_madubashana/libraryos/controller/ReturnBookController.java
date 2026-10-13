@@ -3,14 +3,15 @@ package io.github.sachintha_madubashana.libraryos.controller;
 import io.github.sachintha_madubashana.libraryos.controller.component.AlertMessage;
 import io.github.sachintha_madubashana.libraryos.controller.component.InputField;
 import io.github.sachintha_madubashana.libraryos.controller.component.RecentActivity;
+import io.github.sachintha_madubashana.libraryos.controller.component.ScrollableList;
+import io.github.sachintha_madubashana.libraryos.controller.component.rows.ActiveLoanRow;
 import io.github.sachintha_madubashana.libraryos.model.Activity;
 import io.github.sachintha_madubashana.libraryos.model.ActivityStatus;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import org.kordamp.ikonli.feather.Feather;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -61,17 +62,17 @@ public class ReturnBookController {
         LocalDate returnDate = returnDatePicker.getDateValue();
 
         if (returnDate == null) {
-            AlertMessage alert = new AlertMessage("Return Date Required","Please select a return date.",AlertMessage.Type.WARNING);
+            AlertMessage alert = new AlertMessage("Return Date Required", "Please select a return date.", AlertMessage.Type.WARNING);
             alert.showIn(column2);
             return;
         }
 
-        AlertMessage alert = new AlertMessage("Confirm Return","Return date: " + returnDate,AlertMessage.Type.INFO);
+        AlertMessage alert = new AlertMessage("Confirm Return", "Return date: " + returnDate, AlertMessage.Type.INFO);
         alert.showIn(column2);
     }
 
     @FXML
-    private void initialize(){
+    private void initialize() {
         returnDatePicker.setDateValue(LocalDate.now());
 
         FontIcon fontIcon = new FontIcon(Feather.SEARCH);
@@ -79,8 +80,8 @@ public class ReturnBookController {
         fontIcon.getStyleClass().add("button-icon");
         searchBtn.setGraphic(fontIcon);
 
-        RecentActivity recentActivity = new RecentActivity();
-        recentActivity.setActivities(List.of(
+        ScrollableList<Activity> recentActivityList = new ScrollableList<>(ActiveLoanRow::new);
+        recentActivityList.setItems(List.of(
                 new Activity("To Kill a Mockingbird", "Sofia Andersen", "2026-08-01", ActivityStatus.OVERDUE),
                 new Activity("The Great Gatsby", "Eleanor Whitfield", "2026-09-20", ActivityStatus.BORROWED),
                 new Activity("Brave New World", "James Okafor", "2026-09-10", ActivityStatus.BORROWED),
@@ -93,10 +94,12 @@ public class ReturnBookController {
                 new Activity("The Lord of the Rings", "Sophia Patel", "2026-09-15", ActivityStatus.BORROWED),
                 new Activity("The Hobbit", "Sophia Patel", "2026-09-15", ActivityStatus.BORROWED)
         ));
+        recentActivityList.setMaxHeight(Double.MAX_VALUE);
+        VBox.setVgrow(recentActivityList, Priority.ALWAYS);
 
-        column1.getChildren().add(recentActivity);
+        column1.getChildren().add(recentActivityList);
 
-        AlertMessage alertMessage = new AlertMessage("9 days overdue",null, AlertMessage.Type.WARNING);
+        AlertMessage alertMessage = new AlertMessage("9 days overdue", null, AlertMessage.Type.WARNING);
         alertMessage.showIn(alertContainer, false);
     }
 

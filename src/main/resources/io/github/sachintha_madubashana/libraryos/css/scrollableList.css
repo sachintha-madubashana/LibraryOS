@@ -87,24 +87,30 @@
 
     -fx-padding: 0;
 
-    -fx-border-color: transparent transparent -fx-border transparent;
-    -fx-border-width: 0 0 1px 0;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-radius: 8px;
 }
 
 /* Remove default selected-cell appearance */
 .scrollable-list .scrollable-list-view .list-cell:filled:selected {
-    -fx-background-color: -fx-card;
+    -fx-background-color: transparent;
 }
 
 /* Hover */
 .scrollable-list .scrollable-list-view .list-cell:filled:hover {
-    -fx-background-color: -fx-table-row-hover;
+    -fx-background-color: transparent;
 }
 
 /* Empty cells */
 .scrollable-list .scrollable-list-view .list-cell:empty {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
+}
+
+.scrollable-list .list-cell:filled {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
 }
 
 /* Scrollbars */
