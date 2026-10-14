@@ -1,5 +1,6 @@
 package io.github.sachintha_madubashana.libraryos.controller.component.rows;
 
+import io.github.sachintha_madubashana.libraryos.event.ReturnBookSelectEvent;
 import io.github.sachintha_madubashana.libraryos.model.Activity;
 import io.github.sachintha_madubashana.libraryos.model.ActivityStatus;
 import javafx.geometry.Pos;
@@ -27,6 +28,7 @@ public class ActiveLoanRow extends HBox {
         setSpacing(16);
         setOnMouseClicked(event -> {
             getStyleClass().add("loan-selected");
+            fireEvent(new ReturnBookSelectEvent(activity));
             event.consume();
         });
 

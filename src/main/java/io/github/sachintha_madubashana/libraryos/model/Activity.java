@@ -44,4 +44,9 @@ public class Activity {
     public void setStatus(ActivityStatus status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return "Title: " + title + ", Borrower: " + borrower + ", Date: " + date + ", Status: " + status.toString();
+    }
 }

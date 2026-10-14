@@ -5,6 +5,7 @@ import io.github.sachintha_madubashana.libraryos.controller.component.InputField
 import io.github.sachintha_madubashana.libraryos.controller.component.RecentActivity;
 import io.github.sachintha_madubashana.libraryos.controller.component.ScrollableList;
 import io.github.sachintha_madubashana.libraryos.controller.component.rows.ActiveLoanRow;
+import io.github.sachintha_madubashana.libraryos.event.ReturnBookSelectEvent;
 import io.github.sachintha_madubashana.libraryos.model.Activity;
 import io.github.sachintha_madubashana.libraryos.model.ActivityStatus;
 import javafx.fxml.FXML;
@@ -20,6 +21,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class ReturnBookController {
+
+    @FXML
+    private HBox root;
 
     @FXML
     private Button searchBtn;
@@ -101,6 +105,11 @@ public class ReturnBookController {
 
         AlertMessage alertMessage = new AlertMessage("9 days overdue", null, AlertMessage.Type.WARNING);
         alertMessage.showIn(alertContainer, false);
+
+        root.addEventHandler(ReturnBookSelectEvent.RETURN_BOOK_SELECT, event -> {
+            System.out.println(event.getActivity().toString());
+            event.consume();
+        });
     }
 
 }
