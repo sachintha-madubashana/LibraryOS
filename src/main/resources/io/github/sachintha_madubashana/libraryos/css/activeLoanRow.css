@@ -21,7 +21,7 @@
     -fx-background-color: -fx-accent;
 }
 
-    /* ---------- Loan Details ---------- */
+/* ---------- Loan Details ---------- */
 .active-loan-details {
     -fx-spacing: 8px;
 }
@@ -29,9 +29,9 @@
 /* ---------- Book Title ---------- */
 .active-loan-title {
     -fx-text-fill: -fx-text-primary;
-    -fx-font-family: -fx-font-family;
-    -fx-font-size: 13px;
-    -fx-font-weight: bold;
+    -fx-font-family: "Inter Medium";
+    -fx-font-size: 14px;
+    -fx-font-weight: normal;
 }
 
 /* ---------- Borrower ---------- */
@@ -63,7 +63,6 @@
     -fx-font-weight: normal;
 
     -fx-background-radius: 6px;
-    /*-fx-border-radius: 6px;*/
 }
 
 /* ---------- Borrowed ---------- */

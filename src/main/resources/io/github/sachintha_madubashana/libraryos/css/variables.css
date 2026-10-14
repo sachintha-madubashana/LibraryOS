@@ -1,0 +1,83 @@
+/* ---------------------------------------------------------
+   VARIABLES
+   --------------------------------------------------------- */
+.root {
+    /* ---------- Base ---------- */
+    -fx-background: #FFFFFF;
+    -fx-foreground: #09090B;
+
+    -fx-card: #FFFFFF;
+    -fx-card-foreground: #09090B;
+
+    -fx-popover: #FFFFFF;
+    -fx-popover-foreground: #09090B;
+
+    /* ---------- Primary ---------- */
+    -fx-primary: #18181B;
+    -fx-primary-foreground: #FAFAFA;
+
+    -fx-primary-hover: #27272A;
+    -fx-primary-active: #3F3F46;
+
+    /* ---------- Secondary ---------- */
+    -fx-secondary: #F4F4F5;
+    -fx-secondary-foreground: #18181B;
+
+    -fx-secondary-hover: #E4E4E7;
+    -fx-secondary-active: #D4D4D8;
+
+    /* ---------- Muted ---------- */
+    -fx-muted: #F4F4F5;
+    -fx-muted-foreground: #71717A;
+
+    /* ---------- Accent ---------- */
+    -fx-accent: #F4F4F5;
+    -fx-accent-foreground: #18181B;
+
+    /* ---------- Borders / Inputs ---------- */
+    -fx-border: #E4E4E7;
+    -fx-input: #E4E4E7;
+    -fx-ring: #18181B;
+
+    -fx-border-inverted: #18181B;
+
+    /* ---------- Shadow ---------- */
+    -fx-focus-shadow: dropshadow(three-pass-box,rgba(24, 24, 27, 0.25),10,0,0,0);
+
+    /* ---------- Destructive ---------- */
+    -fx-destructive: #DC2626;
+    -fx-destructive-foreground: #FFFFFF;
+
+    -fx-destructive-hover: #B91C1C;
+    -fx-destructive-active: #991B1B;
+
+    /* ---------- Text ---------- */
+    -fx-text-primary: #09090B;
+    -fx-text-secondary: #71717A;
+    -fx-text-muted: #A1A1AA;
+    -fx-text-disabled: #A1A1AA;
+    -fx-text-inverted: #FAFAFA;
+
+    /* ---------- Data Table ---------- */
+    -fx-table-header: #F8F8FA;
+    -fx-table-row-hover: #F8FAFC;
+    -fx-table-row-selected: #F0FDF4;
+
+    /* ---------- Sidebar ---------- */
+    -fx-sidebar: #18181B;
+    -fx-sidebar-foreground: #FAFAFA;
+    -fx-sidebar-muted: #A1A1AA;
+    -fx-sidebar-icon: #71717A;
+    -fx-sidebar-border: #27272A;
+
+    -fx-sidebar-hover: #27272A;
+    -fx-sidebar-active: #3F3F46;
+
+    /* ---------- Status ---------- */
+    -fx-success: #16A34A;
+    -fx-warning: #D97706;
+    -fx-info: #2563EB;
+
+    /* ---------- Typography ---------- */
+    -fx-font-family: "Inter";
+}
