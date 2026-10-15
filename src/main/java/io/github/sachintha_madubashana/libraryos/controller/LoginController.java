@@ -4,11 +4,13 @@ import io.github.sachintha_madubashana.libraryos.Launcher;
 import io.github.sachintha_madubashana.libraryos.controller.component.InputField;
 import io.github.sachintha_madubashana.libraryos.model.AuthenticationService;
 import io.github.sachintha_madubashana.libraryos.model.User;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
@@ -65,6 +67,7 @@ public class LoginController {
                 primaryStage.setTitle("Library OS");
                 FXMLLoader fxml = new FXMLLoader(Objects.requireNonNull(Launcher.class.getResource("view/main-view.fxml")));
                 primaryStage.setScene(new Scene(fxml.load(), 1069, 600));
+                primaryStage.getIcons().add(new Image(Objects.requireNonNull(Launcher.class.getResourceAsStream("icon/icon.png"))));
                 primaryStage.show();
             }catch (Exception e){
                 Alert alert = new Alert(Alert.AlertType.ERROR);

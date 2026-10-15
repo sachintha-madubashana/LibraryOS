@@ -3,6 +3,7 @@ package io.github.sachintha_madubashana.libraryos;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -21,8 +22,10 @@ public class LibraryOS extends javafx.application.Application {
         FXMLLoader fxmlLoader = new FXMLLoader(Launcher.class.getResource("view/login-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1069, 600);
         scene.setFill(Color.TRANSPARENT);
+        stage.getIcons().add(new Image(Objects.requireNonNull(Launcher.class.getResourceAsStream("icon/icon.png"))));
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.setScene(scene);
+        stage.setIconified(false);
         stage.show();
     }
 
