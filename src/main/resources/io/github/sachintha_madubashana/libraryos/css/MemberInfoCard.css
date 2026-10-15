@@ -41,11 +41,10 @@
 .member-info-section-label {
     -fx-text-fill: -fx-muted-foreground;
     -fx-font-size: 10px;
-    -fx-font-weight: bold;
+    -fx-font-weight: normal;
 
     -fx-padding: 0;
 }
-
 
 /* Image Container */
 .member-info-image-container {
