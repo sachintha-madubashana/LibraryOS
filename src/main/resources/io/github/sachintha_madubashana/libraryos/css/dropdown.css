@@ -1,0 +1,129 @@
+/* ---------------------------------------------------------
+   DROPDOWN
+   --------------------------------------------------------- */
+.dropdown-select {
+    -fx-spacing: 6px;
+}
+
+/* Label */
+.dropdown-select .input-label {
+    -fx-text-fill: -fx-foreground;
+    -fx-font-weight: bold;
+}
+
+.dropdown-select .required-indicator {
+    -fx-text-fill: -fx-destructive;
+    -fx-font-weight: bold;
+}
+
+/* Dropdown Container */
+.dropdown-select .dropdown-container {
+    -fx-max-width: Infinity;
+}
+
+/* ComboBox */
+.dropdown-select .combo-box {
+    -fx-pref-height: 40px;
+    -fx-min-height: 40px;
+    -fx-max-height: 40px;
+
+    -fx-max-width: Infinity;
+    -fx-background-color: -fx-background;
+
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+
+    -fx-border-width: 1px;
+    -fx-border-color: -fx-border;
+
+    -fx-text-fill: -fx-foreground;
+
+    -fx-padding: 0 12px;
+}
+
+/* ComboBox: Hover */
+.dropdown-select .combo-box:hover {
+    -fx-border-color: -fx-ring;
+}
+
+/* ComboBox: Focus */
+.dropdown-select .combo-box:focused {
+    -fx-border-color: -fx-ring;
+    -fx-effect: -fx-focus-shadow;
+}
+
+/* ComboBox: Disabled */
+.dropdown-select .combo-box:disabled {
+    -fx-opacity: 0.5;
+}
+
+/* Selected Text */
+.dropdown-select .combo-box .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-foreground;
+}
+
+/* Hide JavaFX Default Arrow */
+.dropdown-select .combo-box .arrow-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.dropdown-select .combo-box .arrow {
+    -fx-opacity: 0;
+}
+
+/* Custom Feather Arrow */
+.dropdown-select .dropdown-arrow {
+    -fx-icon-size: 16px;
+    -fx-fill: -fx-muted-foreground;
+}
+
+/* Dropdown Popup */
+.dropdown-select .combo-box-popup .list-view {
+    -fx-background-color: -fx-popover;
+    -fx-background-radius: 6px;
+
+    -fx-border-color: -fx-border;
+    -fx-border-width: 1px;
+    -fx-border-radius: 6px;
+
+    -fx-padding: 4px;
+}
+
+/* Dropdown Items */
+.dropdown-select .combo-box-popup .list-cell {
+    -fx-background-color: transparent;
+    -fx-background-radius: 4px;
+    -fx-text-fill: -fx-popover-foreground;
+    -fx-padding: 8px 10px;
+}
+
+/* Item: Hover */
+.dropdown-select .combo-box-popup .list-cell:hover {
+    -fx-background-color: -fx-accent;
+    -fx-text-fill: -fx-accent-foreground;
+}
+
+/* Item: Selected */
+.dropdown-select .combo-box-popup .list-cell:filled:selected {
+    -fx-background-color: -fx-accent;
+    -fx-text-fill: -fx-accent-foreground;
+}
+
+/* Error State */
+.dropdown-select .combo-box.input-error {
+    -fx-border-color: -fx-destructive;
+    -fx-effect: none;
+}
+
+.dropdown-select .combo-box.input-error:focused {
+    -fx-border-color: -fx-destructive;
+    -fx-effect: -fx-focus-shadow;
+}
+
+/* Error Message */
+.dropdown-select .input-error-label {
+    -fx-text-fill: -fx-destructive;
+    -fx-padding: 0 2px;
+}
