@@ -82,9 +82,6 @@
                 </VBox>
 
          </children></VBox>
-      <VBox fx:id="column3" layoutX="10.0" layoutY="10.0" maxWidth="410.0" minWidth="400.0">
-         <children>
-            <Label text="RetMember Infourn Details" />
-         </children></VBox>
+      <VBox fx:id="column3" layoutX="10.0" layoutY="10.0" maxWidth="410.0" minWidth="400.0" />
    </children>
 </HBox>

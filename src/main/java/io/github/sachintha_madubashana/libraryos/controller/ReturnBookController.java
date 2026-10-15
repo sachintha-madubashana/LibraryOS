@@ -1,16 +1,19 @@
 package io.github.sachintha_madubashana.libraryos.controller;
 
+import io.github.sachintha_madubashana.libraryos.Launcher;
 import io.github.sachintha_madubashana.libraryos.controller.component.AlertMessage;
 import io.github.sachintha_madubashana.libraryos.controller.component.InputField;
-import io.github.sachintha_madubashana.libraryos.controller.component.RecentActivity;
+import io.github.sachintha_madubashana.libraryos.controller.component.MemberInfoCard;
 import io.github.sachintha_madubashana.libraryos.controller.component.ScrollableList;
 import io.github.sachintha_madubashana.libraryos.controller.component.rows.ActiveLoanRow;
 import io.github.sachintha_madubashana.libraryos.event.ReturnBookSelectEvent;
 import io.github.sachintha_madubashana.libraryos.model.Activity;
 import io.github.sachintha_madubashana.libraryos.model.ActivityStatus;
+import io.github.sachintha_madubashana.libraryos.model.Member;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -19,6 +22,7 @@ import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 public class ReturnBookController {
 
@@ -108,6 +112,24 @@ public class ReturnBookController {
 
         root.addEventHandler(ReturnBookSelectEvent.RETURN_BOOK_SELECT, event -> {
             System.out.println(event.getActivity().toString());
+            MemberInfoCard largeCard = new MemberInfoCard(
+                    new Member("MEM002", "Eleanor Whitfield",
+                            "e.whitfield@email.com", "555-0142", null, null),
+                    MemberInfoCard.Layout.LARGE);
+
+            MemberInfoCard compactCard = new MemberInfoCard(new Member("MEM001", "Eleanor Whitfield",
+                    "e.whitfield@email.com", "555-0142", null, null),
+                    MemberInfoCard.Layout.COMPACT);
+            Image memberImage = new Image(
+                    Objects.requireNonNull(Launcher.class.getResourceAsStream(
+                            "/io/github/sachintha_madubashana/libraryos/image/user.png"
+                    ))
+            );
+
+            largeCard.setMemberImage(memberImage);
+            compactCard.setMemberImage(memberImage);
+            VBox.setVgrow(largeCard, Priority.ALWAYS);
+            column3.getChildren().addAll(compactCard,largeCard);
             event.consume();
         });
     }

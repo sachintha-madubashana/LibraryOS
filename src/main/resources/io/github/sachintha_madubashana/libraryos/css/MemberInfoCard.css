@@ -1,0 +1,121 @@
+/* ---------------------------------------------------------
+   MEMBER INFO CARD
+   --------------------------------------------------------- */
+.member-info-card {
+    -fx-background-color: -fx-card;
+    -fx-border-color: -fx-border;
+    -fx-border-width: 1px;
+
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+
+    -fx-padding: 20px;
+    -fx-spacing: 10px;
+
+    -fx-alignment: TOP_LEFT;
+}
+
+/* Card Dimensions */
+.member-info-card.large {
+    -fx-min-width: 412px;
+    -fx-pref-width: 412px;
+    -fx-max-width: 412px;
+
+    -fx-min-height: 400px;
+    -fx-pref-height: 500px;
+    -fx-max-height: 588px;
+}
+
+.member-info-card.compact {
+    -fx-min-width: 412px;
+    -fx-pref-width: 412px;
+    -fx-max-width: 412px;
+
+    -fx-min-height: 100px;
+    -fx-pref-height: 166px;
+    -fx-max-height: 166px;
+}
+
+
+/* Section Label */
+.member-info-section-label {
+    -fx-text-fill: -fx-muted-foreground;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+
+    -fx-padding: 0;
+}
+
+
+/* Image Container */
+.member-info-image-container {
+    -fx-background-color: #D9D9D9;
+    -fx-background-radius: 10px;
+
+    -fx-alignment: CENTER;
+}
+
+
+/* Large Image Container Dimensions */
+.member-info-image-container.large {
+    -fx-min-height: 100px;
+    -fx-pref-height: 284px;
+    -fx-max-height: Infinity;
+
+    -fx-min-width: 100px;
+    -fx-pref-width: 284px;
+    -fx-max-width: Infinity;
+
+    -fx-padding: 12px;
+}
+
+/* Compact Image Container Dimensions */
+.member-info-image-container.compact {
+    -fx-min-width: 50px;
+    -fx-pref-width: 100px;
+    -fx-max-width: 200px;
+
+    -fx-min-height: 50px;
+    -fx-pref-height: 100px;
+    -fx-max-height: 200px;
+
+    -fx-padding: 10px;
+}
+
+
+/* Image View */
+.member-info-image {
+    -fx-background-radius: 10px;
+}
+
+
+/* Member Details */
+.member-info-details {
+    -fx-spacing: 8px;
+    -fx-alignment: TOP_LEFT;
+    -fx-fill-width: true;
+}
+
+
+/* Member Name */
+.member-info-name {
+    -fx-text-fill: -fx-foreground;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+
+    -fx-wrap-text: true;
+}
+
+/* Member ID */
+.member-info-id {
+    -fx-text-fill: -fx-muted-foreground;
+    -fx-font-size: 11px;
+}
+
+/* Email and Phone */
+.member-info-detail {
+    -fx-text-fill: -fx-muted-foreground;
+    -fx-font-size: 13px;
+
+    -fx-wrap-text: true;
+}
