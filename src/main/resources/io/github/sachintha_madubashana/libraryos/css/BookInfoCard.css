@@ -1,0 +1,197 @@
+/* ---------------------------------------------------------
+   BOOK INFO CARD
+   --------------------------------------------------------- */
+.book-info-card {
+    -fx-background-color: -fx-card;
+    -fx-border-color: -fx-border;
+    -fx-border-width: 1px;
+
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+
+    -fx-padding: 20px;
+    -fx-spacing: 10px;
+
+    -fx-alignment: TOP_LEFT;
+}
+
+/* Card Dimensions */
+.book-info-card.large {
+    -fx-min-width: 412px;
+    -fx-pref-width: 412px;
+    -fx-max-width: 412px;
+
+    -fx-min-height: 400px;
+    -fx-pref-height: 500px;
+    -fx-max-height: 588px;
+}
+
+.book-info-card.compact {
+    -fx-min-width: 412px;
+    -fx-pref-width: 412px;
+    -fx-max-width: 412px;
+
+    -fx-min-height: 140px;
+    -fx-pref-height: 166px;
+    -fx-max-height: 166px;
+
+    -fx-padding: 20px;
+    -fx-spacing: 10px;
+}
+
+/* Section Label */
+.book-info-section-label {
+    -fx-text-fill: -fx-muted-foreground;
+    -fx-font-size: 10px;
+    -fx-font-weight: normal;
+
+    -fx-padding: 0;
+}
+
+/* Image Container */
+.book-info-image-container {
+    -fx-background-color: #D9D9D9;
+    -fx-background-radius: 10px;
+
+    -fx-alignment: CENTER;
+}
+
+/* Large Image Container Dimensions */
+.book-info-image-container.large {
+    -fx-min-height: 100px;
+    -fx-pref-height: 284px;
+    -fx-max-height: Infinity;
+
+    -fx-min-width: 100px;
+    -fx-pref-width: 284px;
+    -fx-max-width: Infinity;
+
+    -fx-padding: 12px;
+}
+
+/* Compact Image Container Dimensions */
+.book-info-image-container.compact {
+    -fx-min-width: 100px;
+    -fx-pref-width: 100px;
+    -fx-max-width: 100px;
+
+    -fx-min-height: 100px;
+    -fx-pref-height: 100px;
+    -fx-max-height: 100px;
+
+    -fx-background-radius: 8px;
+    -fx-padding: 10px;
+}
+
+/* Image View */
+.book-info-image {
+    -fx-background-radius: 10px;
+}
+
+/* Book Details */
+.book-info-details {
+    -fx-spacing: 8px;
+    -fx-alignment: TOP_LEFT;
+    -fx-fill-width: true;
+}
+
+/* Book Title */
+.book-info-name {
+    -fx-text-fill: -fx-foreground;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+
+    -fx-wrap-text: true;
+}
+
+/* Book ID */
+.book-info-id {
+    -fx-text-fill: -fx-muted-foreground;
+    -fx-font-size: 11px;
+
+    -fx-wrap-text: true;
+}
+
+/* Book Details */
+.book-info-detail {
+    -fx-text-fill: -fx-muted-foreground;
+    -fx-font-size: 13px;
+
+    -fx-wrap-text: true;
+}
+
+/* Book Quantity Section */
+.book-info-quantity-section {
+    -fx-spacing: 24px;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.book-info-quantity-container {
+    -fx-spacing: 8px;
+    -fx-alignment: TOP_LEFT;
+}
+
+/* Quantity Label */
+.book-info-quantity-label {
+    -fx-text-fill: -fx-muted-foreground;
+    -fx-font-size: 16px;
+    -fx-font-weight: normal;
+}
+
+/* Available Quantity */
+.book-info-available-count {
+    -fx-text-fill: -fx-success;
+    -fx-font-size: 26px;
+}
+
+/* Total Quantity */
+.book-info-total-count {
+    -fx-text-fill: -fx-foreground;
+    -fx-font-size: 26px;
+}
+
+ /* Compact Layout */
+.book-info-compact-content {
+    -fx-spacing: 10px;
+    -fx-alignment: TOP_LEFT;
+}
+
+/* Section Label */
+.book-info-card.compact .book-info-section-label {
+    -fx-font-size: 10px;
+}
+
+/* Book Details */
+.book-info-card.compact .book-info-details {
+    -fx-spacing: 6px;
+}
+
+.book-info-card.compact .book-info-name {
+    -fx-font-size: 16px;
+}
+
+.book-info-card.compact .book-info-id {
+    -fx-font-size: 13px;
+}
+
+.book-info-card.compact .book-info-detail {
+    -fx-font-size: 12px;
+}
+
+/* Quantity Section */
+.book-info-card.compact .book-info-quantity-section {
+    -fx-spacing: 12px;
+}
+
+.book-info-card.compact .book-info-quantity-container {
+    -fx-spacing: 4px;
+}
+
+.book-info-card.compact .book-info-quantity-label {
+    -fx-font-size: 11px;
+}
+
+.book-info-card.compact .book-info-available-count,
+.book-info-card.compact .book-info-total-count {
+    -fx-font-size: 14px;
+}
