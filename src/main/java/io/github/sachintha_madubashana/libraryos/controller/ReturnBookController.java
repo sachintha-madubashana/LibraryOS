@@ -8,6 +8,8 @@ import io.github.sachintha_madubashana.libraryos.model.Activity;
 import io.github.sachintha_madubashana.libraryos.model.ActivityStatus;
 import io.github.sachintha_madubashana.libraryos.model.Book;
 import io.github.sachintha_madubashana.libraryos.model.Member;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -87,8 +89,8 @@ public class ReturnBookController {
         searchBtn.setGraphic(fontIcon);
 
         ScrollableList<Activity> recentActivityList = new ScrollableList<>(ActiveLoanRow::new);
-        recentActivityList.setItems(List.of(
-                new Activity("To Kill a Mockingbird", "Sofia Andersen", "2026-08-01", ActivityStatus.OVERDUE),
+        ObservableList<Activity> items = FXCollections.observableArrayList();
+        items.setAll(new Activity("To Kill a Mockingbird", "Sofia Andersen", "2026-08-01", ActivityStatus.OVERDUE),
                 new Activity("The Great Gatsby", "Eleanor Whitfield", "2026-09-20", ActivityStatus.BORROWED),
                 new Activity("Brave New World", "James Okafor", "2026-09-10", ActivityStatus.BORROWED),
                 new Activity("Moby Dick", "Priya Nair", "2026-08-10", ActivityStatus.OVERDUE),
@@ -98,8 +100,8 @@ public class ReturnBookController {
                 new Activity("Harry Potter and the Philosopher's Stone", "Sophia Patel", "2026-09-15", ActivityStatus.BORROWED),
                 new Activity("The Hobbit", "Sophia Patel", "2026-09-15", ActivityStatus.BORROWED),
                 new Activity("The Lord of the Rings", "Sophia Patel", "2026-09-15", ActivityStatus.BORROWED),
-                new Activity("The Hobbit", "Sophia Patel", "2026-09-15", ActivityStatus.BORROWED)
-        ));
+                new Activity("The Hobbit", "Sophia Patel", "2026-09-15", ActivityStatus.BORROWED));
+        recentActivityList.setItems(items);
         recentActivityList.setMaxHeight(Double.MAX_VALUE);
         VBox.setVgrow(recentActivityList, Priority.ALWAYS);
 

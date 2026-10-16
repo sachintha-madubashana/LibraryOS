@@ -7,13 +7,14 @@ import io.github.sachintha_madubashana.libraryos.event.NavigationEvent;
 import io.github.sachintha_madubashana.libraryos.model.Activity;
 import io.github.sachintha_madubashana.libraryos.model.ActivityStatus;
 import io.github.sachintha_madubashana.libraryos.model.Book;
+import io.github.sachintha_madubashana.libraryos.service.AppServices;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-
-import java.util.List;
 
 public class DashboardController {
 
@@ -38,27 +39,13 @@ public class DashboardController {
     private ScrollableList<Book> createBookAvailability() {
         ScrollableList<Book> bookAvailability = new ScrollableList<>(BookAvailabilityRow::new);
         Button bookHeaderBtn = new Button("Add Book   →");
-        bookHeaderBtn.setOnAction(e ->{
-                root.fireEvent(new NavigationEvent(MainController.ADD_BOOK));
-                e.consume();
+        bookHeaderBtn.setOnAction(e -> {
+            root.fireEvent(new NavigationEvent(MainController.ADD_BOOK));
+            e.consume();
         });
 
         bookAvailability.setHeaderText("Book Availability", bookHeaderBtn);
-        bookAvailability.setItems(List.of(
-                new Book("BK001", "To Kill a Mockingbird", "Harper Lee", "Fiction", 10, 5),
-                new Book("BK002", "1984", "George Orwell", "Fiction", 5, 0),
-                new Book("BK003", "The Great Gatsby", "F. Scott Fitzgerald", "Fiction", 8, 2),
-                new Book("BK004", "Pride and Prejudice", "Jane Austen", "Fiction", 7, 0),
-                new Book("BK005", "The Catcher in the Rye", "J.D. Salinger", "Fiction", 6, 1),
-                new Book("BK006", "The Hobbit", "J.R.R. Tolkien", "Fantasy", 12, 7),
-                new Book("BK007", "The Lord of the Rings", "J.R.R. Tolkien", "Fantasy", 15, 0),
-                new Book("BK008", "Harry Potter and the Philosopher's Stone", "J.K. Rowling", "Fantasy", 20, 10),
-                new Book("BK009", "The Hitchhiker's Guide to the Galaxy", "Douglas Adams", "Science Fiction", 18, 12),
-                new Book("BK010", "The Shining", "Stephen King", "Horror", 10, 5),
-                new Book("BK011", "The Da Vinci Code", "Dan Brown", "Thriller", 14, 7),
-                new Book("BK012", "The Chronicles of Narnia", "C.S. Lewis", "Fantasy", 16, 8),
-                new Book("BK013", "The Lord of the Flies", "William Golding", "Fiction", 9, 3)
-        ));
+        bookAvailability.setItems(AppServices.getInstance().getBookService().getAllBooks());
         return bookAvailability;
     }
 
@@ -71,7 +58,8 @@ public class DashboardController {
         });
 
         recentActivity.setHeaderText("Recent Activity", headerBtn);
-        recentActivity.setItems(List.of(
+        ObservableList<Activity> items = FXCollections.observableArrayList();
+        items.setAll(
                 new Activity("To Kill a Mockingbird", "Sofia Andersen", "2026-08-01", ActivityStatus.OVERDUE),
                 new Activity("The Great Gatsby", "Eleanor Whitfield", "2026-09-20", ActivityStatus.BORROWED),
                 new Activity("Brave New World", "James Okafor", "2026-09-10", ActivityStatus.BORROWED),
@@ -84,8 +72,8 @@ public class DashboardController {
                 new Activity("The Lord of the Rings", "Sophia Patel", "2026-09-15", ActivityStatus.BORROWED),
                 new Activity("The Hobbit", "Sophia Patel", "2026-09-15", ActivityStatus.BORROWED),
                 new Activity("The Hobbit", "Sophia Patel", "2026-09-15", ActivityStatus.RETURNED),
-                new Activity("The Hobbit", "Sophia Patel", "2026-09-15", ActivityStatus.RETURNED)
-        ));
+                new Activity("The Hobbit", "Sophia Patel", "2026-09-15", ActivityStatus.RETURNED));
+        recentActivity.setItems(items);
         return recentActivity;
     }
 }

@@ -1,4 +1,6 @@
-package io.github.sachintha_madubashana.libraryos.model;
+package io.github.sachintha_madubashana.libraryos.service;
+
+import io.github.sachintha_madubashana.libraryos.model.User;
 
 import java.util.ArrayList;
 

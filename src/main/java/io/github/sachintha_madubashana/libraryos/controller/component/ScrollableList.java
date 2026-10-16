@@ -19,15 +19,12 @@ import java.util.function.Function;
 public class ScrollableList<T> extends VBox {
 
     private final ListView<T> listView;
-    private final ObservableList<T> items;
     private HBox header;
 
-    public ScrollableList(List<? extends T> items, Function<T, Node> itemFactory) {
+    public ScrollableList(ObservableList<T> items, Function<T, Node> itemFactory) {
         getStyleClass().setAll("scrollable-list");
-        this.items = FXCollections.observableArrayList();
-        this.items.addAll(items);
 
-        listView = new ListView<>(this.items);
+        listView = new ListView<>(items);
         listView.getStyleClass().setAll("scrollable-list-view");
 
         listView.setCellFactory(cellListView -> new ListCell<>() {
@@ -49,7 +46,7 @@ public class ScrollableList<T> extends VBox {
     }
 
     public ScrollableList(Function<T, Node> itemFactory) {
-        this(List.of(), itemFactory);
+        this(FXCollections.observableArrayList(), itemFactory);
     }
 
     public void setHeaderText(String text) {
@@ -93,28 +90,28 @@ public class ScrollableList<T> extends VBox {
         return headerHBox;
     }
 
-    public void setItems(List<? extends T> newItems) {
-        items.setAll(newItems);
+    public void setItems(ObservableList<T> newItems) {
+        listView.getItems().setAll(newItems);
     }
 
-    public void addItems(List<? extends T> newItems) {
-        items.addAll(newItems);
+    public void addItems(ObservableList<T> newItems) {
+        listView.getItems().addAll(newItems);
     }
 
     public void addItem(T item) {
-        items.add(item);
+        listView.getItems().add(item);
     }
 
     public boolean removeItem(T item) {
-        return items.remove(item);
+        return listView.getItems().remove(item);
     }
 
     public void clearItems() {
-        items.clear();
+        listView.getItems().clear();
     }
 
     public int getItemCount() {
-        return items.size();
+        return listView.getItems().size();
     }
 
     public ListView<T> getListView() {
@@ -122,6 +119,6 @@ public class ScrollableList<T> extends VBox {
     }
 
     public ObservableList<T> getItems() {
-        return items;
+        return listView.getItems();
     }
 }
