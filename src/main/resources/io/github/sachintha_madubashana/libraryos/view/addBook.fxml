@@ -26,13 +26,13 @@
             <Separator prefWidth="200.0" />
             <HBox styleClass="container-spacing">
                <children>
-                  <Button alignment="CENTER" mnemonicParsing="false" prefHeight="40.0" text="Add Book" HBox.hgrow="ALWAYS">
+                  <Button fx:id="addBookBtn" alignment="CENTER" mnemonicParsing="false" prefHeight="40.0" text="Add Book" HBox.hgrow="ALWAYS">
                      <styleClass>
                         <String fx:value="button-primary" />
                         <String fx:value="button-md" />
                         <String fx:value="button-full" />
                      </styleClass></Button>
-                  <Button alignment="CENTER" mnemonicParsing="false" prefHeight="40.0" prefWidth="80.0" text="Clear">
+                  <Button fx:id="clearBtn" alignment="CENTER" mnemonicParsing="false" prefHeight="40.0" prefWidth="80.0" text="Clear">
                      <styleClass>
                         <String fx:value="button-secondary" />
                         <String fx:value="button-md" />
