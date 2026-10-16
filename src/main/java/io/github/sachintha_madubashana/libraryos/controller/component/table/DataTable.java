@@ -10,17 +10,15 @@ import javafx.scene.layout.VBox;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class DataTable<T> extends VBox {
 
     private final TableView<T> tableView;
-    private final ObservableList<T> items;
-
     private final Label emptyLabel;
 
     public DataTable() {
         this.tableView = new TableView<>();
-        this.items = FXCollections.observableArrayList();
         this.emptyLabel = new Label("No data available");
 
         initialize();
@@ -33,7 +31,6 @@ public class DataTable<T> extends VBox {
     private void initialize() {
         getStyleClass().add("data-table");
         tableView.getStyleClass().add("data-table-view");
-        tableView.setItems(items);
 
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
 
@@ -97,32 +94,28 @@ public class DataTable<T> extends VBox {
     // Data
     // --------------------------------------------------------------------------
 
-    public void setItems(Collection<T> data) {
-        items.setAll(data);
-    }
-
-    public void setItems(List<T> data) {
-        items.setAll(data);
+    public void setItems(ObservableList<T> data) {
+        tableView.setItems(data);
     }
 
     public void addItem(T item) {
-        items.add(item);
+        tableView.getItems().add(item);
     }
 
-    public void addItems(Collection<T> data){
-        items.addAll(data);
+    public void addItems(ObservableList<T> data){
+        tableView.getItems().addAll(data);
     }
 
     public void removeItem(T item) {
-        items.remove(item);
+        tableView.getItems().remove(item);
     }
 
     public void clearItems() {
-        items.clear();
+        tableView.getItems().clear();
     }
 
     public ObservableList<T> getItems() {
-        return items;
+        return tableView.getItems();
     }
 
     // --------------------------------------------------------------------------
@@ -145,7 +138,7 @@ public class DataTable<T> extends VBox {
         tableView.getSelectionModel().setSelectionMode(selectionMode);
     }
 
-    public void setOnRowClick(java.util.function.Consumer<T> handler) {
+    public void setOnRowClick(Consumer<T> handler) {
         tableView.setRowFactory(tv -> {
             TableRow<T> row = new TableRow<>();
             row.setOnMouseClicked(event -> {

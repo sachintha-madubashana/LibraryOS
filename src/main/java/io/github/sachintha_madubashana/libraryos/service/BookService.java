@@ -2,7 +2,6 @@ package io.github.sachintha_madubashana.libraryos.service;
 
 import io.github.sachintha_madubashana.libraryos.model.Book;
 import io.github.sachintha_madubashana.libraryos.repository.InMemoryBookRepository;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class BookService {
@@ -21,29 +20,34 @@ public class BookService {
     }
 
     public void addBook(Book book) {
-        Book existingBook = bookRepository.findBookById(book.getId());
-        System.out.println("Existing book: " + existingBook);
-        if (existingBook != null) {
-            bookRepository.updateBook(bookRepository.getBookIndex(existingBook), book);
-        } else {
-            bookRepository.addBook(book);
+        if (bookRepository.findBookById(book.getId()) != null) {
+            throw new IllegalArgumentException(
+                    "A book with this ID already exists."
+            );
         }
+
+        bookRepository.addBook(book);
+    }
+
+    public void updateBook(Book book) {
+        Book existingBook = bookRepository.findBookById(book.getId());
+
+        if (existingBook == null) {
+            throw new IllegalArgumentException(
+                    "Book not found: " + book.getId()
+            );
+        }
+
+        bookRepository.updateBook(book);
     }
 
     public boolean removeBook(Book book) {
-        Integer bookIndex = bookRepository.getBookIndex(book);
-        if (bookIndex != -1) {
-            return bookRepository.removeBook(book);
-        }
-        return false;
+        return bookRepository.isBookExist(book) && bookRepository.removeBook(book);
     }
 
     public boolean removeBookById(String id) {
-        Book existingBook = findBookById(id);
-        if (existingBook != null) {
-            return bookRepository.removeBook(existingBook);
-        }
-        return false;
+        Book book = bookRepository.findBookById(id);
+        return book != null && bookRepository.removeBook(book);
     }
 
 }

@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SampleData {
+    private SampleData() {
+    }
+
 
     public static List<Book> createBooks() {
         List<Book> books = new ArrayList<>();

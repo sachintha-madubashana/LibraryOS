@@ -12,8 +12,8 @@ public class InMemoryBookRepository {
         books = FXCollections.observableArrayList(SampleData.createBooks());
     }
 
-    public Integer getBookIndex(Book book){
-        return books.indexOf(book);
+    public boolean isBookExist(Book book){
+        return books.contains(book);
     }
 
     public ObservableList<Book> getAllBooks() {
@@ -21,7 +21,6 @@ public class InMemoryBookRepository {
     }
 
     public Book findBookById(String id) {
-        System.out.println("looking book id: " + id);
         return books.stream()
                 .filter(book -> book.getId().equals(id))
                 .findFirst()
@@ -29,13 +28,16 @@ public class InMemoryBookRepository {
     }
 
     public void addBook(Book book) {
-        System.out.println("book added: " + book);
         books.add(book);
     }
 
-    public void updateBook(int index, Book book) {
-        System.out.println("book updated: " + book);
-        books.set(index, book);
+    public void updateBook(Book book) {
+        Book existingBook = books.stream().filter(book1 -> book1.getId().equals(book.getId())).findFirst().orElse(null);
+        int index = books.indexOf(existingBook);
+
+        if (index != -1) {
+            books.set(index, book);
+        }
     }
 
     public boolean removeBook(Book book) {
