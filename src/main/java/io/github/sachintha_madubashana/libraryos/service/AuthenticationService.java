@@ -13,32 +13,32 @@ public class AuthenticationService {
         users.add(new User("guest", "guest"));
     }
 
-    public boolean authenticate(User credential) {
+    public ResultService<User> authenticate(User credential) {
         if (credential == null) {
-            return false;
+            return ResultService.error("Credentials are Empty");
         }
 
         if (credential.getUsername() == null || credential.getPassword() == null) {
-            return false;
+            return ResultService.error("Username or Password is Empty");
         }
 
         if (credential.getUsername().isEmpty() || credential.getPassword().isEmpty()) {
-            return false;
+            return ResultService.error("Username or Password is Empty");
         }
 
         if (credential.getUsername().length() < 3 || credential.getPassword().length() < 3) {
-            return false;
+            return ResultService.error("Username or Password is too short");
         }
 
         if (credential.getUsername().contains(" ") || credential.getPassword().contains(" ")) {
-            return false;
+            return ResultService.error("Username or Password contains space");
         }
 
         for (User user : users) {
             if (user.isEquals(credential)) {
-                return true;
+                return ResultService.success("User Authenticated", user);
             }
         }
-        return false;
+        return ResultService.error("Invalid Credentials");
     }
 }

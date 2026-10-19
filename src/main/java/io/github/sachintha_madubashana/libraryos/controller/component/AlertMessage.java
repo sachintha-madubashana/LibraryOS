@@ -1,5 +1,6 @@
 package io.github.sachintha_madubashana.libraryos.controller.component;
 
+import io.github.sachintha_madubashana.libraryos.service.ResultService;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Parent;
@@ -21,6 +22,11 @@ public class AlertMessage extends HBox {
     private final Label messageLabel;
     private Timeline dismissTimeline;
     private Duration dismissDuration;
+
+    public AlertMessage(ResultService<?> resultService) {
+        this(resultService.getMessage(), resultService.getMessage(),
+                resultService.getState().equals(ResultService.ResultState.SUCCESS) ? AlertMessage.Type.SUCCESS : AlertMessage.Type.ERROR);
+    }
 
     public AlertMessage(String title, String message, Type type) {
         Label messageLabel1;
@@ -44,7 +50,7 @@ public class AlertMessage extends HBox {
             messageBox = new VBox(4);
             HBox.setHgrow(messageBox, Priority.ALWAYS);
             messageBox.getChildren().addAll(titleLabel, messageLabel1);
-        }else {
+        } else {
             messageLabel1 = null;
             HBox.setHgrow(titleLabel, Priority.ALWAYS);
         }
@@ -55,7 +61,7 @@ public class AlertMessage extends HBox {
         closeButton.getStyleClass().add("alert-close-button");
         closeButton.setOnAction(event -> dismiss());
 
-        getChildren().addAll(fontIcon, (messageBox == null)? titleLabel : messageBox,closeButton);
+        getChildren().addAll(fontIcon, (messageBox == null) ? titleLabel : messageBox, closeButton);
 
         setType(type);
         setOnMouseEntered(event -> pause());
@@ -83,7 +89,7 @@ public class AlertMessage extends HBox {
         messageLabel.setText(message);
     }
 
-    public void showIn(Pane parent, Boolean isDismissTimerOn){
+    public void showIn(Pane parent, Boolean isDismissTimerOn) {
         showIn(parent, Boolean.TRUE.equals(isDismissTimerOn) ? DEFAULT_DISMISS_DURATION : null);
     }
 
@@ -119,7 +125,7 @@ public class AlertMessage extends HBox {
             dismissTimeline.stop();
         }
 
-        if(dismissDuration != null){
+        if (dismissDuration != null) {
             dismissTimeline = new Timeline(new KeyFrame(dismissDuration, event -> dismiss()));
             dismissTimeline.play();
         }
@@ -158,7 +164,12 @@ public class AlertMessage extends HBox {
             this.iconName = iconName;
         }
 
-        public String getCssClass() { return cssClass; }
-        public Feather getIconName() { return iconName; }
+        public String getCssClass() {
+            return cssClass;
+        }
+
+        public Feather getIconName() {
+            return iconName;
+        }
     }
 }

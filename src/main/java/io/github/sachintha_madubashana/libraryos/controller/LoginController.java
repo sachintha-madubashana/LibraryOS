@@ -1,19 +1,24 @@
 package io.github.sachintha_madubashana.libraryos.controller;
 
 import io.github.sachintha_madubashana.libraryos.Launcher;
+import io.github.sachintha_madubashana.libraryos.controller.component.AlertMessage;
 import io.github.sachintha_madubashana.libraryos.controller.component.InputField;
-import io.github.sachintha_madubashana.libraryos.model.AuthenticationService;
+import io.github.sachintha_madubashana.libraryos.service.AuthenticationService;
 import io.github.sachintha_madubashana.libraryos.model.User;
-import javafx.application.Platform;
+import io.github.sachintha_madubashana.libraryos.service.ResultService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.kordamp.ikonli.feather.Feather;
 import org.kordamp.ikonli.javafx.FontIcon;
 
@@ -35,6 +40,9 @@ public class LoginController {
     @FXML
     private InputField passwordField;
 
+    @FXML
+    private VBox errorContainer;
+
     private AuthenticationService authenticationService;
 
     @FXML
@@ -51,6 +59,8 @@ public class LoginController {
         closeBtn.setOnAction(event -> onCloseButtonClick());
         loinBtn.setOnAction(event -> onLoginButtonClick());
         clearBtn.setOnAction(event -> onClearButtonClick());
+
+//        Platform.runLater(() -> loinBtn.fire());
     }
 
     private void onCloseButtonClick() {
@@ -59,7 +69,8 @@ public class LoginController {
 
     private void onLoginButtonClick() {
         User credential = new User(usernameField.getInputValue(), passwordField.getInputValue());
-        if (authenticationService.authenticate(credential)) {
+        ResultService<User> result = authenticationService.authenticate(credential);
+        if (result.isSuccess()) {
             try {
                 Stage stage = (Stage) loinBtn.getScene().getWindow();
                 stage.close();
@@ -76,13 +87,8 @@ public class LoginController {
                 alert.setContentText(e.getMessage());
                 alert.showAndWait();
             }
-
         } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Login failed");
-            alert.setContentText("Credentials are wrong");
-            alert.showAndWait();
+            showError(result);
         }
     }
 
@@ -103,5 +109,12 @@ public class LoginController {
     private void onClearButtonClick() {
         usernameField.clear();
         passwordField.clear();
+    }
+
+    private void showError(ResultService<User> resultService) {
+        errorContainer.setVisible(true);
+        errorContainer.getChildren().clear();
+        AlertMessage alertMessage = new AlertMessage(resultService);
+        alertMessage.showIn(errorContainer, Duration.seconds(10));
     }
 }
