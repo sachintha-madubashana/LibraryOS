@@ -5,6 +5,7 @@ import io.github.sachintha_madubashana.libraryos.controller.component.Pagination
 import io.github.sachintha_madubashana.libraryos.controller.component.table.DataColumn;
 import io.github.sachintha_madubashana.libraryos.controller.component.table.DataTable;
 import io.github.sachintha_madubashana.libraryos.model.Member;
+import io.github.sachintha_madubashana.libraryos.service.AppServices;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -46,21 +47,7 @@ public class ManageMemberController {
                 DataColumn.actions("ACTION", 170, this::handleEditMember, this::handleDeleteMember)
         );
 
-        List<Member> members = new ArrayList<>();
-        members.add(new Member("MB001", "John Smith", "john.smith@email.com", "0771234567", "25 Main Street, Colombo", LocalDate.of(2026, 1, 15)));
-        members.add(new Member("MB002", "Emily Johnson", "emily.johnson@email.com", "0712345678", "14 Park Road, Kandy", LocalDate.of(2026, 2, 3)));
-        members.add(new Member("MB003", "Michael Brown", "michael.brown@email.com", "0763456789", "8 Lake View, Galle", LocalDate.of(2026, 2, 18)));
-        members.add(new Member("MB004", "Sarah Wilson", "sarah.wilson@email.com", "0754567890", "42 Hill Street, Negombo", LocalDate.of(2026, 3, 7)));
-        members.add(new Member("MB005", "David Miller", "david.miller@email.com", "0705678901", "19 Station Road, Matara", LocalDate.of(2026, 3, 21)));
-        members.add(new Member("MB006", "Jessica Davis", "jessica.davis@email.com", "0776789012", "31 Flower Road, Colombo", LocalDate.of(2026, 4, 2)));
-        members.add(new Member("MB007", "Daniel Anderson", "daniel.anderson@email.com", "0717890123", "7 Temple Road, Kurunegala", LocalDate.of(2026, 4, 15)));
-        members.add(new Member("MB008", "Sophia Taylor", "sophia.taylor@email.com", "0768901234", "55 Beach Road, Kalutara", LocalDate.of(2026, 5, 1)));
-        members.add(new Member("MB009", "James Thomas", "james.thomas@email.com", "0759012345", "12 Main Street, Jaffna", LocalDate.of(2026, 5, 19)));
-        members.add(new Member("MB010", "Olivia Moore", "olivia.moore@email.com", "0700123456", "28 Garden Avenue, Colombo", LocalDate.of(2026, 6, 5)));
-        members.add(new Member("MB011", "William Martin", "william.martin@email.com", "0771122334", "16 Church Road, Kandy", LocalDate.of(2026, 6, 17)));
-        members.add(new Member("MB012", "Emma Jackson", "emma.jackson@email.com", "0712233445", "9 Riverside Road, Gampaha", LocalDate.of(2026, 7, 4)));
-
-        table.setItems(members);
+        table.setItems(AppServices.getInstance().getMemberService().getMembers());
         table.setSelectionMode(SelectionMode.MULTIPLE);
 
         Pagination pagination = new Pagination();
