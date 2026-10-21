@@ -1,29 +1,21 @@
 package io.github.sachintha_madubashana.libraryos.controller;
 
-import io.github.sachintha_madubashana.libraryos.Launcher;
 import io.github.sachintha_madubashana.libraryos.controller.component.AlertMessage;
 import io.github.sachintha_madubashana.libraryos.controller.component.InputField;
 import io.github.sachintha_madubashana.libraryos.navigation.WindowManager;
 import io.github.sachintha_madubashana.libraryos.service.AuthenticationService;
 import io.github.sachintha_madubashana.libraryos.model.User;
-import io.github.sachintha_madubashana.libraryos.service.ResultService;
+import io.github.sachintha_madubashana.libraryos.common.result.Result;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.kordamp.ikonli.feather.Feather;
 import org.kordamp.ikonli.javafx.FontIcon;
-
-import java.util.Objects;
 
 public class LoginController {
     @FXML
@@ -70,7 +62,7 @@ public class LoginController {
 
     private void onLoginButtonClick() {
         User credential = new User(usernameField.getInputValue(), passwordField.getInputValue());
-        ResultService<User> result = authenticationService.authenticate(credential);
+        Result<User> result = authenticationService.authenticate(credential);
         if (result.isSuccess()) {
             try {
                 Stage stage = (Stage) loinBtn.getScene().getWindow();
@@ -107,10 +99,10 @@ public class LoginController {
         passwordField.clear();
     }
 
-    private void showError(ResultService<User> resultService) {
+    private void showError(Result<User> result) {
         errorContainer.setVisible(true);
         errorContainer.getChildren().clear();
-        AlertMessage alertMessage = new AlertMessage(resultService);
+        AlertMessage alertMessage = new AlertMessage(result);
         alertMessage.showIn(errorContainer, Duration.seconds(10));
     }
 }

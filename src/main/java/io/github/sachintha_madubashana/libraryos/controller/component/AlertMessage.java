@@ -1,6 +1,7 @@
 package io.github.sachintha_madubashana.libraryos.controller.component;
 
-import io.github.sachintha_madubashana.libraryos.service.ResultService;
+import io.github.sachintha_madubashana.libraryos.common.result.Result;
+import io.github.sachintha_madubashana.libraryos.common.result.ResultState;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Parent;
@@ -23,9 +24,9 @@ public class AlertMessage extends HBox {
     private Timeline dismissTimeline;
     private Duration dismissDuration;
 
-    public AlertMessage(ResultService<?> resultService) {
-        this(resultService.getMessage(), resultService.getMessage(),
-                resultService.getState().equals(ResultService.ResultState.SUCCESS) ? AlertMessage.Type.SUCCESS : AlertMessage.Type.ERROR);
+    public AlertMessage(Result<?> result) {
+        this(result.getMessage(), result.getMessage(),
+                result.getState().equals(ResultState.SUCCESS) ? AlertMessage.Type.SUCCESS : AlertMessage.Type.ERROR);
     }
 
     public AlertMessage(String title, String message, Type type) {

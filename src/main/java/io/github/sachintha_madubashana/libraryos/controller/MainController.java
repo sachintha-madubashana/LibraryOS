@@ -130,26 +130,10 @@ public class MainController {
     }
 
     private void signOut() {
-//        try {
-            Stage currentStage = (Stage) signOutBtn.getScene().getWindow();
-            currentStage.close();
-            new WindowManager().openLoginStage();
-
-//            FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("view/login-view.fxml"));
-//            Stage loginStage = new Stage();
-//            Scene loginScene = new Scene(loader.load(), 1069, 600);
-//            loginScene.setFill(Color.TRANSPARENT);
-//            loginStage.setScene(loginScene);
-//            loginStage.initStyle(StageStyle.TRANSPARENT);
-//
-//
-//            loginStage.show();
-
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        Stage currentStage = (Stage) signOutBtn.getScene().getWindow();
+        currentStage.close();
+        new WindowManager().openLoginStage();
     }
-
     private void configureSidebarScroll(ScrollPane scrollPane) {
         scrollPane.addEventFilter(ScrollEvent.SCROLL, event -> {
             double delta = event.getDeltaY();
