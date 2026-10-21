@@ -6,6 +6,7 @@ import io.github.sachintha_madubashana.libraryos.controller.component.rows.Recen
 import io.github.sachintha_madubashana.libraryos.event.NavigationEvent;
 import io.github.sachintha_madubashana.libraryos.model.Activity;
 import io.github.sachintha_madubashana.libraryos.model.Book;
+import io.github.sachintha_madubashana.libraryos.navigation.ScenesManager;
 import io.github.sachintha_madubashana.libraryos.service.AppServices;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -37,7 +38,7 @@ public class DashboardController {
         ScrollableList<Book> bookAvailability = new ScrollableList<>(BookAvailabilityRow::new);
         Button bookHeaderBtn = new Button("Add Book   →");
         bookHeaderBtn.setOnAction(e -> {
-            root.fireEvent(new NavigationEvent(MainController.ADD_BOOK));
+            root.fireEvent(new NavigationEvent(ScenesManager.ADD_BOOK));
             e.consume();
         });
 
@@ -50,7 +51,7 @@ public class DashboardController {
         ScrollableList<Activity> recentActivity = new ScrollableList<>(RecentActivityRow::new);
         Button headerBtn = new Button("VIEW ALL   →");
         headerBtn.setOnAction(e -> {
-            root.fireEvent(new NavigationEvent(MainController.HISTORY));
+            root.fireEvent(new NavigationEvent(ScenesManager.HISTORY));
             e.consume();
         });
 
