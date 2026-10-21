@@ -1,5 +1,6 @@
 package io.github.sachintha_madubashana.libraryos;
 
+import io.github.sachintha_madubashana.libraryos.navigation.WindowManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -19,14 +20,7 @@ public class LibraryOS extends javafx.application.Application {
     public void start(Stage stage) throws IOException {
         loadFonts();
         Application.setUserAgentStylesheet(Objects.requireNonNull(getClass().getResource("css/main.css")).toExternalForm());
-        FXMLLoader fxmlLoader = new FXMLLoader(Launcher.class.getResource("view/login-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1069, 600);
-        scene.setFill(Color.TRANSPARENT);
-        stage.getIcons().add(new Image(Objects.requireNonNull(Launcher.class.getResourceAsStream("icon/icon.png"))));
-        stage.initStyle(StageStyle.TRANSPARENT);
-        stage.setScene(scene);
-        stage.setIconified(false);
-        stage.show();
+        new WindowManager().openLoginStage(stage);
     }
 
     public void loadFonts() {

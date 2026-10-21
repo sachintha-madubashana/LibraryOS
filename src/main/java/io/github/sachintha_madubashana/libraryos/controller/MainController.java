@@ -5,6 +5,7 @@ import io.github.sachintha_madubashana.libraryos.controller.component.PageHeader
 import io.github.sachintha_madubashana.libraryos.event.NavigationEvent;
 import io.github.sachintha_madubashana.libraryos.model.Route;
 import io.github.sachintha_madubashana.libraryos.navigation.ScenesManager;
+import io.github.sachintha_madubashana.libraryos.navigation.WindowManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -129,22 +130,24 @@ public class MainController {
     }
 
     private void signOut() {
-        try {
+//        try {
             Stage currentStage = (Stage) signOutBtn.getScene().getWindow();
-
-            FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("view/login-view.fxml"));
-            Stage loginStage = new Stage();
-            Scene loginScene = new Scene(loader.load(), 1069, 600);
-            loginScene.setFill(Color.TRANSPARENT);
-            loginStage.setScene(loginScene);
-            loginStage.initStyle(StageStyle.TRANSPARENT);
-
             currentStage.close();
-            loginStage.show();
+            new WindowManager().openLoginStage();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//            FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("view/login-view.fxml"));
+//            Stage loginStage = new Stage();
+//            Scene loginScene = new Scene(loader.load(), 1069, 600);
+//            loginScene.setFill(Color.TRANSPARENT);
+//            loginStage.setScene(loginScene);
+//            loginStage.initStyle(StageStyle.TRANSPARENT);
+//
+//
+//            loginStage.show();
+
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     private void configureSidebarScroll(ScrollPane scrollPane) {

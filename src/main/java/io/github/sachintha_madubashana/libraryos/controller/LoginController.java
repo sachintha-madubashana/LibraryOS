@@ -3,6 +3,7 @@ package io.github.sachintha_madubashana.libraryos.controller;
 import io.github.sachintha_madubashana.libraryos.Launcher;
 import io.github.sachintha_madubashana.libraryos.controller.component.AlertMessage;
 import io.github.sachintha_madubashana.libraryos.controller.component.InputField;
+import io.github.sachintha_madubashana.libraryos.navigation.WindowManager;
 import io.github.sachintha_madubashana.libraryos.service.AuthenticationService;
 import io.github.sachintha_madubashana.libraryos.model.User;
 import io.github.sachintha_madubashana.libraryos.service.ResultService;
@@ -74,12 +75,7 @@ public class LoginController {
             try {
                 Stage stage = (Stage) loinBtn.getScene().getWindow();
                 stage.close();
-                Stage primaryStage = new Stage();
-                primaryStage.setTitle("Library OS");
-                FXMLLoader fxml = new FXMLLoader(Objects.requireNonNull(Launcher.class.getResource("view/main-view.fxml")));
-                primaryStage.setScene(new Scene(fxml.load(), 1069, 600));
-                primaryStage.getIcons().add(new Image(Objects.requireNonNull(Launcher.class.getResourceAsStream("icon/icon.png"))));
-                primaryStage.show();
+                new WindowManager().openMainStage();
             }catch (Exception e){
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
