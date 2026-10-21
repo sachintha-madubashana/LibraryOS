@@ -11,7 +11,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <javafx.version>21.0.6</javafx.version>
+        <javafx.version>26</javafx.version>
         <ikonli.version>12.3.1</ikonli.version>
         <ikonli.feather.version>12.4.0</ikonli.feather.version>
         <spring-security-crypto.version>6.4.5</spring-security-crypto.version>

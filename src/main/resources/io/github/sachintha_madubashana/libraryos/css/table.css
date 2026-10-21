@@ -1,0 +1,122 @@
+/* ---------------------------------------------------------
+   DATA TABLE
+   --------------------------------------------------------- */
+.data-table {
+    -fx-background-color: -fx-background;
+}
+
+/* Table View */
+.data-table-view {
+    -fx-background-color: -fx-background;
+
+    -fx-border-color: -fx-border;
+    -fx-border-width: 1px;
+
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+
+    -fx-padding: 0;
+}
+
+/* Column Header */
+.data-table-view .column-header-background {
+    -fx-background-color: -fx-table-header;
+
+    -fx-background-radius: 4px 4px 0px 0px;
+
+    -fx-border-color: transparent transparent -fx-border-inverted transparent;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.data-table-view .column-header {
+    -fx-background-color: -fx-table-header;
+
+    -fx-border-color: -fx-border;
+    -fx-border-width: 0 1px 1px 0;
+}
+
+.data-table-view .column-header .label {
+    -fx-text-fill: -fx-foreground;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 8px;
+}
+
+/* Rows */
+
+.data-table-view .table-row-cell {
+    -fx-background-color: -fx-background;
+
+    -fx-border-color: -fx-border;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.data-table-view .table-row-cell:hover {
+    -fx-background-color: -fx-table-row-hover;
+}
+
+.data-table-view .table-row-cell:selected {
+    -fx-background-color: -fx-table-row-selected;
+}
+
+/* Cells */
+.data-table-view .table-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-foreground;
+
+    -fx-border-color: transparent;
+    -fx-padding: 10px 12px;
+}
+
+.data-table-view .secondary-cell {
+    -fx-text-fill: -fx-secondary-foreground;
+}
+
+/* Cell Alignment */
+.data-table-view .cell-left {
+    -fx-alignment: CENTER_LEFT;
+}
+
+.data-table-view .cell-center {
+    -fx-alignment: CENTER;
+}
+
+.data-table-view .cell-right {
+    -fx-alignment: CENTER_RIGHT;
+}
+
+/* Empty Quantity */
+.data-table-view .quantity-empty {
+    -fx-text-fill: -fx-muted-foreground;
+}
+
+/* Empty Table */
+.data-table-empty {
+    -fx-background-color: -fx-background;
+    -fx-text-fill: -fx-muted-foreground;
+}
+
+/* Table Scrollbars */
+.data-table-view .scroll-bar:vertical,
+.data-table-view .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}
+
+.data-table-view .scroll-bar .track {
+    -fx-background-color: transparent;
+}
+
+.data-table-view .scroll-bar .thumb {
+    -fx-background-color: -fx-border;
+    -fx-background-radius: 999px;
+}
+
+.data-table-view .scroll-bar .thumb:hover {
+    -fx-background-color: -fx-muted-foreground;
+}
+
+.data-table-view .corner {
+    -fx-background-color: transparent;
+}

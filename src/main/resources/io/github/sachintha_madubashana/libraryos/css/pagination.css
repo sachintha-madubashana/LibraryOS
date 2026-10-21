@@ -1,0 +1,80 @@
+/* ---------------------------------------------------------
+   PAGINATION
+   --------------------------------------------------------- */
+.pagination {
+    -fx-alignment: center;
+    -fx-spacing: 8px;
+}
+
+/* Previous / Next */
+.pagination-previous,
+.pagination-next {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-foreground;
+
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+
+    -fx-padding: 7px 12px;
+    -fx-opacity: 0.5;
+
+    -fx-cursor: hand;
+}
+
+.pagination-previous:hover,
+.pagination-next:hover {
+    -fx-background-color: -fx-accent;
+    -fx-opacity: 1;
+}
+
+.pagination-previous:pressed,
+.pagination-next:pressed {
+    -fx-background-color: #F1F5F9;
+    -fx-translate-x: 0.8;
+    -fx-translate-y: 0.8;
+}
+
+.pagination-previous:disabled,
+.pagination-next:disabled {
+    -fx-opacity: 0.25;
+}
+
+/* Page */
+.pagination-page {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-foreground;
+
+    -fx-border-color: transparent;
+
+    -fx-min-width: 32px;
+    -fx-min-height: 32px;
+
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+}
+
+.pagination-page:hover {
+    -fx-background-color: -fx-accent;
+}
+
+.pagination-page:pressed {
+    -fx-translate-x: 0.8;
+    -fx-translate-y: 0.8;
+    -fx-opacity: 0.5;
+}
+
+/* Active Page */
+.pagination-page.active {
+    -fx-background-color: -fx-primary;
+    -fx-text-fill: -fx-primary-foreground;
+}
+
+/* Page Container */
+.pagination-pages {
+    -fx-spacing: 4px;
+}
+
+/* Ellipsis */
+.pagination-ellipsis {
+    -fx-text-fill: -fx-muted-foreground;
+}

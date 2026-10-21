@@ -1,0 +1,164 @@
+/* ---------------------------------------------------------
+   BUTTONS
+   --------------------------------------------------------- */
+/* Base Button */
+.button {
+    -fx-background-color: -fx-secondary;
+    -fx-text-fill: -fx-secondary-foreground;
+
+    -fx-border-color: transparent;
+    -fx-border-width: 1px;
+
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+
+    -fx-font-size: 14px;
+
+    -fx-padding: 8px 16px;
+}
+
+/* Base States */
+.button:hover {
+    -fx-background-color: -fx-secondary-hover;
+}
+
+.button:pressed {
+    -fx-background-color: -fx-secondary-active;
+}
+
+.button:focused {
+    -fx-border-color: -fx-ring;
+}
+
+.button:disabled {
+    -fx-opacity: 0.5;
+}
+
+/* Primary */
+.button-primary {
+    -fx-background-color: -fx-primary;
+    -fx-text-fill: -fx-primary-foreground;
+}
+
+.button-primary:hover {
+    -fx-background-color: -fx-primary-hover;
+}
+
+.button-primary:pressed {
+    -fx-background-color: -fx-primary-active;
+}
+
+/* Secondary */
+.button-secondary {
+    -fx-background-color: -fx-secondary;
+    -fx-text-fill: -fx-secondary-foreground;
+}
+
+.button-secondary:hover {
+    -fx-background-color: -fx-secondary-hover;
+}
+
+.button-secondary:pressed {
+    -fx-background-color: -fx-secondary-active;
+}
+
+/* Destructive */
+.button-destructive {
+    -fx-background-color: -fx-destructive;
+    -fx-text-fill: -fx-destructive-foreground;
+}
+
+.button-destructive:hover {
+    -fx-background-color: -fx-destructive-hover;
+}
+
+.button-destructive:pressed {
+    -fx-background-color: -fx-destructive-active;
+}
+
+/* Outline */
+.button-outline {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-foreground;
+
+    -fx-border-color: -fx-border;
+}
+
+.button-outline:hover {
+    -fx-background-color: -fx-accent;
+}
+
+
+/* Ghost */
+.button-ghost {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-foreground;
+
+    -fx-border-color: transparent;
+}
+
+.button-ghost:hover {
+    -fx-background-color: -fx-accent;
+}
+
+/* Link */
+.button-link {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-primary;
+
+    -fx-border-color: transparent;
+
+    -fx-padding: 0;
+}
+
+.button-link:hover {
+    -fx-background-color: transparent;
+    -fx-underline: true;
+}
+
+/* Button Sizes */
+.button-sm {
+    -fx-padding: 6px 12px;
+    -fx-font-size: 13px;
+}
+
+.button-md {
+    -fx-padding: 8px 16px;
+    -fx-font-size: 14px;
+}
+
+.button-lg {
+    -fx-padding: 12px 20px;
+    -fx-font-size: 15px;
+}
+
+/* Icon Buttons */
+.button-icon {
+    -fx-padding: 8px;
+    -fx-min-width: 36px;
+    -fx-min-height: 36px;
+    -fx-pref-width: 36px;
+    -fx-pref-height: 36px;
+
+    -fx-fill: -fx-background;
+}
+
+.button-icon-sm {
+    -fx-padding: 6px;
+    -fx-min-width: 32px;
+    -fx-min-height: 32px;
+    -fx-pref-width: 32px;
+    -fx-pref-height: 32px;
+}
+
+.button-icon-lg {
+    -fx-padding: 10px;
+    -fx-min-width: 44px;
+    -fx-min-height: 44px;
+    -fx-pref-width: 44px;
+    -fx-pref-height: 44px;
+}
+
+.button-full {
+    -fx-max-width: Infinity;
+}

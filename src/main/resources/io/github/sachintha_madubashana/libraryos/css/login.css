@@ -1,0 +1,21 @@
+/* ---------------------------------------------------------
+   Login
+   --------------------------------------------------------- */
+.login-page{
+    -fx-background-radius: 16px;
+    -fx-border-radius: 16px;
+}
+
+.login-page .right-bar{
+    -fx-border-radius: 16px;
+    -fx-background-radius: 16px;
+}
+
+.login-page .close-button-container{
+    -fx-border-radius: 8px;
+    -fx-padding: 8px;
+}
+
+.login-page .close-button-container .button{
+    -fx-border-radius: 8px;
+}
