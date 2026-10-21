@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
@@ -12,12 +13,17 @@
             <Insets />
          </BorderPane.margin>
          <children>
-            <VBox styleClass="sidebar-header">
+            <HBox styleClass="sidebar-header">
                <children>
-                  <Label prefWidth="220.0" styleClass="sidebar-brand-muted" text="LibraryOS" />
-                  <Label prefWidth="220.0" styleClass="sidebar-brand" text="Librarian Portal" />
+                  <ImageView fx:id="logoImage" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
+                  <VBox>
+                     <children>
+                        <Label prefWidth="220.0" styleClass="sidebar-brand-muted" text="LibraryOS" />
+                        <Label prefWidth="220.0" styleClass="sidebar-brand" text="Librarian Portal" />
+                     </children>
+                  </VBox>
                </children>
-            </VBox>
+            </HBox>
             <ScrollPane fx:id="sidebarScroll" fitToWidth="true" VBox.vgrow="ALWAYS">
                <content>
                   <VBox styleClass="sidebar-content">

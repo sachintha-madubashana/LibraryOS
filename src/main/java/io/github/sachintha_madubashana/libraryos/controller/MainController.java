@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
@@ -30,6 +31,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Objects;
 
 public class MainController {
 
@@ -64,9 +66,12 @@ public class MainController {
     private Button userBtn;
     @FXML
     private ScrollPane sidebarScroll;
+    @FXML
+    private ImageView logoImage;
 
     @FXML
     private void initialize() {
+        logoImage.setImage(new Image(Objects.requireNonNull(Launcher.class.getResourceAsStream("icon/icon.png"))));
         scenes();
         initializeIconsMap();
         configureSidebarScroll(sidebarScroll);
