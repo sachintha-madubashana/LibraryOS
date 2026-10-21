@@ -1,0 +1,108 @@
+/* ---------------------------------------------------------
+   EMPTY INFO CARD
+   --------------------------------------------------------- */
+
+.empty-info-card {
+    -fx-background-color: -fx-card;
+    -fx-border-color: -fx-border;
+    -fx-border-width: 1px;
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+}
+
+/* ---------- Icon Container ---------- */
+
+.empty-info-card .empty-info-icon-container {
+    -fx-alignment: center;
+    -fx-min-width: 44px;
+    -fx-min-height: 44px;
+    -fx-pref-width: 44px;
+    -fx-pref-height: 44px;
+}
+
+.empty-info-card .empty-info-icon {
+    -fx-icon-size: 36px;
+    -fx-icon-color: -fx-foreground;
+}
+
+/* ---------- Title ---------- */
+
+.empty-info-card .empty-info-title {
+    -fx-text-fill: -fx-foreground;
+    -fx-font-family: "Inter";
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+/* ---------- Description ---------- */
+
+.empty-info-card .empty-info-description {
+    -fx-text-fill: #64748B;
+    -fx-font-family: "Inter";
+    -fx-font-size: 14px;
+    -fx-wrap-text: true;
+}
+
+
+/* ---------------------------------------------------------
+   COMPACT LAYOUT
+   --------------------------------------------------------- */
+
+.empty-info-card-compact {
+    -fx-padding: 24px 28px;
+    -fx-alignment: center-left;
+}
+
+.empty-info-card-compact .empty-info-content {
+    -fx-alignment: center-left;
+    -fx-spacing: 4px;
+}
+
+.empty-info-card-compact .empty-info-icon-container {
+    -fx-margin: 0 0 0 0;
+}
+
+.empty-info-card-compact .empty-info-title {
+    -fx-font-size: 20px;
+}
+
+.empty-info-card-compact .empty-info-description {
+    -fx-font-size: 14px;
+}
+
+
+/* ---------------------------------------------------------
+   LARGE LAYOUT
+   --------------------------------------------------------- */
+
+.empty-info-card-large {
+    -fx-padding: 24px;
+    -fx-alignment: center;
+}
+
+.empty-info-card-large .empty-info-content {
+    -fx-alignment: center;
+    -fx-spacing: 8px;
+}
+
+.empty-info-card-large .empty-info-icon-container {
+    -fx-min-width: 48px;
+    -fx-min-height: 48px;
+    -fx-pref-width: 48px;
+    -fx-pref-height: 48px;
+}
+
+.empty-info-card-large .empty-info-icon {
+    -fx-icon-size: 40px;
+}
+
+.empty-info-card-large .empty-info-title {
+    -fx-font-size: 18px;
+    -fx-alignment: center;
+}
+
+.empty-info-card-large .empty-info-description {
+    -fx-font-size: 14px;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+}

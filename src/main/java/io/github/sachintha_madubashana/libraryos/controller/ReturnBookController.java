@@ -128,6 +128,14 @@ public class ReturnBookController {
             column3.getChildren().setAll(compactCard, largeCard);
             event.consume();
         });
+
+        EmptyInfoCard memberInfoCard = new EmptyInfoCard("No Member Details", "Please select a book to see member details", Feather.BOOK, InfoCard.LayoutType.COMPACT);
+
+        EmptyInfoCard bookInfoCard = new EmptyInfoCard("No Book Details", "Please select a book to see details", Feather.BOOK, InfoCard.LayoutType.LARGE);
+        VBox.setVgrow(bookInfoCard, Priority.ALWAYS);
+        column3.getChildren().addAll(memberInfoCard, bookInfoCard);
+
+
     }
 
 }
