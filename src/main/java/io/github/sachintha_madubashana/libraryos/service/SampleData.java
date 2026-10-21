@@ -1,8 +1,6 @@
 package io.github.sachintha_madubashana.libraryos.service;
 
-import io.github.sachintha_madubashana.libraryos.model.Book;
-import io.github.sachintha_madubashana.libraryos.model.BorrowingRecord;
-import io.github.sachintha_madubashana.libraryos.model.Member;
+import io.github.sachintha_madubashana.libraryos.model.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -31,7 +29,7 @@ public class SampleData {
         return books;
     }
 
-    public static  List<BorrowingRecord> createBorrowings(){
+    public static List<BorrowingRecord> createBorrowings() {
         List<BorrowingRecord> borrowingRecords = new ArrayList<>();
         borrowingRecords.add(new BorrowingRecord("BR001", "John Smith", "To Kill a Mockingbird", LocalDate.of(2026, 8, 1), LocalDate.of(2026, 8, 15), LocalDate.of(2026, 8, 13), "Returned"));
         borrowingRecords.add(new BorrowingRecord("BR002", "Emily Johnson", "1984", LocalDate.of(2026, 8, 5), LocalDate.of(2026, 8, 19), LocalDate.of(2026, 8, 18), "Returned"));
@@ -48,7 +46,7 @@ public class SampleData {
         return borrowingRecords;
     }
 
-    public static  List<Member> createMembers(){
+    public static List<Member> createMembers() {
         List<Member> members = new ArrayList<>();
         members.add(new Member("MB001", "John Smith", "john.smith@email.com", "0771234567", "25 Main Street, Colombo", LocalDate.of(2026, 1, 15)));
         members.add(new Member("MB002", "Emily Johnson", "emily.johnson@email.com", "0712345678", "14 Park Road, Kandy", LocalDate.of(2026, 2, 3)));
@@ -64,5 +62,24 @@ public class SampleData {
         members.add(new Member("MB012", "Emma Jackson", "emma.jackson@email.com", "0712233445", "9 Riverside Road, Gampaha", LocalDate.of(2026, 7, 4)));
 
         return members;
+    }
+
+    public static List<Activity> createRecentActivities() {
+        List<Activity> recentActivities = new ArrayList<>();
+        recentActivities.add(new Activity("To Kill a Mockingbird", "Sofia Andersen", "2026-08-01", ActivityStatus.OVERDUE));
+        recentActivities.add(new Activity("The Great Gatsby", "Eleanor Whitfield", "2026-09-20", ActivityStatus.BORROWED));
+        recentActivities.add(new Activity("Brave New World", "James Okafor", "2026-09-10", ActivityStatus.BORROWED));
+        recentActivities.add(new Activity("Moby Dick", "Priya Nair", "2026-08-10", ActivityStatus.OVERDUE));
+        recentActivities.add(new Activity("1984", "Marcus Chen", "2026-09-05", ActivityStatus.BORROWED));
+        recentActivities.add(new Activity("The Hitchhiker's Guide to the Galaxy", "Sophia Patel", "2026-09-15", ActivityStatus.BORROWED));
+        recentActivities.add(new Activity("The Lord of the Rings", "Sophia Patel", "2026-09-15", ActivityStatus.BORROWED));
+        recentActivities.add(new Activity("Harry Potter and the Philosopher's Stone", "Sophia Patel", "2026-09-15", ActivityStatus.BORROWED));
+        recentActivities.add(new Activity("The Hobbit", "Sophia Patel", "2026-09-15", ActivityStatus.BORROWED));
+        recentActivities.add(new Activity("The Lord of the Rings", "Sophia Patel", "2026-09-15", ActivityStatus.BORROWED));
+        recentActivities.add(new Activity("The Hobbit", "Sophia Patel", "2026-09-15", ActivityStatus.RETURNED));
+        recentActivities.add(new Activity("The Hobbit", "Sophia Patel", "2026-09-15", ActivityStatus.RETURNED));
+        recentActivities.add(new Activity("The Hobbit", "Sophia Patel", "2026-09-15", ActivityStatus.RETURNED));
+        recentActivities.add(new Activity("The Hobbit", "Sophia Patel", "2026-09-15", ActivityStatus.RETURNED));
+        return recentActivities;
     }
 }
