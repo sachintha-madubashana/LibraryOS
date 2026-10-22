@@ -5,42 +5,70 @@ import io.github.sachintha_madubashana.libraryos.service.SampleData;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class InMemoryBookRepository {
-    private final ObservableList<Book> books;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+public class InMemoryBookRepository implements BookRepository {
+    private final List<Book> books;
 
     public InMemoryBookRepository() {
-        books = FXCollections.observableArrayList(SampleData.createBooks());
+        this.books = new ArrayList<>(SampleData.createBooks());
     }
 
-    public boolean isBookExist(Book book){
-        return books.contains(book);
-    }
+    @Override
+    public Optional<Book> findById(String id) {
+        if (id == null || id.isBlank()) {
+            return Optional.empty();
+        }
 
-    public ObservableList<Book> getAllBooks() {
-        return books;
-    }
-
-    public Book findBookById(String id) {
         return books.stream()
                 .filter(book -> book.getId().equals(id))
-                .findFirst()
-                .orElse(null);
+                .findFirst();
     }
 
-    public void addBook(Book book) {
-        books.add(book);
+    @Override
+    public boolean existsById(String id) {
+        return findById(id).isPresent();
     }
 
-    public void updateBook(Book book) {
-        Book existingBook = books.stream().filter(book1 -> book1.getId().equals(book.getId())).findFirst().orElse(null);
-        int index = books.indexOf(existingBook);
+    @Override
+    public List<Book> findAll() {
+        return List.copyOf(books);
+    }
 
-        if (index != -1) {
-            books.set(index, book);
+    @Override
+    public boolean save(Book book) {
+        if (book == null || existsById(book.getId())) {
+            return false;
         }
+
+        books.add(book);
+        return true;
     }
 
-    public boolean removeBook(Book book) {
-        return books.remove(book);
+    @Override
+    public boolean update(Book book) {
+        if (book == null || book.getId() == null) {
+            return false;
+        }
+
+        for (int i = 0; i < books.size(); i++) {
+            if (books.get(i).getId().equals(book.getId())) {
+                books.set(i, book);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean deleteById(String id) {
+        if (id == null) {
+            return false;
+        }
+
+        return books.removeIf(book -> book.getId().equals(id));
     }
 }
