@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.sachintha_madubashana.libraryos.controller.component.*?>
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -8,7 +9,10 @@
    <children>
       <VBox fx:id="root" fillWidth="true" maxWidth="600.0" styleClass="card">
          <children>
-            <Label fx:id="generatedIdLabel" text="Member ID (auto-assigned): MEM007" />
+            <InputField fx:id="memberId" disable="true" iconEnabled="false" iconLiteral="" inputType="TEXT" labelText="Member ID (auto-assigned)" layoutX="10.0" layoutY="27.0" promptText="ME00001" required="true">
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor></InputField>
             <InputField fx:id="nameField" iconEnabled="false" iconLiteral="" labelText="Full Name" promptText="First and last name" required="true" />
             <HBox styleClass="container-spacing">
                <children>

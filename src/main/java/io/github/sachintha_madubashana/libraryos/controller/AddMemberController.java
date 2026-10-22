@@ -1,9 +1,11 @@
 package io.github.sachintha_madubashana.libraryos.controller;
 
+import io.github.sachintha_madubashana.libraryos.common.result.Result;
 import io.github.sachintha_madubashana.libraryos.controller.component.AlertMessage;
 import io.github.sachintha_madubashana.libraryos.controller.component.InputField;
 import io.github.sachintha_madubashana.libraryos.model.Member;
 import io.github.sachintha_madubashana.libraryos.model.MemberValidator;
+import io.github.sachintha_madubashana.libraryos.service.AppServices;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -18,6 +20,9 @@ public class AddMemberController {
 
     @FXML
     private VBox root;
+
+    @FXML
+    private InputField memberId;
 
     @FXML
     private InputField nameField;
@@ -40,19 +45,15 @@ public class AddMemberController {
     @FXML
     private Label generatedIdLabel;
 
-    private int count = 7;
     @FXML
     private void initialize() {
-        generatedIdLabel.setText("Member ID (auto-assigned): MEM" + count);
+        generateMemberId();
         registerBtn.setOnAction(event -> registerMember());
         clearBtn.setOnAction(event -> clearForm());
     }
 
     private void registerMember() {
-
         clearErrors();
-
-        boolean valid = true;
 
         String name = nameField.getInputValue().trim();
         String email = emailField.getInputValue().trim();
@@ -63,52 +64,44 @@ public class AddMemberController {
         String nameError = MemberValidator.validateName(name);
         if (nameError != null) {
             nameField.setErrorMessage(nameError);
-            valid = false;
+            return;
         }
 
         // Email
         String emailError = MemberValidator.validateEmail(email);
         if (emailError != null) {
             emailField.setErrorMessage(emailError);
-            valid = false;
+            return;
         }
 
         // Phone
         String phoneError = MemberValidator.validatePhone(phone);
         if (phoneError != null) {
             numberField.setErrorMessage(phoneError);
-            valid = false;
+            return;
         }
 
         // Address
         String addressError = MemberValidator.validateAddress(address);
         if (addressError != null) {
             addressField.setErrorMessage(addressError);
-            valid = false;
-        }
-
-        if (!valid) {
             return;
         }
 
-        Member member = new Member(generateMemberId(), name, email, phone, address, LocalDate.now());
-        registerMember(member);
+        Member member = new Member(memberId.getInputValue(), name, email, phone, address, LocalDate.now());
+        register(member);
     }
 
-    private void registerMember(Member member) {
-        AlertMessage alert = new AlertMessage(
-                "Member registered",
-                "Member registered successfully.",
-                AlertMessage.Type.SUCCESS
-        );
+    private void register(Member member) {
+        Result<Member> result = AppServices.getInstance().getMemberService().register(member);
+        AlertMessage alert;
+        if (result.isSuccess()) {
+            alert = new AlertMessage("Member added", "Member added successfully", AlertMessage.Type.SUCCESS);
+        } else {
+            alert = new AlertMessage("Member add failed", result.getMessage(), AlertMessage.Type.ERROR);
+        }
         alert.showIn(parent);
         clearForm();
-    }
-
-    private String generateMemberId() {
-        String memberId = "MEM00" + count++;
-        generatedIdLabel.setText("Member ID (auto-assigned): " + count);
-        return memberId;
     }
 
     private void clearForm() {
@@ -125,5 +118,15 @@ public class AddMemberController {
         emailField.clearError();
         numberField.clearError();
         addressField.clearError();
+    }
+
+    private void generateMemberId() {
+        Result<String> data = AppServices.getInstance().getMemberService().generateMemberId();
+        if (data.isSuccess()) {
+            String generatedBookId = data.getData();
+            memberId.setInputValue(generatedBookId);
+        } else {
+            memberId.setErrorMessage(data.getMessage());
+        }
     }
 }

@@ -6,6 +6,8 @@ import io.github.sachintha_madubashana.libraryos.controller.component.table.Data
 import io.github.sachintha_madubashana.libraryos.controller.component.table.DataTable;
 import io.github.sachintha_madubashana.libraryos.model.Member;
 import io.github.sachintha_madubashana.libraryos.service.AppServices;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -25,6 +27,8 @@ public class ManageMemberController {
 
     @FXML
     private DropdownSelect<String> sort;
+
+    private ObservableList<Member> members;
 
     @FXML
     public void initialize() {
@@ -46,8 +50,8 @@ public class ManageMemberController {
                 DataColumn.of("JOINED DATE", Member::getJoinedDate).width(130),
                 DataColumn.actions("ACTION", 170, this::handleEditMember, this::handleDeleteMember)
         );
-
-        table.setItems(AppServices.getInstance().getMemberService().getMembers());
+        members = FXCollections.observableArrayList(AppServices.getInstance().getMemberService().getMembers().getData());
+        table.setItems(members);
         table.setSelectionMode(SelectionMode.MULTIPLE);
 
         Pagination pagination = new Pagination();
