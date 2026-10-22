@@ -5,7 +5,8 @@ import io.github.sachintha_madubashana.libraryos.controller.component.table.Data
 import io.github.sachintha_madubashana.libraryos.controller.component.table.DataTable;
 import io.github.sachintha_madubashana.libraryos.model.BorrowingRecord;
 import io.github.sachintha_madubashana.libraryos.service.AppServices;
-import io.github.sachintha_madubashana.libraryos.service.SampleData;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -13,10 +14,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 public class BorrowingHistoryController {
 
@@ -35,9 +32,10 @@ public class BorrowingHistoryController {
     @FXML
     Button overDueBtn;
 
+    ObservableList<BorrowingRecord> borrowings;
+
     @FXML
     private void initialize() {
-
         generateTable();
     }
 
@@ -48,14 +46,16 @@ public class BorrowingHistoryController {
 
         table.addColumns(
                 DataColumn.of("RECORD ID", BorrowingRecord::getRecordId).width(100),
-                DataColumn.of("MEMBER", BorrowingRecord::getMember).width(170),
-                DataColumn.of("BOOK TITLE", BorrowingRecord::getBookTitle).width(240),
+                DataColumn.of("MEMBER", BorrowingRecord::getMemberId).width(170),
+                DataColumn.of("BOOK TITLE", BorrowingRecord::getBookId).width(240),
                 DataColumn.of("ISSUE DATE", BorrowingRecord::getIssueDate).width(120),
                 DataColumn.of("DUE DATE", BorrowingRecord::getDueDate).width(120),
                 DataColumn.of("RETURN DATE", BorrowingRecord::getReturnDate).width(120),
                 DataColumn.of("STATUS", BorrowingRecord::getStatus).width(110)
         );
-        table.setItems(AppServices.getInstance().getBorrowingHistoryService().getBorrowings());
+        borrowings = FXCollections.observableArrayList(AppServices.getInstance().getBorrowingHistoryService().getBorrowings().getData());
+
+        table.setItems(borrowings);
 
         Pagination pagination = new Pagination();
         pagination.setPageCount(8);
@@ -68,7 +68,7 @@ public class BorrowingHistoryController {
                 }
         );
 
-        Label paginationLabel = new Label(table.getItems().size() + " records shown");
+        Label paginationLabel = new Label(borrowings.size() + " records shown");
         paginationLabel.getStyleClass().add("text-caption");
         paginationLabel.setAlignment(Pos.CENTER_LEFT);
         paginationLabel.setMaxWidth(Double.MAX_VALUE);

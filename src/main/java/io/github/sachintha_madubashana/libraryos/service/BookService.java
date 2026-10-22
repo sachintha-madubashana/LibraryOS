@@ -36,6 +36,13 @@ public class BookService {
     public Result<List<Book>> getAllBooks() {
         List<Book> books = bookRepository.findAll();
 
+        if (books == null) {
+            return Result.error(
+                    "Unable to retrieve Books",
+                    "The Book list could not be loaded."
+            );
+        }
+
         return Result.success(
                 "Books retrieved successfully",
                 "The book list has been loaded.",
