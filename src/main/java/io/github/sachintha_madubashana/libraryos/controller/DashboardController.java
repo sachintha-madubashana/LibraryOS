@@ -8,6 +8,7 @@ import io.github.sachintha_madubashana.libraryos.model.Activity;
 import io.github.sachintha_madubashana.libraryos.model.Book;
 import io.github.sachintha_madubashana.libraryos.navigation.ScenesManager;
 import io.github.sachintha_madubashana.libraryos.service.AppServices;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
@@ -43,7 +44,7 @@ public class DashboardController {
         });
 
         bookAvailability.setHeaderText("Book Availability", bookHeaderBtn);
-        bookAvailability.setItems(AppServices.getInstance().getBookService().getAllBooks());
+        bookAvailability.setItems(FXCollections.observableArrayList(AppServices.getInstance().getBookService().getAllBooks().getData()));
         return bookAvailability;
     }
 

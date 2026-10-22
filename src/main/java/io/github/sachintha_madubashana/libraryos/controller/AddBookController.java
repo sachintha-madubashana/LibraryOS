@@ -1,5 +1,8 @@
 package io.github.sachintha_madubashana.libraryos.controller;
 
+import io.github.sachintha_madubashana.libraryos.Launcher;
+import io.github.sachintha_madubashana.libraryos.common.result.Result;
+import io.github.sachintha_madubashana.libraryos.controller.component.AlertMessage;
 import io.github.sachintha_madubashana.libraryos.controller.component.DropdownSelect;
 import io.github.sachintha_madubashana.libraryos.controller.component.InputField;
 import io.github.sachintha_madubashana.libraryos.controller.component.Pagination;
@@ -7,14 +10,20 @@ import io.github.sachintha_madubashana.libraryos.controller.component.table.Data
 import io.github.sachintha_madubashana.libraryos.controller.component.table.DataTable;
 import io.github.sachintha_madubashana.libraryos.model.Book;
 import io.github.sachintha_madubashana.libraryos.service.AppServices;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+
+import java.util.Objects;
 
 public class AddBookController {
 
@@ -46,6 +55,9 @@ public class AddBookController {
     private InputField bookYear;
 
     @FXML
+    private Button generateBookIdBtn;
+
+    @FXML
     private Button addBookBtn;
 
     @FXML
@@ -59,8 +71,15 @@ public class AddBookController {
         generateCard();
         generateTable();
 
+        ImageView image = new ImageView(new Image(Objects.requireNonNull(Launcher.class.getResourceAsStream("image/ai.png"))));
+        image.setPreserveRatio(true);
+        image.setFitWidth(20);
+        image.setFitHeight(20);
+        generateBookIdBtn.setGraphic(image);
+
+        generateBookIdBtn.setOnAction(e -> generateBookId());
         addBookBtn.setOnAction(e -> addBook());
-        clearBtn.setOnAction( e-> clear());
+        clearBtn.setOnAction(e -> clear());
     }
 
     private void generateCard() {
@@ -80,11 +99,13 @@ public class AddBookController {
                 DataColumn.of("QTY", Book::getTotalQuantity).width(80)
         );
 
-        table.setItems(AppServices.getInstance().getBookService().getAllBooks());
+        ObservableList<Book> books = FXCollections.observableArrayList(AppServices.getInstance().getBookService().getAllBooks().getData());
+
+        table.setItems(books);
         table.setSelectionMode(SelectionMode.SINGLE);
 
         Pagination pagination = new Pagination();
-        pagination.setPageCount(8);
+        pagination.setPageCount(3);
         pagination.setCurrentPage(1);
 
         pagination.currentPageProperty().addListener(
@@ -106,12 +127,107 @@ public class AddBookController {
     }
 
     private void addBook() {
-        AppServices.getInstance().getBookService().addBook(
-                new Book("BK014", "The Hitchhiker's Guide to the Galaxy", "Douglas Adams", "Science Fiction", 18, 12)
-        );
+        clearErrors();
+
+        String id = bookId.getInputValue();
+        String title = bookTitle.getInputValue();
+        String author = bookAuthor.getInputValue();
+        String category = categoryField.getValue();
+        String qty = bookQty.getInputValue();
+        String year = bookYear.getInputValue();
+
+        if(id.isEmpty()){
+            bookId.setErrorMessage("Book ID is required");
+            return;
+        }
+
+        if(title.isEmpty()){
+            bookTitle.setErrorMessage("Book title is required");
+            return;
+        }
+
+        if(author.isEmpty()){
+            bookAuthor.setErrorMessage("Book author is required");
+            return;
+        }
+
+        if(Objects.equals(category, "Select")){
+            categoryField.setError("Category is required");
+            return;
+        }
+
+        if(qty.isEmpty()){
+            bookQty.setErrorMessage("Quantity is required");
+            return;
+        }
+
+        if(year.isEmpty() || Integer.parseInt(year) <= 0){
+            bookYear.setErrorMessage("Year must be greater than 0");
+            return;
+        }
+
+        if(Integer.parseInt(year) >= 9999){
+            bookYear.setErrorMessage("Year must be less than 9999");
+            return;
+        }
+
+        if(!qty.matches("\\d+")){
+            bookQty.setErrorMessage("Quantity must be a number");
+            return;
+        }
+
+        if(Integer.parseInt(qty) <= 0){
+            bookQty.setErrorMessage("Quantity must be greater than 0");
+            return;
+        }
+
+        if(!year.matches("\\d+")){
+            bookYear.setErrorMessage("Year must be a number");
+            return;
+        }
+
+        Book book = new Book(id, title, author, category, Integer.parseInt(qty), Integer.parseInt(year));
+        Result<Book> result = AppServices.getInstance().getBookService().addBook(book);
+
+        if (result.isSuccess()) {
+            table.getItems().add(result.getData());
+            AlertMessage alert = new AlertMessage("Book added","Book added successfully", AlertMessage.Type.SUCCESS);
+            alert.showIn(card);
+            clear();
+        }else{
+            AlertMessage alert = new AlertMessage("Book add failed",result.getMessage(), AlertMessage.Type.ERROR);
+            alert.showIn(card);
+        }
     }
 
-    private void clear(){
-        AppServices.getInstance().getBookService().removeBookById("BK014");
+    private void clear() {
+        bookId.clear();
+        bookTitle.clear();
+        bookAuthor.clear();
+        categoryField.setValue("Select");
+        categoryField.clearError();
+        bookQty.clear();
+        bookYear.clear();
+        generateBookIdBtn.setDisable(false);
+    }
+
+    private void clearErrors() {
+        bookId.clearError();
+        bookTitle.clearError();
+        bookAuthor.clearError();
+        categoryField.clearError();
+        bookQty.clearError();
+        bookYear.clearError();
+    }
+
+    private void generateBookId() {
+        Result<String> data = AppServices.getInstance().getBookService().generateBookId();
+        if (data.isSuccess()) {
+            String generatedBookId = data.getData();
+            bookId.setInputValue(generatedBookId);
+        } else {
+            bookId.setErrorMessage(data.getMessage());
+        }
+        generateBookIdBtn.setDisable(true);
     }
 }
