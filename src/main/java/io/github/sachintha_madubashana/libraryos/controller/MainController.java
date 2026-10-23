@@ -1,38 +1,21 @@
 package io.github.sachintha_madubashana.libraryos.controller;
 
 import io.github.sachintha_madubashana.libraryos.Launcher;
-import io.github.sachintha_madubashana.libraryos.controller.component.PageHeader;
 import io.github.sachintha_madubashana.libraryos.event.NavigationEvent;
-import io.github.sachintha_madubashana.libraryos.model.Route;
 import io.github.sachintha_madubashana.libraryos.navigation.ScenesManager;
 import io.github.sachintha_madubashana.libraryos.navigation.WindowManager;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Separator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import org.kordamp.ikonli.feather.Feather;
 import org.kordamp.ikonli.javafx.FontIcon;
 
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Locale;
 import java.util.Objects;
 
 import static io.github.sachintha_madubashana.libraryos.navigation.ScenesManager.*;

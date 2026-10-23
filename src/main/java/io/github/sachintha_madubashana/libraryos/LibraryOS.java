@@ -2,13 +2,8 @@ package io.github.sachintha_madubashana.libraryos;
 
 import io.github.sachintha_madubashana.libraryos.navigation.WindowManager;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.util.Objects;

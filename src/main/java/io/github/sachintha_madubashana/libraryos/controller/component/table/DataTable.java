@@ -1,15 +1,12 @@
 package io.github.sachintha_madubashana.libraryos.controller.component.table;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.function.Consumer;
 
 public class DataTable<T> extends VBox {
