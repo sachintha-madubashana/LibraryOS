@@ -3,7 +3,6 @@ package io.github.sachintha_madubashana.libraryos.repository;
 import io.github.sachintha_madubashana.libraryos.model.Member;
 import io.github.sachintha_madubashana.libraryos.service.SampleData;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,7 +11,7 @@ public class InMemoryMemberRepository implements MemberRepository {
     private final List<Member> members;
 
     public InMemoryMemberRepository() {
-        members = FXCollections.observableArrayList(SampleData.createMembers());
+        members = FXCollections.observableArrayList(SampleData.getMembers());
     }
 
     @Override

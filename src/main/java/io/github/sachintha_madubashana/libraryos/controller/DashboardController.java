@@ -9,6 +9,7 @@ import io.github.sachintha_madubashana.libraryos.model.Book;
 import io.github.sachintha_madubashana.libraryos.navigation.ScenesManager;
 import io.github.sachintha_madubashana.libraryos.service.AppServices;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
@@ -57,7 +58,10 @@ public class DashboardController {
         });
 
         recentActivity.setHeaderText("Recent Activity", headerBtn);
-        recentActivity.setItems(AppServices.getInstance().getRecentActivityService().getRecentActivities());
+
+        ObservableList<Activity> activities = FXCollections.observableArrayList(AppServices.getInstance().getDashboardService().findAllActivities().getData());
+
+        recentActivity.setItems(activities);
         return recentActivity;
     }
 }

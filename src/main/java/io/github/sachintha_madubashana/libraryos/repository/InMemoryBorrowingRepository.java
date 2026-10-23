@@ -1,9 +1,8 @@
 package io.github.sachintha_madubashana.libraryos.repository;
 
+import io.github.sachintha_madubashana.libraryos.model.Activity;
 import io.github.sachintha_madubashana.libraryos.model.BorrowingRecord;
 import io.github.sachintha_madubashana.libraryos.service.SampleData;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +12,7 @@ public class InMemoryBorrowingRepository implements BorrowingRepository {
     private final List<BorrowingRecord> borrowings;
 
     public InMemoryBorrowingRepository() {
-        this.borrowings = new ArrayList<>(SampleData.createBorrowings());
+        this.borrowings = new ArrayList<>(SampleData.getBorrowingRecords());
     }
 
     @Override
@@ -70,5 +69,10 @@ public class InMemoryBorrowingRepository implements BorrowingRepository {
         }
 
         return borrowings.removeIf(borrowing -> borrowing.getRecordId().equals(id));
+    }
+
+    @Override
+    public List<Activity> findAllActivities() {
+        return borrowings.stream().map(borrowingRecord -> new Activity(borrowingRecord.getBook().getTitle(), borrowingRecord.getMember().getFullName(), borrowingRecord.getIssueDate().toString(), borrowingRecord.getStatus())).toList();
     }
 }

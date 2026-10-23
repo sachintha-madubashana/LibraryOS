@@ -2,8 +2,6 @@ package io.github.sachintha_madubashana.libraryos.repository;
 
 import io.github.sachintha_madubashana.libraryos.model.Book;
 import io.github.sachintha_madubashana.libraryos.service.SampleData;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +11,7 @@ public class InMemoryBookRepository implements BookRepository {
     private final List<Book> books;
 
     public InMemoryBookRepository() {
-        this.books = new ArrayList<>(SampleData.createBooks());
+        this.books = new ArrayList<>(SampleData.getBooks());
     }
 
     @Override

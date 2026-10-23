@@ -1,17 +1,15 @@
 package io.github.sachintha_madubashana.libraryos.service;
 
 import io.github.sachintha_madubashana.libraryos.common.result.Result;
-import io.github.sachintha_madubashana.libraryos.model.Book;
 import io.github.sachintha_madubashana.libraryos.model.Member;
-import io.github.sachintha_madubashana.libraryos.repository.InMemoryMemberRepository;
-import javafx.collections.ObservableList;
+import io.github.sachintha_madubashana.libraryos.repository.MemberRepository;
 
 import java.util.List;
 
 public class MemberService {
-    private final InMemoryMemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
-    public MemberService(InMemoryMemberRepository memberRepository) {
+    public MemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }
 
