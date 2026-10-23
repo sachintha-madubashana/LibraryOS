@@ -1,6 +1,7 @@
 package io.github.sachintha_madubashana.libraryos.repository;
 
 import io.github.sachintha_madubashana.libraryos.model.Activity;
+import io.github.sachintha_madubashana.libraryos.model.BorrowStatus;
 import io.github.sachintha_madubashana.libraryos.model.BorrowingRecord;
 import io.github.sachintha_madubashana.libraryos.service.SampleData;
 
@@ -72,7 +73,7 @@ public class InMemoryBorrowingRepository implements BorrowingRepository {
     }
 
     @Override
-    public List<Activity> findAllActivities() {
-        return borrowings.stream().map(borrowingRecord -> new Activity(borrowingRecord.getBook().getTitle(), borrowingRecord.getMember().getFullName(), borrowingRecord.getIssueDate().toString(), borrowingRecord.getStatus())).toList();
+    public List<BorrowingRecord> findActiveLoans() {
+        return borrowings.stream().filter(borrowingRecord -> !borrowingRecord.getStatus().equals(BorrowStatus.RETURNED)).toList();
     }
 }

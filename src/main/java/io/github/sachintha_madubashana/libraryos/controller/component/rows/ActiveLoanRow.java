@@ -3,6 +3,7 @@ package io.github.sachintha_madubashana.libraryos.controller.component.rows;
 import io.github.sachintha_madubashana.libraryos.event.ReturnBookSelectEvent;
 import io.github.sachintha_madubashana.libraryos.model.Activity;
 import io.github.sachintha_madubashana.libraryos.model.BorrowStatus;
+import io.github.sachintha_madubashana.libraryos.model.BorrowingRecord;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -22,7 +23,7 @@ public class ActiveLoanRow extends HBox {
     private final Label statusLabel;
     private final VBox detailsContainer;
 
-    public ActiveLoanRow(Activity activity) {
+    public ActiveLoanRow(BorrowingRecord activity) {
         getStyleClass().add("active-loan-row");
         setAlignment(Pos.TOP_LEFT);
         setSpacing(16);
@@ -57,14 +58,14 @@ public class ActiveLoanRow extends HBox {
         updateActivity(activity);
     }
 
-    public void updateActivity(Activity activity) {
+    public void updateActivity(BorrowingRecord record) {
 
-        titleLabel.setText(activity.getBookTitle());
-        borrowerLabel.setText(activity.getBorrower());
+        titleLabel.setText(record.getBook().getTitle());
+        borrowerLabel.setText(record.getMember().getFullName());
 
-        updateDueDate(activity.getDate());
-        updateStatus(activity.getStatus());
-        updateRowStyle(activity);
+        updateDueDate(record.getDueDate().toString());
+        updateStatus(record.getStatus());
+        updateRowStyle(record);
     }
 
     private void updateDueDate(String date) {
@@ -119,10 +120,10 @@ public class ActiveLoanRow extends HBox {
         }
     }
 
-    private void updateRowStyle(Activity activity) {
+    private void updateRowStyle(BorrowingRecord record) {
         getStyleClass().removeAll("loan-overdue", "loan-selected");
 
-        if (activity.getStatus() == BorrowStatus.OVERDUE) {
+        if (record.getStatus() == BorrowStatus.OVERDUE) {
             getStyleClass().add("loan-overdue");
         }
     }

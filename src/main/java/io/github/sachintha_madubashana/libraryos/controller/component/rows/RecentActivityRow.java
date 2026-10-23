@@ -1,6 +1,7 @@
 package io.github.sachintha_madubashana.libraryos.controller.component.rows;
 
 import io.github.sachintha_madubashana.libraryos.model.Activity;
+import io.github.sachintha_madubashana.libraryos.model.BorrowingRecord;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -9,15 +10,15 @@ import javafx.scene.layout.VBox;
 
 public class RecentActivityRow extends HBox {
 
-    public RecentActivityRow(Activity activity) {
+    public RecentActivityRow(BorrowingRecord record) {
         getStyleClass().add("recent-activity-row");
         setAlignment(Pos.CENTER_LEFT);
         setSpacing(16);
 
-        Label titleLabel = new Label(activity.getBookTitle());
+        Label titleLabel = new Label(record.getBook().getTitle());
         titleLabel.getStyleClass().add("recent-activity-title");
 
-        Label detailsLabel = new Label(activity.getBorrower() + " · " + activity.getDate());
+        Label detailsLabel = new Label(record.getMember().getFullName() + " · " + record.getDueDate());
         detailsLabel.getStyleClass().add("recent-activity-details");
 
         VBox bookDetails = new VBox(6, titleLabel, detailsLabel);
@@ -25,8 +26,8 @@ public class RecentActivityRow extends HBox {
 
         HBox.setHgrow(bookDetails, Priority.ALWAYS);
 
-        Label statusLabel = new Label(activity.getStatus().name());
-        statusLabel.getStyleClass().addAll("recent-activity-status", getStatusStyle(activity.getStatus().name()));
+        Label statusLabel = new Label(record.getStatus().name());
+        statusLabel.getStyleClass().addAll("recent-activity-status", getStatusStyle(record.getStatus().name()));
 
         getChildren().addAll(bookDetails, statusLabel);
     }

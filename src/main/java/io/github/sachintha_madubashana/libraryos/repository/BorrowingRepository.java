@@ -13,5 +13,5 @@ public interface BorrowingRepository {
     boolean save(BorrowingRecord borrowingRecord);
     boolean update(BorrowingRecord borrowingRecord);
     boolean deleteById(String id);
-    List<Activity> findAllActivities();
+    List<BorrowingRecord> findActiveLoans();
 }

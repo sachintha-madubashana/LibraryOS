@@ -6,6 +6,7 @@ import io.github.sachintha_madubashana.libraryos.controller.component.rows.Recen
 import io.github.sachintha_madubashana.libraryos.event.NavigationEvent;
 import io.github.sachintha_madubashana.libraryos.model.Activity;
 import io.github.sachintha_madubashana.libraryos.model.Book;
+import io.github.sachintha_madubashana.libraryos.model.BorrowingRecord;
 import io.github.sachintha_madubashana.libraryos.navigation.ScenesManager;
 import io.github.sachintha_madubashana.libraryos.service.AppServices;
 import javafx.collections.FXCollections;
@@ -27,7 +28,7 @@ public class DashboardController {
     @FXML
     private void initialize() {
         ScrollableList<Book> bookAvailability = createBookAvailability();
-        ScrollableList<Activity> recentActivity = createRecentActivity();
+        ScrollableList<BorrowingRecord> recentActivity = createRecentActivity();
 
         HBox.setHgrow(recentActivity, Priority.ALWAYS);
         HBox.setHgrow(bookAvailability, Priority.ALWAYS);
@@ -49,8 +50,8 @@ public class DashboardController {
         return bookAvailability;
     }
 
-    private ScrollableList<Activity> createRecentActivity() {
-        ScrollableList<Activity> recentActivity = new ScrollableList<>(RecentActivityRow::new);
+    private ScrollableList<BorrowingRecord> createRecentActivity() {
+        ScrollableList<BorrowingRecord> recentActivity = new ScrollableList<>(RecentActivityRow::new);
         Button headerBtn = new Button("VIEW ALL   →");
         headerBtn.setOnAction(e -> {
             root.fireEvent(new NavigationEvent(ScenesManager.HISTORY));
@@ -59,7 +60,7 @@ public class DashboardController {
 
         recentActivity.setHeaderText("Recent Activity", headerBtn);
 
-        ObservableList<Activity> activities = FXCollections.observableArrayList(AppServices.getInstance().getDashboardService().findAllActivities().getData());
+        ObservableList<BorrowingRecord> activities = FXCollections.observableArrayList(AppServices.getInstance().getDashboardService().findAllActivities().getData());
 
         recentActivity.setItems(activities);
         return recentActivity;

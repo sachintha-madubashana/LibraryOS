@@ -1,6 +1,7 @@
 package io.github.sachintha_madubashana.libraryos.service;
 
 import io.github.sachintha_madubashana.libraryos.common.result.Result;
+import io.github.sachintha_madubashana.libraryos.model.Activity;
 import io.github.sachintha_madubashana.libraryos.model.BorrowingRecord;
 import io.github.sachintha_madubashana.libraryos.repository.BorrowingRepository;
 
@@ -113,4 +114,20 @@ public class BorrowingHistoryService {
         return "BR" + String.format("%05d", (number + 1));
     }
 
+    public Result<List<BorrowingRecord>> findActiveLoans() {
+        List<BorrowingRecord> activities = borrowingRepository.findActiveLoans();
+
+        if (activities == null) {
+            return Result.error(
+                    "Unable to retrieve Borrowing Records",
+                    "The Borrowing Record list could not be loaded."
+            );
+        }
+
+        return Result.success(
+                "Borrowing Records retrieved successfully",
+                "The Borrowing Record list has been loaded.",
+                activities
+        );
+    }
 }
