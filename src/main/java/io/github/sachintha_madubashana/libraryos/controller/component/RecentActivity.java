@@ -1,7 +1,7 @@
 package io.github.sachintha_madubashana.libraryos.controller.component;
 
 import io.github.sachintha_madubashana.libraryos.model.Activity;
-import io.github.sachintha_madubashana.libraryos.model.ActivityStatus;
+import io.github.sachintha_madubashana.libraryos.model.BorrowStatus;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -71,7 +71,7 @@ public class RecentActivity extends VBox {
     }
 
     private HBox createActivityRow(Activity activity) {
-        Label bookTitle = new Label(activity.getTitle());
+        Label bookTitle = new Label(activity.getBookTitle());
         bookTitle.getStyleClass().add("book-title");
 
         Label details = new Label(
@@ -85,7 +85,7 @@ public class RecentActivity extends VBox {
         Label status = new Label(activity.getStatus().toString().toUpperCase());
         status.getStyleClass().add("status-badge");
 
-        if (activity.getStatus() == ActivityStatus.OVERDUE) {
+        if (activity.getStatus() == BorrowStatus.OVERDUE) {
             status.getStyleClass().add("overdue");
         } else {
             status.getStyleClass().add("borrowed");

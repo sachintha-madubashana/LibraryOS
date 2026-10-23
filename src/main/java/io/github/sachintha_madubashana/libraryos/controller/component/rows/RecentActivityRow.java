@@ -14,7 +14,7 @@ public class RecentActivityRow extends HBox {
         setAlignment(Pos.CENTER_LEFT);
         setSpacing(16);
 
-        Label titleLabel = new Label(activity.getTitle());
+        Label titleLabel = new Label(activity.getBookTitle());
         titleLabel.getStyleClass().add("recent-activity-title");
 
         Label detailsLabel = new Label(activity.getBorrower() + " · " + activity.getDate());

@@ -3,7 +3,9 @@ package io.github.sachintha_madubashana.libraryos.controller;
 import io.github.sachintha_madubashana.libraryos.controller.component.Pagination;
 import io.github.sachintha_madubashana.libraryos.controller.component.table.DataColumn;
 import io.github.sachintha_madubashana.libraryos.controller.component.table.DataTable;
+import io.github.sachintha_madubashana.libraryos.model.Book;
 import io.github.sachintha_madubashana.libraryos.model.BorrowingRecord;
+import io.github.sachintha_madubashana.libraryos.model.Member;
 import io.github.sachintha_madubashana.libraryos.service.AppServices;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,6 +16,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+
+import java.util.function.Function;
 
 public class BorrowingHistoryController {
 
@@ -46,8 +50,8 @@ public class BorrowingHistoryController {
 
         table.addColumns(
                 DataColumn.of("RECORD ID", BorrowingRecord::getRecordId).width(100),
-                DataColumn.of("MEMBER", BorrowingRecord::getMemberId).width(170),
-                DataColumn.of("BOOK TITLE", BorrowingRecord::getBookId).width(240),
+                DataColumn.of("MEMBER", (((Function<BorrowingRecord, Member>) BorrowingRecord::getMember).andThen(Member::getFullName))).width(170),
+                DataColumn.of("BOOK TITLE",(((Function<BorrowingRecord, Book>) BorrowingRecord::getBook).andThen(Book::getTitle))).width(240),
                 DataColumn.of("ISSUE DATE", BorrowingRecord::getIssueDate).width(120),
                 DataColumn.of("DUE DATE", BorrowingRecord::getDueDate).width(120),
                 DataColumn.of("RETURN DATE", BorrowingRecord::getReturnDate).width(120),

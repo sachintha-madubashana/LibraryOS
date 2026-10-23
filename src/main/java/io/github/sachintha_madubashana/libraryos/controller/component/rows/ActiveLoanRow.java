@@ -2,7 +2,7 @@ package io.github.sachintha_madubashana.libraryos.controller.component.rows;
 
 import io.github.sachintha_madubashana.libraryos.event.ReturnBookSelectEvent;
 import io.github.sachintha_madubashana.libraryos.model.Activity;
-import io.github.sachintha_madubashana.libraryos.model.ActivityStatus;
+import io.github.sachintha_madubashana.libraryos.model.BorrowStatus;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -59,7 +59,7 @@ public class ActiveLoanRow extends HBox {
 
     public void updateActivity(Activity activity) {
 
-        titleLabel.setText(activity.getTitle());
+        titleLabel.setText(activity.getBookTitle());
         borrowerLabel.setText(activity.getBorrower());
 
         updateDueDate(activity.getDate());
@@ -97,7 +97,7 @@ public class ActiveLoanRow extends HBox {
         dueDateLabel.setText(text);
     }
 
-    private void updateStatus(ActivityStatus status) {
+    private void updateStatus(BorrowStatus status) {
 
         statusLabel.getStyleClass().removeAll(
                 "status-borrowed",
@@ -122,7 +122,7 @@ public class ActiveLoanRow extends HBox {
     private void updateRowStyle(Activity activity) {
         getStyleClass().removeAll("loan-overdue", "loan-selected");
 
-        if (activity.getStatus() == ActivityStatus.OVERDUE) {
+        if (activity.getStatus() == BorrowStatus.OVERDUE) {
             getStyleClass().add("loan-overdue");
         }
     }

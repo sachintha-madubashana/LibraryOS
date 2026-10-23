@@ -1,9 +1,6 @@
 package io.github.sachintha_madubashana.libraryos.service;
 
-import io.github.sachintha_madubashana.libraryos.repository.InMemoryBookRepository;
-import io.github.sachintha_madubashana.libraryos.repository.InMemoryBorrowingRepository;
-import io.github.sachintha_madubashana.libraryos.repository.InMemoryMemberRepository;
-import io.github.sachintha_madubashana.libraryos.repository.InMemoryRecentActivityRepository;
+import io.github.sachintha_madubashana.libraryos.repository.*;
 
 public class AppServices {
 
@@ -11,13 +8,17 @@ public class AppServices {
     private final BookService bookService;
     private final BorrowingHistoryService borrowingHistoryService;
     private final MemberService memberService;
-    private final RecentActivityService recentActivityService;
+    private final DashboardService dashboardService;
 
     private AppServices() {
-        bookService = new BookService(new InMemoryBookRepository());
-        borrowingHistoryService = new BorrowingHistoryService(new InMemoryBorrowingRepository());
-        memberService = new MemberService(new InMemoryMemberRepository());
-        recentActivityService = new RecentActivityService(new InMemoryRecentActivityRepository());
+        BookRepository bookRepository = new InMemoryBookRepository();
+        BorrowingRepository borrowingRepository = new InMemoryBorrowingRepository();
+        MemberRepository memberRepository = new InMemoryMemberRepository();
+
+        bookService = new BookService(bookRepository);
+        borrowingHistoryService = new BorrowingHistoryService(borrowingRepository);
+        memberService = new MemberService(memberRepository);
+        dashboardService = new DashboardService(bookRepository, borrowingRepository);
     }
 
     public static AppServices getInstance() {
@@ -39,7 +40,7 @@ public class AppServices {
         return memberService;
     }
 
-    public RecentActivityService getRecentActivityService() {
-        return recentActivityService;
+    public DashboardService getDashboardService() {
+        return dashboardService;
     }
 }

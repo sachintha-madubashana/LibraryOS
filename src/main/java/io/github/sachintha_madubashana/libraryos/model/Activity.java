@@ -1,24 +1,24 @@
 package io.github.sachintha_madubashana.libraryos.model;
 
 public class Activity {
-    private String title;
+    private String bookTitle;
     private String borrower;
     private String date;
-    private ActivityStatus status;
+    private BorrowStatus status;
 
-    public Activity(String title, String borrower, String date, ActivityStatus status) {
-        this.title = title;
+    public Activity(String bookTitle, String borrower, String date, BorrowStatus status) {
+        this.bookTitle = bookTitle;
         this.borrower = borrower;
         this.date = date;
         this.status = status;
     }
 
-    public String getTitle() {
-        return title;
+    public String getBookTitle() {
+        return bookTitle;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setBookTitle(String bookTitle) {
+        this.bookTitle = bookTitle;
     }
 
     public String getBorrower() {
@@ -37,16 +37,16 @@ public class Activity {
         this.date = date;
     }
 
-    public ActivityStatus getStatus() {
+    public BorrowStatus getStatus() {
         return status;
     }
 
-    public void setStatus(ActivityStatus status) {
+    public void setStatus(BorrowStatus status) {
         this.status = status;
     }
 
     @Override
     public String toString() {
-        return "Title: " + title + ", Borrower: " + borrower + ", Date: " + date + ", Status: " + status.toString();
+        return "Book Title: " + bookTitle + ", Borrower: " + borrower + ", Date: " + date + ", Status: " + status.toString();
     }
 }

@@ -5,17 +5,17 @@ import java.time.LocalDate;
 
 public class BorrowingRecord implements Serializable {
     private final String recordId;
-    private final String memberId;
-    private final String bookId;
+    private final Member member;
+    private final Book book;
     private final LocalDate issueDate;
     private final LocalDate dueDate;
     private final LocalDate returnDate;
-    private final String status;
+    private final BorrowStatus status;
 
-    public BorrowingRecord(String recordId, String member, String bookTitle, LocalDate issueDate, LocalDate dueDate, LocalDate returnDate, String status) {
+    public BorrowingRecord(String recordId, Member member, Book book, LocalDate issueDate, LocalDate dueDate, LocalDate returnDate, BorrowStatus status) {
         this.recordId = recordId;
-        this.memberId = member;
-        this.bookId = bookTitle;
+        this.member = member;
+        this.book = book;
         this.issueDate = issueDate;
         this.dueDate = dueDate;
         this.returnDate = returnDate;
@@ -26,12 +26,12 @@ public class BorrowingRecord implements Serializable {
         return recordId;
     }
 
-    public String getMemberId() {
-        return memberId;
+    public Member getMember() {
+        return member;
     }
 
-    public String getBookId() {
-        return bookId;
+    public Book getBook() {
+        return book;
     }
 
     public LocalDate getIssueDate() {
@@ -46,7 +46,7 @@ public class BorrowingRecord implements Serializable {
         return returnDate;
     }
 
-    public String getStatus() {
+    public BorrowStatus getStatus() {
         return status;
     }
 }

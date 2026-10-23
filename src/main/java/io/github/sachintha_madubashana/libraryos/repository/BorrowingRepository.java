@@ -1,5 +1,6 @@
 package io.github.sachintha_madubashana.libraryos.repository;
 
+import io.github.sachintha_madubashana.libraryos.model.Activity;
 import io.github.sachintha_madubashana.libraryos.model.BorrowingRecord;
 
 import java.util.List;
@@ -12,4 +13,5 @@ public interface BorrowingRepository {
     boolean save(BorrowingRecord borrowingRecord);
     boolean update(BorrowingRecord borrowingRecord);
     boolean deleteById(String id);
+    List<Activity> findAllActivities();
 }
