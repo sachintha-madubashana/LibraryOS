@@ -1,19 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import io.github.sachintha_madubashana.libraryos.controller.component.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
 <VBox fx:id="root" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.sachintha_madubashana.libraryos.controller.DashboardController">
 <children>
-      <HBox fx:id="statsCardContainer" styleClass="card-container">
-         <children>
-            <StatsCard description="6 titles" icon="fth-book" layoutX="10.0" layoutY="10.0" number="19" title="Total Books" HBox.hgrow="ALWAYS" />
-      <StatsCard description="registered" icon="fth-user" number="5" title="Total Members" HBox.hgrow="ALWAYS" />
-            <StatsCard description="active loans" icon="fth-book-open" layoutX="84.0" layoutY="10.0" number="3" title="Currently Borrowed" HBox.hgrow="ALWAYS" />
-            <StatsCard description="require attention" icon="fth-pause" layoutX="176.0" layoutY="10.0" number="2" title="Overdue Books" HBox.hgrow="ALWAYS" />
-         </children>
-      </HBox>
+      <HBox fx:id="statsCardContainer" styleClass="card-container" />
       <HBox fx:id="listContainer" styleClass="container-spacing" VBox.vgrow="ALWAYS" /></children>
    <styleClass>
       <String fx:value="dashboard-page" />

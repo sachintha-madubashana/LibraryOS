@@ -6,7 +6,7 @@ public class AppServices {
 
     private static AppServices INSTANCE;
     private final BookService bookService;
-    private final BorrowingHistoryService borrowingHistoryService;
+    private final BorrowingService borrowingService;
     private final MemberService memberService;
     private final DashboardService dashboardService;
 
@@ -16,7 +16,7 @@ public class AppServices {
         MemberRepository memberRepository = new InMemoryMemberRepository();
 
         bookService = new BookService(bookRepository);
-        borrowingHistoryService = new BorrowingHistoryService(borrowingRepository);
+        borrowingService = new BorrowingService(borrowingRepository);
         memberService = new MemberService(memberRepository);
         dashboardService = new DashboardService(bookRepository, borrowingRepository, memberRepository);
     }
@@ -32,8 +32,8 @@ public class AppServices {
         return bookService;
     }
 
-    public BorrowingHistoryService getBorrowingHistoryService() {
-        return borrowingHistoryService;
+    public BorrowingService getBorrowingHistoryService() {
+        return borrowingService;
     }
 
     public MemberService getMemberService() {

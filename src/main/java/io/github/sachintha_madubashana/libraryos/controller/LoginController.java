@@ -53,7 +53,6 @@ public class LoginController {
         loinBtn.setOnAction(event -> onLoginButtonClick());
         clearBtn.setOnAction(event -> onClearButtonClick());
 
-//        Platform.runLater(() -> loinBtn.fire());
     }
 
     private void onCloseButtonClick() {
