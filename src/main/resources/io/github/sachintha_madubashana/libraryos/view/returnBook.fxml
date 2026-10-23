@@ -38,28 +38,28 @@
                         <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="0">
                             <Label styleClass="return-field-label" text="RECORD ID" />
 
-                            <Label fx:id="recordIdLabel" styleClass="return-field-value" text="BR002" />
+                            <Label fx:id="recordIdLabel" styleClass="return-field-value" text="-" />
                         </VBox>
 
                         <!-- Book -->
                         <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="0">
                             <Label styleClass="return-field-label" text="BOOK" />
 
-                            <Label fx:id="bookTitleLabel" styleClass="return-field-value" text="1984" />
+                            <Label fx:id="bookTitleLabel" styleClass="return-field-value" text="-" />
                         </VBox>
 
                         <!-- Borrowed date -->
                         <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="1">
                             <Label styleClass="return-field-label" text="BORROWED DATE" />
 
-                            <Label fx:id="borrowedDateLabel" styleClass="return-field-value" text="2026-09-05" />
+                            <Label fx:id="borrowedDateLabel" styleClass="return-field-value" text="-" />
                         </VBox>
 
                         <!-- Due date -->
                         <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="1">
                             <Label styleClass="return-field-label" text="DUE DATE" />
 
-                            <Label fx:id="dueDateLabel" styleClass="return-field-value" text="2026-09-19" />
+                            <Label fx:id="dueDateLabel" styleClass="return-field-value" text="-" />
                         </VBox>
                   <rowConstraints>
                      <RowConstraints />

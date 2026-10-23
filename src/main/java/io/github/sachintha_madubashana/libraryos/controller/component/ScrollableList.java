@@ -120,4 +120,12 @@ public class ScrollableList<T> extends VBox {
     public ObservableList<T> getItems() {
         return listView.getItems();
     }
+
+    public T getSelectedItem() {
+        return listView.getSelectionModel().getSelectedItem();
+    }
+
+    public void unSelectItem() {
+        listView.getSelectionModel().clearSelection();
+    }
 }

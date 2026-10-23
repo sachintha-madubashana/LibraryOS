@@ -9,8 +9,8 @@ public class BorrowingRecord implements Serializable {
     private final Book book;
     private final LocalDate issueDate;
     private final LocalDate dueDate;
-    private final LocalDate returnDate;
-    private final BorrowStatus status;
+    private LocalDate returnDate;
+    private BorrowStatus status;
 
     public BorrowingRecord(String recordId, Member member, Book book, LocalDate issueDate, LocalDate dueDate, LocalDate returnDate, BorrowStatus status) {
         this.recordId = recordId;
@@ -46,7 +46,15 @@ public class BorrowingRecord implements Serializable {
         return returnDate;
     }
 
+    public void setReturnDate(LocalDate returnDate) {
+        this.returnDate = returnDate;
+    }
+
     public BorrowStatus getStatus() {
         return status;
+    }
+
+    public void setStatus(BorrowStatus status) {
+        this.status = status;
     }
 }
