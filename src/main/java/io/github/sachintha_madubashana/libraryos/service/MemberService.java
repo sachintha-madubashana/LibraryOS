@@ -13,6 +13,26 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
+    public Result<Member> getMemberById(String id) {
+        if (id == null || id.isBlank()) {
+            return Result.error(
+                    "Invalid member ID",
+                    "Please provide a valid member ID."
+            );
+        }
+
+        return memberRepository.findById(id)
+                .map(member -> Result.success(
+                        "Member found",
+                        "The requested member was found.",
+                        member
+                ))
+                .orElseGet(() -> Result.error(
+                        "Member not found",
+                        "No member exists with ID: " + id
+                ));
+    }
+
     public Result<List<Member>> getMembers(){
         List<Member> members = memberRepository.findAll();
 

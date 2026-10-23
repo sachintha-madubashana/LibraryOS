@@ -92,7 +92,7 @@ public class BorrowingHistoryService {
         );
     }
 
-    public Result<String> generateBookId() {
+    public Result<String> generateBorrowingId() {
         List<BorrowingRecord> borrowingRecords   = borrowingRepository.findAll();
         String newRecordId = getNewBorrowingId(0);
 

@@ -17,13 +17,13 @@
 
 /* Card Dimensions */
 .member-info-card.large {
-    -fx-min-width: 412px;
+    -fx-min-width: 300px;
     -fx-pref-width: 412px;
-    -fx-max-width: 412px;
+    -fx-max-width: Infinity;
 
     -fx-min-height: 400px;
     -fx-pref-height: 500px;
-    -fx-max-height: 588px;
+    -fx-max-height: Infinity;
 }
 
 .member-info-card.compact {

@@ -3,6 +3,9 @@ package io.github.sachintha_madubashana.libraryos.controller.component;
 import io.github.sachintha_madubashana.libraryos.Launcher;
 import javafx.beans.property.*;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -179,6 +182,10 @@ public class DropdownSelect<T> extends VBox {
         return comboBox.getItems();
     }
 
+    public void clearValue() {
+        comboBox.getSelectionModel().clearSelection();
+    }
+
     public ComboBox<T> getComboBox() {
         return comboBox;
     }
@@ -203,5 +210,9 @@ public class DropdownSelect<T> extends VBox {
     private void setManagedAndVisible(Node node, boolean visible) {
         node.setVisible(visible);
         node.setManaged(visible);
+    }
+
+    public void setOnSelectionChanged(EventHandler<ActionEvent> value) {
+        comboBox.setOnAction(value);
     }
 }
