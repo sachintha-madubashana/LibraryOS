@@ -4,7 +4,6 @@ import io.github.sachintha_madubashana.libraryos.controller.component.Scrollable
 import io.github.sachintha_madubashana.libraryos.controller.component.rows.BookAvailabilityRow;
 import io.github.sachintha_madubashana.libraryos.controller.component.rows.RecentActivityRow;
 import io.github.sachintha_madubashana.libraryos.event.NavigationEvent;
-import io.github.sachintha_madubashana.libraryos.model.Activity;
 import io.github.sachintha_madubashana.libraryos.model.Book;
 import io.github.sachintha_madubashana.libraryos.model.BorrowingRecord;
 import io.github.sachintha_madubashana.libraryos.navigation.ScenesManager;

@@ -91,7 +91,6 @@ public class ReturnBookController {
         recentActivityList.setMaxHeight(Double.MAX_VALUE);
         VBox.setVgrow(recentActivityList, Priority.ALWAYS);
         recentActivityList.getListView().setOnMouseClicked(event -> {
-            System.out.println("Mouse Clicked on Recent Activity");
             loadEmptyInfoCards();
         });
 

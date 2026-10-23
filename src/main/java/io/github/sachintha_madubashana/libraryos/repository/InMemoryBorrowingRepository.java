@@ -1,6 +1,5 @@
 package io.github.sachintha_madubashana.libraryos.repository;
 
-import io.github.sachintha_madubashana.libraryos.model.Activity;
 import io.github.sachintha_madubashana.libraryos.model.BorrowStatus;
 import io.github.sachintha_madubashana.libraryos.model.BorrowingRecord;
 import io.github.sachintha_madubashana.libraryos.service.SampleData;
