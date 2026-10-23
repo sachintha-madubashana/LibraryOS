@@ -18,7 +18,7 @@ public class AppServices {
         bookService = new BookService(bookRepository);
         borrowingHistoryService = new BorrowingHistoryService(borrowingRepository);
         memberService = new MemberService(memberRepository);
-        dashboardService = new DashboardService(bookRepository, borrowingRepository);
+        dashboardService = new DashboardService(bookRepository, borrowingRepository, memberRepository);
     }
 
     public static AppServices getInstance() {

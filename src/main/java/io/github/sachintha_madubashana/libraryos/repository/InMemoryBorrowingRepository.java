@@ -75,4 +75,9 @@ public class InMemoryBorrowingRepository implements BorrowingRepository {
     public List<BorrowingRecord> findActiveLoans() {
         return borrowings.stream().filter(borrowingRecord -> !borrowingRecord.getStatus().equals(BorrowStatus.RETURNED)).toList();
     }
+
+    @Override
+    public List<BorrowingRecord> findAllOverdue() {
+        return borrowings.stream().filter(borrowingRecord -> borrowingRecord.getStatus().equals(BorrowStatus.OVERDUE)).toList();
+    }
 }
