@@ -4,7 +4,7 @@ import java.util.regex.Pattern;
 
 public class MemberValidator {
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
-    private static final Pattern PHONE_PATTERN = Pattern.compile("^[0-9]{3}-[0-9]{7}$");
+    private static final Pattern PHONE_PATTERN = Pattern.compile("^[0-9]{3}[0-9]{7}$");
 
     private MemberValidator() {
         // Utility class
@@ -57,8 +57,13 @@ public class MemberValidator {
 
         phone = phone.trim();
 
+        if (phone.length() != 10) {
+            return "Phone must be 10 digits.";
+        }
+
+
         if (!PHONE_PATTERN.matcher(phone).matches()) {
-            return "Phone must be in the format 077-1234567.";
+            return "Phone must be in the format 0771234567.";
         }
 
         return null;
