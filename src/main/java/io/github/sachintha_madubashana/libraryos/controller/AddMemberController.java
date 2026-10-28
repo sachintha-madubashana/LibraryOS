@@ -111,6 +111,7 @@ public class AddMemberController {
         addressField.clear();
 
         clearErrors();
+        generateMemberId();
     }
 
     private void clearErrors() {
