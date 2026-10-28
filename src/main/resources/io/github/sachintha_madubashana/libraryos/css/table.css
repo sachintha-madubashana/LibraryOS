@@ -99,9 +99,12 @@
 }
 
 /* Table Scrollbars */
-.data-table-view .scroll-bar:vertical,
+.data-table-view .scroll-bar:vertical {
+    -fx-pref-width: 6px;
+}
+
 .data-table-view .scroll-bar:horizontal {
-    -fx-background-color: transparent;
+    -fx-pref-height: 6px;
 }
 
 .data-table-view .scroll-bar .track {

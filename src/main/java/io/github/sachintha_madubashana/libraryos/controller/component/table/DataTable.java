@@ -1,5 +1,6 @@
 package io.github.sachintha_madubashana.libraryos.controller.component.table;
 
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -14,6 +15,8 @@ public class DataTable<T> extends VBox {
 
     private final TableView<T> tableView;
     private final Label emptyLabel;
+    private boolean adjustingColumns;
+    private double previousTableWidth = -1;
 
     public DataTable() {
         this.tableView = new TableView<>();
@@ -27,14 +30,19 @@ public class DataTable<T> extends VBox {
         getStyleClass().add("data-table");
         tableView.getStyleClass().add("data-table-view");
 
-        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
+        tableView.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
         tableView.setPlaceholder(emptyLabel);
         emptyLabel.getStyleClass().add("data-table-empty");
         setFillWidth(true);
+        setMaxWidth(Double.MAX_VALUE);
         VBox.setVgrow(tableView, Priority.ALWAYS);
 
         getChildren().add(tableView);
+
+        tableView.widthProperty().addListener((observable, oldWidth, newWidth) -> {
+            Platform.runLater(this::resizeColumnsToFit);
+        });
     }
 
     // Columns
@@ -82,11 +90,8 @@ public class DataTable<T> extends VBox {
         tableView.getColumns().clear();
     }
 
-    // --------------------------------------------------------------------------
     // Data
-    // --------------------------------------------------------------------------
-
-    public void setItems(ObservableList<T> data) {
+     public void setItems(ObservableList<T> data) {
         tableView.setItems(data);
     }
 
@@ -110,10 +115,7 @@ public class DataTable<T> extends VBox {
         return tableView.getItems();
     }
 
-    // --------------------------------------------------------------------------
     // Selection
-    // --------------------------------------------------------------------------
-
     public T getSelectedItem() {
         return tableView.getSelectionModel().getSelectedItem();
     }
@@ -153,10 +155,7 @@ public class DataTable<T> extends VBox {
         emptyLabel.setText(message);
     }
 
-    // --------------------------------------------------------------------------
     // Table configuration
-    // --------------------------------------------------------------------------
-
     public TableView<T> getTableView() {
         return tableView;
     }
@@ -181,6 +180,45 @@ public class DataTable<T> extends VBox {
             column.getStyleClass().add("align-right");
         }else {
             column.getStyleClass().add("align-left");
+        }
+    }
+
+    private void resizeColumnsToFit() {
+        if (adjustingColumns || tableView.getColumns().isEmpty()) {
+            return;
+        }
+
+        double availableWidth = tableView.getWidth();
+
+        if (availableWidth <= 0) {
+            return;
+        }
+
+        availableWidth -= 2;// for table border
+
+        if (tableView.lookup(".scroll-bar:vertical") instanceof ScrollBar scrollbar && scrollbar.isVisible()) {
+            availableWidth -= scrollbar.getWidth();
+        }
+
+        double totalWidth = tableView.getColumns()
+                .stream()
+                .mapToDouble(TableColumn::getWidth)
+                .sum();
+
+        if (totalWidth < availableWidth) {
+            double extraWidth = availableWidth - totalWidth;
+            int columnCount = tableView.getColumns().size();
+
+            for (TableColumn<T, ?> column : tableView.getColumns()) {
+                double extraPerColumn = extraWidth / columnCount;
+
+                double newWidth = Math.min(
+                        column.getWidth() + extraPerColumn,
+                        column.getMaxWidth()
+                );
+
+                column.setPrefWidth(newWidth);
+            }
         }
     }
 }
