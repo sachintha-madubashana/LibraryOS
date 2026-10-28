@@ -8,6 +8,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class DataTable<T> extends VBox {
 
@@ -21,15 +22,12 @@ public class DataTable<T> extends VBox {
         initialize();
     }
 
-    // --------------------------------------------------------------------------
     // Initialization
-    // --------------------------------------------------------------------------
-
     private void initialize() {
         getStyleClass().add("data-table");
         tableView.getStyleClass().add("data-table-view");
 
-        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
 
         tableView.setPlaceholder(emptyLabel);
         emptyLabel.getStyleClass().add("data-table-empty");
@@ -39,10 +37,7 @@ public class DataTable<T> extends VBox {
         getChildren().add(tableView);
     }
 
-    // --------------------------------------------------------------------------
     // Columns
-    // --------------------------------------------------------------------------
-
     public <V> void addColumn(DataColumn<T, V> configuration) {
         TableColumn<T, V> column = new TableColumn<>(configuration.getTitle());
 
@@ -64,7 +59,7 @@ public class DataTable<T> extends VBox {
         tableView.getColumns().add(column);
     }
 
-    public void addColumn(String title, java.util.function.Function<T, ?> valueProvider) {
+    public void addColumn(String title, Function<T, ?> valueProvider) {
         addColumn(DataColumn.of(title, valueProvider));
     }
 
@@ -178,10 +173,7 @@ public class DataTable<T> extends VBox {
         tableView.refresh();
     }
 
-    // --------------------------------------------------------------------------
     // Helpers
-    // --------------------------------------------------------------------------
-
     private void applyAlignmentStyle(TableColumn<T, ?> column, Pos alignment) {
         if (alignment == Pos.CENTER) {
             column.getStyleClass().add("align-center");
