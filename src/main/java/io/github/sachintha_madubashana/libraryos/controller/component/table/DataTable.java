@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -16,7 +17,6 @@ public class DataTable<T> extends VBox {
     private final TableView<T> tableView;
     private final Label emptyLabel;
     private boolean adjustingColumns;
-    private double previousTableWidth = -1;
 
     public DataTable() {
         this.tableView = new TableView<>();
@@ -40,12 +40,10 @@ public class DataTable<T> extends VBox {
 
         getChildren().add(tableView);
 
-        tableView.widthProperty().addListener((observable, oldWidth, newWidth) -> {
-            Platform.runLater(this::resizeColumnsToFit);
-        });
+        tableView.widthProperty().addListener((observable, oldWidth, newWidth) -> Platform.runLater(this::resizeColumnsToFit));
     }
 
-    // Columns
+    // Add Columns
     public <V> void addColumn(DataColumn<T, V> configuration) {
         TableColumn<T, V> column = new TableColumn<>(configuration.getTitle());
 
@@ -58,7 +56,7 @@ public class DataTable<T> extends VBox {
         column.setSortable(configuration.isSortable());
         column.setResizable(configuration.isResizable());
 
-        applyAlignmentStyle(column,configuration.getAlignment());
+        applyAlignmentStyle(column, configuration.getAlignment());
 
         if (configuration.getCellFactory() != null) {
             column.setCellFactory(configuration.getCellFactory());
@@ -82,6 +80,7 @@ public class DataTable<T> extends VBox {
         addColumn((DataColumn) column);
     }
 
+    // Other Column Operations
     public void removeColumn(TableColumn<T, ?> column) {
         tableView.getColumns().remove(column);
     }
@@ -90,16 +89,11 @@ public class DataTable<T> extends VBox {
         tableView.getColumns().clear();
     }
 
-    // Data
-     public void setItems(ObservableList<T> data) {
-        tableView.setItems(data);
-    }
-
     public void addItem(T item) {
         tableView.getItems().add(item);
     }
 
-    public void addItems(ObservableList<T> data){
+    public void addItems(ObservableList<T> data) {
         tableView.getItems().addAll(data);
     }
 
@@ -111,8 +105,13 @@ public class DataTable<T> extends VBox {
         tableView.getItems().clear();
     }
 
+    // Data
     public ObservableList<T> getItems() {
         return tableView.getItems();
+    }
+
+    public void setItems(ObservableList<T> data) {
+        tableView.setItems(data);
     }
 
     // Selection
@@ -147,10 +146,7 @@ public class DataTable<T> extends VBox {
         });
     }
 
-    // --------------------------------------------------------------------------
     // Empty state
-    // --------------------------------------------------------------------------
-
     public void setEmptyMessage(String message) {
         emptyLabel.setText(message);
     }
@@ -178,7 +174,7 @@ public class DataTable<T> extends VBox {
             column.getStyleClass().add("align-center");
         } else if (alignment == Pos.CENTER_RIGHT || alignment == Pos.BASELINE_RIGHT || alignment == Pos.TOP_RIGHT || alignment == Pos.BOTTOM_RIGHT) {
             column.getStyleClass().add("align-right");
-        }else {
+        } else {
             column.getStyleClass().add("align-left");
         }
     }
@@ -200,25 +196,68 @@ public class DataTable<T> extends VBox {
             availableWidth -= scrollbar.getWidth();
         }
 
-        double totalWidth = tableView.getColumns()
+        List<TableColumn<T, ?>> columns = tableView.getColumns();
+
+        double totalColumnsWidth = columns
                 .stream()
                 .mapToDouble(TableColumn::getWidth)
                 .sum();
 
-        if (totalWidth < availableWidth) {
-            double extraWidth = availableWidth - totalWidth;
-            int columnCount = tableView.getColumns().size();
+        if (totalColumnsWidth < availableWidth) {
+            increaseSizeColumnsToFit(columns, availableWidth, totalColumnsWidth);
+            return;
+        }
 
-            for (TableColumn<T, ?> column : tableView.getColumns()) {
-                double extraPerColumn = extraWidth / columnCount;
+        if (totalColumnsWidth > availableWidth) {
+            decreaseSizeColumnsToFit(columns, availableWidth, totalColumnsWidth);
+        }
+    }
 
-                double newWidth = Math.min(
-                        column.getWidth() + extraPerColumn,
-                        column.getMaxWidth()
-                );
+    private void increaseSizeColumnsToFit(List<TableColumn<T, ?>> columns, double availableWidth, double totalColumnsWidth) {
+        double extraWidth = availableWidth - totalColumnsWidth;
+        if (extraWidth <= 0.5) return;
+        adjustingColumns = true;
 
+        try {
+            List<TableColumn<T, ?>> expandableColumns = columns
+                    .stream()
+                    .filter(column -> column.getWidth() < column.getMaxWidth())
+                    .toList();
+
+            if (expandableColumns.isEmpty()) return;
+
+            double extraPerColumn = extraWidth / expandableColumns.size();
+
+            for (TableColumn<T, ?> column : expandableColumns) {
+                double newWidth = Math.min(column.getWidth() + extraPerColumn, column.getMaxWidth());
                 column.setPrefWidth(newWidth);
             }
+        } finally {
+            adjustingColumns = false;
+        }
+    }
+
+    private void decreaseSizeColumnsToFit(List<TableColumn<T, ?>> columns, double availableWidth, double totalColumnsWidth) {
+        double extraWidth = totalColumnsWidth - availableWidth;
+        adjustingColumns = true;
+
+        try {
+
+            List<TableColumn<T, ?>> collapsibleColumns = columns
+                    .stream()
+                    .filter(column -> column.getWidth() > column.getMinWidth())
+                    .toList();
+
+            if (collapsibleColumns.isEmpty()) return;
+
+            double extraPerColumn = extraWidth / collapsibleColumns.size();
+
+            for (TableColumn<T, ?> column : collapsibleColumns) {
+                double newWidth = Math.max(column.getWidth() - extraPerColumn, column.getMinWidth());
+                column.setPrefWidth(newWidth);
+            }
+        } finally {
+            adjustingColumns = false;
         }
     }
 }
