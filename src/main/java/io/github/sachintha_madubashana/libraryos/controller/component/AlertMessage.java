@@ -4,6 +4,7 @@ import io.github.sachintha_madubashana.libraryos.common.result.Result;
 import io.github.sachintha_madubashana.libraryos.common.result.ResultState;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -14,6 +15,8 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import org.kordamp.ikonli.feather.Feather;
 import org.kordamp.ikonli.javafx.FontIcon;
+
+import java.util.List;
 
 public class AlertMessage extends HBox {
 
@@ -105,6 +108,18 @@ public class AlertMessage extends HBox {
         }
 
         parent.getChildren().add(0, this);
+        startDismissTimer();
+    }
+
+    public void showInLast(Pane parent) {
+        showInLast(parent, DEFAULT_DISMISS_DURATION);
+    }
+
+    public void showInLast(Pane parent, Duration duration) {
+        dismissDuration = duration;
+        if (getParent() != null) return;
+
+        parent.getChildren().add(parent.getChildren().size(), this);
         startDismissTimer();
     }
 

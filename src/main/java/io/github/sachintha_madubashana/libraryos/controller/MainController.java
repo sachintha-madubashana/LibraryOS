@@ -2,8 +2,10 @@ package io.github.sachintha_madubashana.libraryos.controller;
 
 import io.github.sachintha_madubashana.libraryos.Launcher;
 import io.github.sachintha_madubashana.libraryos.event.NavigationEvent;
+import io.github.sachintha_madubashana.libraryos.model.Notification;
 import io.github.sachintha_madubashana.libraryos.navigation.ScenesManager;
 import io.github.sachintha_madubashana.libraryos.navigation.WindowManager;
+import io.github.sachintha_madubashana.libraryos.service.NotificationManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -12,6 +14,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.kordamp.ikonli.feather.Feather;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -21,6 +24,8 @@ import java.util.Objects;
 import static io.github.sachintha_madubashana.libraryos.navigation.ScenesManager.*;
 
 public class MainController {
+    private final ScenesManager scenesManager;
+    private final NotificationManager notificationManager;
     @FXML
     private BorderPane contentArea;
     @FXML
@@ -45,11 +50,12 @@ public class MainController {
     private ScrollPane sidebarScroll;
     @FXML
     private ImageView logoImage;
-
-    private final ScenesManager scenesManager;
+    @FXML
+    private VBox foregroundNotificationContainer;
 
     public MainController() {
         this.scenesManager = new ScenesManager();
+        this.notificationManager = new NotificationManager();
     }
 
     @FXML
@@ -71,6 +77,7 @@ public class MainController {
         returnBookBtn.setOnAction(actionEvent -> navigate(RETURN_BOOK));
         historyBtn.setOnAction(actionEvent -> navigate(HISTORY));
         signOutBtn.setOnAction(actionEvent -> signOut());
+        userBtn.setOnAction(actionEvent -> test());
 
         ImageView userIcon = new ImageView(String.valueOf(Launcher.class.getResource("image/user.png")));
         userIcon.setFitWidth(18);
@@ -117,6 +124,7 @@ public class MainController {
         currentStage.close();
         new WindowManager().openLoginStage();
     }
+
     private void configureSidebarScroll(ScrollPane scrollPane) {
         scrollPane.addEventFilter(ScrollEvent.SCROLL, event -> {
             double delta = event.getDeltaY();
@@ -130,5 +138,9 @@ public class MainController {
             scrollPane.setVvalue(newValue);
             event.consume();
         });
+    }
+
+    private void test() {
+        notificationManager.showNotification(foregroundNotificationContainer,new Notification("Hi","This is test notification", Notification.Position.BOTTOM_RIGHT, Notification.Type.ALERT));
     }
 }
