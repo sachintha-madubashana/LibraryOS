@@ -6,9 +6,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<StackPane fx:id="stackPane" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.sachintha_madubashana.libraryos.controller.MainController">
+<StackPane fx:id="rootPane" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.sachintha_madubashana.libraryos.controller.MainController">
    <children>
-      <BorderPane fx:id="root">
+      <BorderPane fx:id="backgroundPane">
          <left>
             <VBox styleClass="sidebar" BorderPane.alignment="CENTER_LEFT">
                <BorderPane.margin>
@@ -82,9 +82,10 @@
             </ScrollPane>
          </center>
       </BorderPane>
-      <AnchorPane fx:id="foregroundPane" pickOnBounds="false">
+      <StackPane fx:id="foregroundPane" pickOnBounds="false">
          <children>
-            <VBox fx:id="foregroundNotificationContainer" prefWidth="200.0" />
-         </children></AnchorPane>
+            <VBox fx:id="foregroundNotificationContainer" maxHeight="200.0" maxWidth="-Infinity" minHeight="0.0" pickOnBounds="false" prefWidth="300.0" />
+         </children>
+      </StackPane>
    </children>
 </StackPane>

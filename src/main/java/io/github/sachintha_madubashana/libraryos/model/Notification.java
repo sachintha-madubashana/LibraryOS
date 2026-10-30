@@ -1,6 +1,5 @@
 package io.github.sachintha_madubashana.libraryos.model;
 
-import io.github.sachintha_madubashana.libraryos.controller.component.AlertMessage;
 
 public class Notification {
     private String title;

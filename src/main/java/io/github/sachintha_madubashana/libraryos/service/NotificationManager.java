@@ -2,8 +2,10 @@ package io.github.sachintha_madubashana.libraryos.service;
 
 import io.github.sachintha_madubashana.libraryos.controller.component.AlertMessage;
 import io.github.sachintha_madubashana.libraryos.model.Notification;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 public class NotificationManager {
@@ -20,25 +22,30 @@ public class NotificationManager {
         alert.showInLast(root);
     }
 
-    private void changeAlertPosition(Node alertNode, Notification.Position position) {
-        AnchorPane.clearConstraints(alertNode);
+    private void changeAlertPosition(VBox node, Notification.Position position) {
         switch (position) {
-            case TOP_LEFT -> {
-                AnchorPane.setTopAnchor(alertNode, 20.0);
-                AnchorPane.setLeftAnchor(alertNode, 20.0);
+            case TOP_LEFT     -> {
+                StackPane.setAlignment(node, Pos.TOP_LEFT);
+                node.setAlignment(Pos.TOP_CENTER);
             }
-            case TOP_RIGHT -> {
-                AnchorPane.setTopAnchor(alertNode, 20.0);
-                AnchorPane.setRightAnchor(alertNode, 20.0);
+            case TOP_RIGHT    -> {
+                StackPane.setAlignment(node, Pos.TOP_RIGHT);
+                node.setAlignment(Pos.TOP_CENTER);
             }
-            case BOTTOM_LEFT -> {
-                AnchorPane.setBottomAnchor(alertNode, 20.0);
-                AnchorPane.setLeftAnchor(alertNode, 20.0);
+            case BOTTOM_LEFT  -> {
+                StackPane.setAlignment(node, Pos.BOTTOM_LEFT);
+                node.setAlignment(Pos.BOTTOM_CENTER);
             }
             case BOTTOM_RIGHT -> {
-                AnchorPane.setBottomAnchor(alertNode, 20.0);
-                AnchorPane.setRightAnchor(alertNode, 20.0);
+                StackPane.setAlignment(node, Pos.BOTTOM_RIGHT);
+                node.setAlignment(Pos.BOTTOM_CENTER);
+            }
+            case CENTRE       -> {
+                StackPane.setAlignment(node, Pos.CENTER);
+                node.setAlignment(Pos.CENTER);
             }
         }
+
+        StackPane.setMargin(node, new Insets(20));
     }
 }

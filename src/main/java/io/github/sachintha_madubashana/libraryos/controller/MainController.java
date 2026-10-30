@@ -2,6 +2,7 @@ package io.github.sachintha_madubashana.libraryos.controller;
 
 import io.github.sachintha_madubashana.libraryos.Launcher;
 import io.github.sachintha_madubashana.libraryos.event.NavigationEvent;
+import io.github.sachintha_madubashana.libraryos.event.NotificationEvent;
 import io.github.sachintha_madubashana.libraryos.model.Notification;
 import io.github.sachintha_madubashana.libraryos.navigation.ScenesManager;
 import io.github.sachintha_madubashana.libraryos.navigation.WindowManager;
@@ -26,6 +27,9 @@ import static io.github.sachintha_madubashana.libraryos.navigation.ScenesManager
 public class MainController {
     private final ScenesManager scenesManager;
     private final NotificationManager notificationManager;
+
+    @FXML
+    private StackPane rootPane;
     @FXML
     private BorderPane contentArea;
     @FXML
@@ -64,8 +68,13 @@ public class MainController {
         initializeIcons();
         configureSidebarScroll(sidebarScroll);
 
-        contentArea.addEventHandler(NavigationEvent.NAVIGATE, event -> {
+        rootPane.addEventHandler(NavigationEvent.NAVIGATE, event -> {
             navigate(event.getTargetScene());
+            event.consume();
+        });
+
+        rootPane.addEventHandler(NotificationEvent.NOTIFICATION,event -> {
+            showAlert(event.getTargetNotification());
             event.consume();
         });
 
@@ -77,7 +86,7 @@ public class MainController {
         returnBookBtn.setOnAction(actionEvent -> navigate(RETURN_BOOK));
         historyBtn.setOnAction(actionEvent -> navigate(HISTORY));
         signOutBtn.setOnAction(actionEvent -> signOut());
-        userBtn.setOnAction(actionEvent -> test());
+        userBtn.setOnAction(actionEvent -> rootPane.fireEvent(new NotificationEvent(new Notification("Hi","This is test notification", Notification.Position.BOTTOM_RIGHT, Notification.Type.ALERT))));
 
         ImageView userIcon = new ImageView(String.valueOf(Launcher.class.getResource("image/user.png")));
         userIcon.setFitWidth(18);
@@ -140,7 +149,7 @@ public class MainController {
         });
     }
 
-    private void test() {
-        notificationManager.showNotification(foregroundNotificationContainer,new Notification("Hi","This is test notification", Notification.Position.BOTTOM_RIGHT, Notification.Type.ALERT));
+    private void showAlert(Notification notification) {
+        notificationManager.showNotification(foregroundNotificationContainer, notification);
     }
 }
