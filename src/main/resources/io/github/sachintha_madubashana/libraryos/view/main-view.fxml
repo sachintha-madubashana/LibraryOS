@@ -82,10 +82,6 @@
             </ScrollPane>
          </center>
       </BorderPane>
-      <StackPane fx:id="foregroundPane" pickOnBounds="false">
-         <children>
-            <VBox fx:id="foregroundNotificationContainer" maxHeight="200.0" maxWidth="-Infinity" minHeight="0.0" pickOnBounds="false" prefWidth="300.0" />
-         </children>
-      </StackPane>
+      <StackPane fx:id="foregroundPane" pickOnBounds="false" />
    </children>
 </StackPane>

@@ -1,6 +1,8 @@
 package io.github.sachintha_madubashana.libraryos.controller;
 
 import io.github.sachintha_madubashana.libraryos.Launcher;
+import io.github.sachintha_madubashana.libraryos.controller.component.notification.ForegroundOverlay;
+import io.github.sachintha_madubashana.libraryos.controller.component.notification.NotificationOverlay;
 import io.github.sachintha_madubashana.libraryos.event.NavigationEvent;
 import io.github.sachintha_madubashana.libraryos.event.NotificationEvent;
 import io.github.sachintha_madubashana.libraryos.model.Notification;
@@ -8,6 +10,8 @@ import io.github.sachintha_madubashana.libraryos.navigation.ScenesManager;
 import io.github.sachintha_madubashana.libraryos.navigation.WindowManager;
 import io.github.sachintha_madubashana.libraryos.service.NotificationManager;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
@@ -26,10 +30,12 @@ import static io.github.sachintha_madubashana.libraryos.navigation.ScenesManager
 
 public class MainController {
     private final ScenesManager scenesManager;
-    private final NotificationManager notificationManager;
+    private NotificationManager notificationManager;
 
     @FXML
     private StackPane rootPane;
+    @FXML
+    private StackPane foregroundPane;
     @FXML
     private BorderPane contentArea;
     @FXML
@@ -59,7 +65,7 @@ public class MainController {
 
     public MainController() {
         this.scenesManager = new ScenesManager();
-        this.notificationManager = new NotificationManager();
+//        this.notificationManager = new NotificationManager();
     }
 
     @FXML
@@ -73,7 +79,7 @@ public class MainController {
             event.consume();
         });
 
-        rootPane.addEventHandler(NotificationEvent.NOTIFICATION,event -> {
+        rootPane.addEventHandler(NotificationEvent.NOTIFICATION, event -> {
             showAlert(event.getTargetNotification());
             event.consume();
         });
@@ -86,7 +92,7 @@ public class MainController {
         returnBookBtn.setOnAction(actionEvent -> navigate(RETURN_BOOK));
         historyBtn.setOnAction(actionEvent -> navigate(HISTORY));
         signOutBtn.setOnAction(actionEvent -> signOut());
-        userBtn.setOnAction(actionEvent -> rootPane.fireEvent(new NotificationEvent(new Notification("Hi","This is test notification", Notification.Position.BOTTOM_RIGHT, Notification.Type.ALERT))));
+        userBtn.setOnAction(actionEvent -> rootPane.fireEvent(new NotificationEvent(new Notification("Hi", "This is test notification", Notification.Type.ALERT_SUCCESS))));
 
         ImageView userIcon = new ImageView(String.valueOf(Launcher.class.getResource("image/user.png")));
         userIcon.setFitWidth(18);
@@ -99,6 +105,12 @@ public class MainController {
         userBtn.setGraphic(avatarContainer);
 
         navigate(DASHBOARD);
+
+        ForegroundOverlay overlay = new NotificationOverlay();
+        StackPane.setAlignment(overlay.getContainer(), Pos.BOTTOM_RIGHT);
+        StackPane.setMargin(overlay.getContainer(), new Insets(20));
+        foregroundPane.getChildren().add(overlay.getContainer());
+        notificationManager = new NotificationManager(overlay);
     }
 
     private void navigate(String sceneName) {
@@ -150,6 +162,11 @@ public class MainController {
     }
 
     private void showAlert(Notification notification) {
-        notificationManager.showNotification(foregroundNotificationContainer, notification);
+        if(notification.getType().name().startsWith("ALERT")){
+            notificationManager.showNotification(notification);
+            System.out.println("Show notification");
+        } else {
+            System.out.println("Show Dialog");
+        }
     }
 }

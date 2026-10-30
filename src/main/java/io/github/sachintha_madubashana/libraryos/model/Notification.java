@@ -4,13 +4,11 @@ package io.github.sachintha_madubashana.libraryos.model;
 public class Notification {
     private String title;
     private String message;
-    private Position position;
     private Type type;
 
-    public Notification(String title, String message, Position position, Type type) {
+    public Notification(String title, String message, Type type) {
         this.title = title;
         this.message = message;
-        this.position = position;
         this.type = type;
     }
 
@@ -30,14 +28,6 @@ public class Notification {
         this.message = message;
     }
 
-    public Position getPosition() {
-        return position;
-    }
-
-    public void setPosition(Position position) {
-        this.position = position;
-    }
-
     public Type getType() {
         return type;
     }
@@ -46,16 +36,11 @@ public class Notification {
         this.type = type;
     }
 
-    public enum Position{
-        TOP_LEFT,
-        TOP_RIGHT,
-        BOTTOM_LEFT,
-        BOTTOM_RIGHT,
-        CENTRE
-    }
-
     public enum Type{
-        ALERT,
+        ALERT_ERROR,
+        ALERT_INFO,
+        ALERT_SUCCESS,
+        ALERT_WARNING,
         DIALOG
     }
 }
