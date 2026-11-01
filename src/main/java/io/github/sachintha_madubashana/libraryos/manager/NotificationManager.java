@@ -1,13 +1,11 @@
-package io.github.sachintha_madubashana.libraryos.service;
+package io.github.sachintha_madubashana.libraryos.manager;
 
 import io.github.sachintha_madubashana.libraryos.controller.component.AlertMessage;
 import io.github.sachintha_madubashana.libraryos.controller.component.notification.ForegroundOverlay;
-import io.github.sachintha_madubashana.libraryos.controller.component.notification.NotificationOverlay;
 import io.github.sachintha_madubashana.libraryos.model.Notification;
 
 public class NotificationManager {
     private final ForegroundOverlay overlay;
-    private int x = 0;
 
     public NotificationManager(ForegroundOverlay overlay) {
         this.overlay = overlay;
@@ -16,7 +14,7 @@ public class NotificationManager {
     public void showNotification(Notification notification) {
         AlertMessage alert = new AlertMessage(
                 notification.getTitle(),
-                notification.getMessage() + " " + x++,
+                notification.getMessage(),
                 mapNotificationTypeToAlertType(notification.getType())
         );
 

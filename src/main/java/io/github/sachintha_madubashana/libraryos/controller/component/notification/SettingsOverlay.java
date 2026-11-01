@@ -3,8 +3,8 @@ package io.github.sachintha_madubashana.libraryos.controller.component.notificat
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;
 
-public class DialogOverlay implements ForegroundOverlay {
-    public DialogOverlay() {
+public class SettingsOverlay implements ForegroundOverlay {
+    public SettingsOverlay() {
 
     }
 
