@@ -1,14 +1,18 @@
 package io.github.sachintha_madubashana.libraryos.controller;
 
 import io.github.sachintha_madubashana.libraryos.Launcher;
+import io.github.sachintha_madubashana.libraryos.controller.component.AlertDialog;
 import io.github.sachintha_madubashana.libraryos.controller.component.notification.ForegroundOverlay;
 import io.github.sachintha_madubashana.libraryos.controller.component.notification.NotificationOverlay;
+import io.github.sachintha_madubashana.libraryos.event.DialogEvent;
 import io.github.sachintha_madubashana.libraryos.event.NavigationEvent;
 import io.github.sachintha_madubashana.libraryos.event.NotificationEvent;
+import io.github.sachintha_madubashana.libraryos.manager.DialogManager;
+import io.github.sachintha_madubashana.libraryos.manager.NotificationManager;
+import io.github.sachintha_madubashana.libraryos.model.DialogData;
 import io.github.sachintha_madubashana.libraryos.model.Notification;
 import io.github.sachintha_madubashana.libraryos.navigation.ScenesManager;
 import io.github.sachintha_madubashana.libraryos.navigation.WindowManager;
-import io.github.sachintha_madubashana.libraryos.service.NotificationManager;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -31,11 +35,14 @@ import static io.github.sachintha_madubashana.libraryos.navigation.ScenesManager
 public class MainController {
     private final ScenesManager scenesManager;
     private NotificationManager notificationManager;
+    private DialogManager dialogManager;
 
     @FXML
     private StackPane rootPane;
     @FXML
     private StackPane foregroundPane;
+    @FXML
+    private BorderPane backgroundPane;
     @FXML
     private BorderPane contentArea;
     @FXML
@@ -65,7 +72,6 @@ public class MainController {
 
     public MainController() {
         this.scenesManager = new ScenesManager();
-//        this.notificationManager = new NotificationManager();
     }
 
     @FXML
@@ -81,6 +87,11 @@ public class MainController {
 
         rootPane.addEventHandler(NotificationEvent.NOTIFICATION, event -> {
             showAlert(event.getTargetNotification());
+            event.consume();
+        });
+
+        rootPane.addEventHandler(DialogEvent.DIALOG_EVENT, event -> {
+            showDialog(event.getTargetDialogData());
             event.consume();
         });
 
@@ -111,6 +122,8 @@ public class MainController {
         StackPane.setMargin(overlay.getContainer(), new Insets(20));
         foregroundPane.getChildren().add(overlay.getContainer());
         notificationManager = new NotificationManager(overlay);
+
+        this.dialogManager = new DialogManager(rootPane);
     }
 
     private void navigate(String sceneName) {
@@ -141,9 +154,22 @@ public class MainController {
     }
 
     private void signOut() {
-        Stage currentStage = (Stage) signOutBtn.getScene().getWindow();
-        currentStage.close();
-        new WindowManager().openLoginStage();
+        rootPane.fireEvent(new DialogEvent(new DialogData(
+                AlertDialog.Type.PRIMARY,
+                "Sign Out",
+                "Are you sure you want to sign out? Do you want to allow the USB accessory to connect to this device? This will allow the accessory to access data on your device and perform actions as if it were a trusted application. You can change this setting later in the device's settings. Do you want to allow the USB accessory to connect to this device? This will allow the accessory to access data on your device and perform actions as if it were a trusted application. You can change this setting later in the device's settings. Do you want to allow the USB accessory to connect to this device? This will allow the accessory to access data on your device and perform actions as if it were a trusted application. You can change this setting later in the device's settings. Do you want to allow the USB accessory to connect to this device? This will allow the accessory to access data on your device and perform actions as if it were a trusted application. You can change this setting later in the device's settings. Do you want to allow the USB accessory to connect to this device? This will allow the accessory to access data on your device and perform actions as if it were a trusted application. You can change this setting later in the device's settings. Do you want to allow the USB accessory to connect to this device? This will allow the accessory to access data on your device and perform actions as if it were a trusted application. You can change this setting later in the device's settings. Do you want to allow the USB accessory to connect to this device? This will allow the accessory to access data on your device and perform actions as if it were a trusted application. You can change this setting later in the device's settings. ",
+                new FontIcon(Feather.LOG_OUT),
+                "Sign Out",
+                "Cancel",
+                () -> {
+                    Stage currentStage = (Stage) signOutBtn.getScene().getWindow();
+                    currentStage.close();
+                    new WindowManager().openLoginStage();
+                },
+                () -> {
+                    showAlert(new Notification("Sign-out canceled", "You have canceled the sign-out process.", Notification.Type.ALERT_INFO));
+                })
+        ));
     }
 
     private void configureSidebarScroll(ScrollPane scrollPane) {
@@ -162,11 +188,27 @@ public class MainController {
     }
 
     private void showAlert(Notification notification) {
-        if(notification.getType().name().startsWith("ALERT")){
-            notificationManager.showNotification(notification);
-            System.out.println("Show notification");
-        } else {
-            System.out.println("Show Dialog");
-        }
+        notificationManager.showNotification(notification);
+    }
+
+    private void showDialog(DialogData dialogData) {
+        dialogManager.showDialog(dialogData);
+//        AlertDialog dialog = new AlertDialog(rootPane.getScene().getWindow())
+//                .setType(AlertDialog.Type.PRIMARY)
+//                .setIcon(new FontIcon(Feather.BLUETOOTH))
+//                .setTitle("Allow accessory to connect?")
+//                .setDescription(
+//                        "Do you want to allow the USB accessory to connect to this device? This will allow the accessory to access data on your device and perform actions as if it were a trusted application. You can change this setting later in the device's settings. "
+////                                "Do you want to allow the USB accessory to connect to this device? This will allow the accessory to access data on your device and perform actions as if it were a trusted application. You can change this setting later in the device's settings. Do you want to allow the USB accessory to connect to this device? This will allow the accessory to access data on your device and perform actions as if it were a trusted application. You can change this setting later in the device's settings. Do you want to allow the USB accessory to connect to this device? This will allow the accessory to access data on your device and perform actions as if it were a trusted application. You can change this setting later in the device's settings. Do you want to allow the USB accessory to connect to this device? This will allow the accessory to access data on your device and perform actions as if it were a trusted application. You can change this setting later in the device's settings. Do you want to allow the USB accessory to connect to this device? This will allow the accessory to access data on your device and perform actions as if it were a trusted application. You can change this setting later in the device's settings. Do you want to allow the USB accessory to connect to this device? This will allow the accessory to access data on your device and perform actions as if it were a trusted application. You can change this setting later in the device's settings. Do you want to allow the USB accessory to connect to this device? This will allow the accessory to access data on your device and perform actions as if it were a trusted application. You can change this setting later in the device's settings. "
+//                )
+//                .setCancelText("Don't allow")
+//                .setConfirmText("Allow")
+//                .onConfirm(() -> {
+//                    System.out.println("Accessory allowed.");
+//                });
+//        BoxBlur blurEffect = new BoxBlur(5, 5, 3);
+//        backgroundPane.setEffect(blurEffect);
+//        boolean confirmed = dialog.showAndWait();
+//        backgroundPane.setEffect(null);
     }
 }
