@@ -11,7 +11,7 @@ public class AppServices {
     private final DashboardService dashboardService;
 
     private AppServices() {
-        BookRepository bookRepository = new InMemoryBookRepository();
+        BookRepository bookRepository = new MySQLBookRepository();
         BorrowingRepository borrowingRepository = new InMemoryBorrowingRepository();
         MemberRepository memberRepository = new InMemoryMemberRepository();
 
