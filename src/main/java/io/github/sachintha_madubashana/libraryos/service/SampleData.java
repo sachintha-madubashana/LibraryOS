@@ -1,9 +1,6 @@
 package io.github.sachintha_madubashana.libraryos.service;
 
-import io.github.sachintha_madubashana.libraryos.model.Book;
-import io.github.sachintha_madubashana.libraryos.model.BorrowStatus;
-import io.github.sachintha_madubashana.libraryos.model.BorrowingRecord;
-import io.github.sachintha_madubashana.libraryos.model.Member;
+import io.github.sachintha_madubashana.libraryos.model.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,8 +10,10 @@ public class SampleData {
     private static final List<Book> books = new ArrayList<>();
     private static final List<BorrowingRecord> borrowingRecords = new ArrayList<>();
     private static final List<Member> members = new ArrayList<>();
+    private static final List<Category> categories = new ArrayList<>();
 
     static {
+        createCategories();
         createBooks();
         createMembers();
         createBorrowings();
@@ -22,21 +21,33 @@ public class SampleData {
 
     private SampleData() {
     }
+    private static void createCategories() {
+        categories.add(new Category("1", "Fiction"));
+        categories.add(new Category("2", "Non-Fiction"));
+        categories.add(new Category("3", "Science Fiction"));
+        categories.add(new Category("4", "Fantasy"));
+        categories.add(new Category("5", "Mystery"));
+        categories.add(new Category("6", "Biography"));
+        categories.add(new Category("7", "History"));
+        categories.add(new Category("8", "Romance"));
+        categories.add(new Category("9", "Thriller"));
+        categories.add(new Category("10", "Horror"));
+    }
 
     private static void createBooks() {
-        books.add(new Book("BK001", "To Kill a Mockingbird", "Harper Lee", "Fiction", 10, 5));
-        books.add(new Book("BK002", "1984", "George Orwell", "Fiction", 5, 3));
-        books.add(new Book("BK003", "The Great Gatsby", "F. Scott Fitzgerald", "Fiction", 8, 2));
-        books.add(new Book("BK004", "Pride and Prejudice", "Jane Austen", "Fiction", 7, 4));
-        books.add(new Book("BK005", "The Catcher in the Rye", "J.D. Salinger", "Fiction", 6, 1));
-        books.add(new Book("BK006", "The Hobbit", "J.R.R. Tolkien", "Fantasy", 12, 7));
-        books.add(new Book("BK007", "The Lord of the Rings", "J.R.R. Tolkien", "Fantasy", 15, 9));
-        books.add(new Book("BK008", "Harry Potter and the Philosopher's Stone", "J.K. Rowling", "Fantasy", 20, 10));
-        books.add(new Book("BK009", "The Hitchhiker's Guide to the Galaxy", "Douglas Adams", "Science Fiction", 18, 12));
-        books.add(new Book("BK010", "The Shining", "Stephen King", "Horror", 10, 5));
-        books.add(new Book("BK011", "The Da Vinci Code", "Dan Brown", "Thriller", 14, 7));
-        books.add(new Book("BK012", "The Chronicles of Narnia", "C.S. Lewis", "Fantasy", 16, 8));
-        books.add(new Book("BK013", "The Lord of the Flies", "William Golding", "Fiction", 9, 3));
+        books.add(new Book("BK001", "To Kill a Mockingbird", "Harper Lee" ,1960, categories.get(0), 10, 5));
+        books.add(new Book("BK002", "1984", "George Orwell", 1984 , categories.get(0), 5, 3));
+        books.add(new Book("BK003", "The Great Gatsby", "F. Scott Fitzgerald", 2005, categories.get(0), 8, 2));
+        books.add(new Book("BK004", "Pride and Prejudice", "Jane Austen", 2002, categories.get(0), 7, 4));
+        books.add(new Book("BK005", "The Catcher in the Rye", "J.D. Salinger", 1951, categories.get(0), 6, 1));
+        books.add(new Book("BK006", "The Hobbit", "J.R.R. Tolkien", 2000, categories.get(1), 12, 7));
+        books.add(new Book("BK007", "The Lord of the Rings", "J.R.R. Tolkien", 2000, categories.get(1), 15, 9));
+        books.add(new Book("BK008", "Harry Potter and the Philosopher's Stone", "J.K. Rowling", 1997, categories.get(1), 20, 10));
+        books.add(new Book("BK009", "The Hitchhiker's Guide to the Galaxy", "Douglas Adams", 1979, categories.get(2), 18, 12));
+        books.add(new Book("BK010", "The Shining", "Stephen King", 1977, categories.get(5), 10, 5));
+        books.add(new Book("BK011", "The Da Vinci Code", "Dan Brown", 2003, categories.get(8), 14, 7));
+        books.add(new Book("BK012", "The Chronicles of Narnia", "C.S. Lewis", 1950, categories.get(1), 16, 8));
+        books.add(new Book("BK013", "The Lord of the Flies", "William Golding", 1959, categories.get(0), 9, 3));
     }
 
     public static List<Book> getBooks() {

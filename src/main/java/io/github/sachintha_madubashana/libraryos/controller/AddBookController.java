@@ -96,7 +96,7 @@ public class AddBookController {
                 DataColumn.of("TITLE", Book::getTitle).width(240),
                 DataColumn.of("AUTHOR", Book::getAuthor).width(220),
                 DataColumn.of("CATEGORY", Book::getCategory).width(180),
-                DataColumn.of("QTY", Book::getTotalQuantity).width(80)
+                DataColumn.of("QTY", Book::getTotalCopies).width(80)
         );
 
         ObservableList<Book> books = FXCollections.observableArrayList(AppServices.getInstance().getBookService().getAllBooks().getData());
@@ -186,7 +186,7 @@ public class AddBookController {
             return;
         }
 
-        Book book = new Book(id, title, author, category, Integer.parseInt(qty), Integer.parseInt(year));
+        Book book = new Book(id, title, author, bookYear.getYearValue(), null, Integer.parseInt(qty), Integer.parseInt(year));
         Result<Book> result = AppServices.getInstance().getBookService().addBook(book);
 
         if (result.isSuccess()) {
