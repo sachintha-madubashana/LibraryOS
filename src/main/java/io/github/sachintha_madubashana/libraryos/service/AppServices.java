@@ -12,7 +12,7 @@ public class AppServices {
 
     private AppServices() {
         BookRepository bookRepository = new MySQLBookRepository();
-        BorrowingRepository borrowingRepository = new InMemoryBorrowingRepository();
+        BorrowingRepository borrowingRepository = new MySQLBorrowingRepository();
         MemberRepository memberRepository = new MySQLMemberRepository();
 
         bookService = new BookService(bookRepository);

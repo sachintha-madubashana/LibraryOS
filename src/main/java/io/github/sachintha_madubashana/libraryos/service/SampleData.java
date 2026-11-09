@@ -22,16 +22,16 @@ public class SampleData {
     private SampleData() {
     }
     private static void createCategories() {
-        categories.add(new Category("1", "Fiction"));
-        categories.add(new Category("2", "Non-Fiction"));
-        categories.add(new Category("3", "Science Fiction"));
-        categories.add(new Category("4", "Fantasy"));
-        categories.add(new Category("5", "Mystery"));
-        categories.add(new Category("6", "Biography"));
-        categories.add(new Category("7", "History"));
-        categories.add(new Category("8", "Romance"));
-        categories.add(new Category("9", "Thriller"));
-        categories.add(new Category("10", "Horror"));
+        categories.add(new Category(1, "Fiction"));
+        categories.add(new Category(2, "Non-Fiction"));
+        categories.add(new Category(3, "Science Fiction"));
+        categories.add(new Category(4, "Fantasy"));
+        categories.add(new Category(5, "Mystery"));
+        categories.add(new Category(6, "Biography"));
+        categories.add(new Category(7, "History"));
+        categories.add(new Category(8, "Romance"));
+        categories.add(new Category(9, "Thriller"));
+        categories.add(new Category(10, "Horror"));
     }
 
     private static void createBooks() {

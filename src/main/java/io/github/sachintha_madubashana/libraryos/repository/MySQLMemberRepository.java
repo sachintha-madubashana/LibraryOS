@@ -93,8 +93,7 @@ public class MySQLMemberRepository implements MemberRepository{
             statement.setString(5, member.getAddress());
             statement.setDate(6, java.sql.Date.valueOf(member.getJoinedDate()));
 
-            int rowsAffected = statement.executeUpdate();
-            return rowsAffected > 0;
+            return statement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new RuntimeException("Failed to save member.", e);
         }

@@ -29,7 +29,7 @@ public class MySQLBookRepository implements BookRepository {
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     Category category = new Category(
-                            resultSet.getString("category_id"),
+                            resultSet.getInt("category_id"),
                             resultSet.getString("category_name")
                     );
 
@@ -69,7 +69,7 @@ public class MySQLBookRepository implements BookRepository {
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     Category category = new Category(
-                            resultSet.getString("category_id"),
+                            resultSet.getInt("category_id"),
                             resultSet.getString("category_name")
                     );
 
@@ -108,7 +108,7 @@ public class MySQLBookRepository implements BookRepository {
             statement.setInt(4, book.getPublishedYear());
             statement.setInt(5, book.getTotalCopies());
             statement.setInt(6, book.getAvailableCopies());
-            statement.setString(7, book.getCategory().getId());
+            statement.setInt(7, book.getCategory().getId());
 
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -134,7 +134,7 @@ public class MySQLBookRepository implements BookRepository {
             statement.setInt(3, book.getPublishedYear());
             statement.setInt(4, book.getTotalCopies());
             statement.setInt(5, book.getAvailableCopies());
-            statement.setString(6, book.getCategory().getId());
+            statement.setInt(6, book.getCategory().getId());
             statement.setString(7, book.getId());
 
             return statement.executeUpdate() > 0;
