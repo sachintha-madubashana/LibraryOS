@@ -20,11 +20,11 @@ public class MySQLBookRepository implements BookRepository {
     }
 
     @Override
-    public Optional<Book> findById(String id) {
-        String query = "SELECT b.`book_code`, b.`title`, b.`author`, b.`published_year`, b.`total_copies`, b.`available_copies`, c.`id` AS category_id, c.`category` AS category_name FROM book b INNER JOIN category c ON b.`category_id` = c.`id` WHERE b.`id` = ?";
+    public Optional<Book> findById(String code) {
+        String query = "SELECT b.`book_code`, b.`title`, b.`author`, b.`published_year`, b.`total_copies`, b.`available_copies`, c.`id` AS category_id, c.`category` AS category_name FROM book b INNER JOIN category c ON b.`category_id` = c.`id` WHERE b.`book_code` = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setString(1, id);
+            statement.setString(1, code);
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
@@ -153,9 +153,10 @@ public class MySQLBookRepository implements BookRepository {
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, id);
-            return statement.executeUpdate() > 0;
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to delete book.", e);
         }
     }
 }
