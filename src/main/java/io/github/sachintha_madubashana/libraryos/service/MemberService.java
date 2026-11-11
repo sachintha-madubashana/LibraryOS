@@ -13,15 +13,15 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
-    public Result<Member> getMemberById(String id) {
-        if (id == null || id.isBlank()) {
+    public Result<Member> getMemberById(String code) {
+        if (code == null || code.isBlank()) {
             return Result.error(
-                    "Invalid member ID",
-                    "Please provide a valid member ID."
+                    "Invalid member code",
+                    "Please provide a valid member code."
             );
         }
 
-        return memberRepository.findById(id)
+        return memberRepository.findById(code)
                 .map(member -> Result.success(
                         "Member found",
                         "The requested member was found.",
@@ -29,7 +29,7 @@ public class MemberService {
                 ))
                 .orElseGet(() -> Result.error(
                         "Member not found",
-                        "No member exists with ID: " + id
+                        "No member exists with code: " + code
                 ));
     }
 
@@ -58,10 +58,10 @@ public class MemberService {
             );
         }
 
-        if (memberRepository.existsById(member.getId())) {
+        if (memberRepository.existsById(member.getCode())) {
             return Result.error(
-                    "Duplicate member ID",
-                    "A member with this ID already exists."
+                    "Duplicate member code",
+                    "A member with this code already exists."
             );
         }
 
@@ -117,7 +117,7 @@ public class MemberService {
 
         if (!members.isEmpty()) {
             Member lastMember = members.get(members.size() - 1);
-            int memberCount = Integer.parseInt(lastMember.getId().substring(2));
+            int memberCount = Integer.parseInt(lastMember.getCode().substring(2));
             newMemberId = getNewMemberId(memberCount);
         }
 

@@ -46,7 +46,7 @@ public class MemberInfoCard extends VBox {
         imageContainer.setAlignment(Pos.CENTER);
 
         Label nameLabel = createLabel(member.getFullName(), "member-info-name");
-        Label idLabel = createLabel(member.getId(), "member-info-id");
+        Label idLabel = createLabel(member.getCode(), "member-info-id");
         Label emailLabel = createLabel(member.getEmail(), "member-info-detail");
         Label phoneLabel = createLabel(member.getPhone(), "member-info-detail");
 

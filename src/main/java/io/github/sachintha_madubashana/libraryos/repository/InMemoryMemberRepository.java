@@ -37,7 +37,7 @@ public class InMemoryMemberRepository implements MemberRepository {
 
     @Override
     public boolean save(Member member) {
-        if (member == null || existsById(member.getId())) {
+        if (member == null || existsById(member.getCode())) {
             return false;
         }
 

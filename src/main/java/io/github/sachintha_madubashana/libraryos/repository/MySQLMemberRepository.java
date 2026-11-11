@@ -52,13 +52,14 @@ public class MySQLMemberRepository implements MemberRepository{
     @Override
     public List<Member> findAll() {
         List<Member> members = new ArrayList<>();
-        String query = "SELECT `member_code` , `name`, `email`, `phone`, `address`,`joined_date` FROM `member`";
+        String query = "SELECT `id`, `member_code` , `name`, `email`, `phone`, `address`,`joined_date` FROM `member`";
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     Member member = new Member(
+                            resultSet.getInt("id"),
                             resultSet.getString("member_code"),
                             resultSet.getString("name"),
                             resultSet.getString("email"),
@@ -79,14 +80,14 @@ public class MySQLMemberRepository implements MemberRepository{
 
     @Override
     public boolean save(Member member) {
-        if(member == null || existsById(member.getId())) {
+        if(member == null || existsById(member.getCode())) {
             return false;
         }
 
         String query = "INSERT INTO `member` (`member_code`, `name`, `email`, `phone`, `address`, `joined_date`) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement statement = connection.prepareStatement(query)){
-            statement.setString(1, member.getId());
+            statement.setString(1, member.getCode());
             statement.setString(2, member.getFullName());
             statement.setString(3, member.getEmail());
             statement.setString(4, member.getPhone());
@@ -114,7 +115,7 @@ public class MySQLMemberRepository implements MemberRepository{
             statement.setString(3, member.getPhone());
             statement.setString(4, member.getAddress());
             statement.setDate(5, Date.valueOf(member.getJoinedDate()));
-            statement.setString(6, member.getId());
+            statement.setString(6, member.getCode());
 
             int rowsAffected = statement.executeUpdate();
             return rowsAffected > 0;

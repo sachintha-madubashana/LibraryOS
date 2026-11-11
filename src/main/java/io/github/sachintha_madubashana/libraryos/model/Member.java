@@ -5,15 +5,20 @@ import java.time.LocalDate;
 
 public class Member implements Serializable {
 
-    private String id;
+    private Integer id;
+    private String code;
     private String fullName;
     private String email;
     private String phone;
     private String address;
     private LocalDate joinedDate;
 
-    public Member(String id, String fullName, String email, String phone, String address, LocalDate joinedDate) {
+    public Member() {
+    }
+
+    public Member(Integer id,String code, String fullName, String email, String phone, String address, LocalDate joinedDate) {
         this.id = id;
+        this.code = code;
         this.fullName = fullName;
         this.email = email;
         this.phone = phone;
@@ -21,12 +26,29 @@ public class Member implements Serializable {
         this.joinedDate = joinedDate;
     }
 
-    public String getId() {
+    public Member(String code, String fullName, String email, String phone, String address, LocalDate joinedDate) {
+        this.code = code;
+        this.fullName = fullName;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.joinedDate = joinedDate;
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getFullName() {

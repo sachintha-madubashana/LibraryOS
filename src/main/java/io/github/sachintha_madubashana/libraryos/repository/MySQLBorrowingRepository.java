@@ -61,7 +61,7 @@ public class MySQLBorrowingRepository implements BorrowingRepository{
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, borrowingRecord.getRecordId());
-            statement.setString(2, borrowingRecord.getMember().getId());
+            statement.setInt(2, borrowingRecord.getMember().getId());
             statement.setInt(3, borrowingRecord.getBook().getId());
             statement.setDate(4, java.sql.Date.valueOf(borrowingRecord.getIssueDate()));
             statement.setDate(5, java.sql.Date.valueOf(borrowingRecord.getDueDate()));
@@ -83,7 +83,7 @@ public class MySQLBorrowingRepository implements BorrowingRepository{
         String query = "UPDATE borrowing_record SET `member_id` = ?, `book_id` = ?, `issue_date` = ?, `due_date` = ?, `retuned_date` = ?, `borrowing_status_id` = ? WHERE `borrowing_code` = ?";
 
         try(PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setString(1, borrowingRecord.getMember().getId());
+            statement.setInt(1, borrowingRecord.getMember().getId());
             statement.setInt(2, borrowingRecord.getBook().getId());
             statement.setDate(3, java.sql.Date.valueOf(borrowingRecord.getIssueDate()));
             statement.setDate(4, java.sql.Date.valueOf(borrowingRecord.getDueDate()));
