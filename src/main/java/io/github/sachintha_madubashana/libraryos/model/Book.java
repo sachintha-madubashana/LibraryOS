@@ -4,10 +4,11 @@ import java.io.Serializable;
 
 public class Book implements Serializable {
 
-    private String id;
+    private Integer id;
+    private String code;
     private String title;
     private String author;
-    private int publishedYear;
+    private Integer publishedYear;
     private Category category;
     private int totalCopies;
     private int availableCopies;
@@ -15,8 +16,9 @@ public class Book implements Serializable {
     public Book() {
     }
 
-    public Book(String id, String title, String author, int publishedYear, Category category, int totalCopies, int availableCopies) {
+    public Book(Integer id, String code, String title, String author, Integer publishedYear, Category category, int totalCopies, int availableCopies) {
         this.id = id;
+        this.code = code;
         this.title = title;
         this.author = author;
         this.publishedYear = publishedYear;
@@ -25,12 +27,30 @@ public class Book implements Serializable {
         this.availableCopies = availableCopies;
     }
 
-    public String getId() {
+    public Book(String code, String title, String author, Integer publishedYear, Category category, int totalCopies, int availableCopies) {
+        this.code = code;
+        this.title = title;
+        this.author = author;
+        this.publishedYear = publishedYear;
+        this.category = category;
+        this.totalCopies = totalCopies;
+        this.availableCopies = availableCopies;
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getTitle() {
@@ -73,11 +93,11 @@ public class Book implements Serializable {
         this.availableCopies = availableCopies;
     }
 
-    public int getPublishedYear() {
+    public Integer getPublishedYear() {
         return publishedYear;
     }
 
-    public void setPublishedYear(int publishedYear) {
+    public void setPublishedYear(Integer publishedYear) {
         this.publishedYear = publishedYear;
     }
 }

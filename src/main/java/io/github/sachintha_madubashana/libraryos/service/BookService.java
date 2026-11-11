@@ -13,23 +13,23 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
 
-    public Result<Book> getBookById(String id) {
-        if (id == null || id.isBlank()) {
+    public Result<Book> getBookById(String code ) {
+        if (code == null || code.isBlank()) {
             return Result.error(
-                    "Invalid book ID",
-                    "Please provide a valid book ID."
+                    "Invalid book code",
+                    "Please provide a valid book code."
             );
         }
 
-        return bookRepository.findById(id)
+        return bookRepository.findById(code)
                 .map(book -> Result.success(
                         "Book found",
                         "The requested book was found.",
                         book
                 ))
                 .orElseGet(() -> Result.error(
-                        "Book not found",
-                        "No book exists with ID: " + id
+                        "Book not found ",
+                        "No book exists with Code: " + code
                 ));
     }
 
@@ -58,10 +58,10 @@ public class BookService {
             );
         }
 
-        if (bookRepository.existsById(book.getId())) {
+        if (bookRepository.existsById(book.getCode())) {
             return Result.error(
-                    "Duplicate book ID",
-                    "A book with this ID already exists."
+                    "Duplicate book Code",
+                    "A book with this Code already exists."
             );
         }
 
@@ -89,7 +89,7 @@ public class BookService {
             );
         }
 
-        if (!bookRepository.existsById(book.getId())) {
+        if (!bookRepository.existsById(book.getCode())) {
             return Result.error(
                     "Book not found",
                     "The book with the provided ID does not exist."
@@ -113,22 +113,22 @@ public class BookService {
 
     }
 
-    public Result<Void> deleteBook(String id) {
-        if (id == null) {
+    public Result<Void> deleteBook(String code) {
+        if (code == null) {
             return Result.error(
                     "Invalid book",
-                    "Book id is required."
+                    "Book Code is required."
             );
         }
 
-        if (!bookRepository.existsById(id)) {
+        if (!bookRepository.existsById(code)) {
             return Result.error(
                     "Book not found",
                     "The book with the provided ID does not exist."
             );
         }
 
-        boolean isDeleted = bookRepository.deleteById(id);
+        boolean isDeleted = bookRepository.deleteById(code);
 
         if (!isDeleted) {
             return Result.error(
@@ -149,7 +149,7 @@ public class BookService {
 
         if (!books.isEmpty()) {
             Book lastBook = books.get(books.size() - 1);
-            int bookCount = Integer.parseInt(lastBook.getId().substring(2));
+            int bookCount = Integer.parseInt(lastBook.getCode().substring(2));
             newBookId = getNewBookId(bookCount);
         }
 
@@ -161,6 +161,6 @@ public class BookService {
     }
 
     private String getNewBookId(int number) {
-        return "BK" + String.format("%05d", (number + 1));
+        return "bk" + String.format("%05d", (number + 1));
     }
 }

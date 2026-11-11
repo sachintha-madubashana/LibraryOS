@@ -21,7 +21,7 @@ public class MySQLBookRepository implements BookRepository {
 
     @Override
     public Optional<Book> findById(String code) {
-        String query = "SELECT b.`book_code`, b.`title`, b.`author`, b.`published_year`, b.`total_copies`, b.`available_copies`, c.`id` AS category_id, c.`category` AS category_name FROM book b INNER JOIN category c ON b.`category_id` = c.`id` WHERE b.`book_code` = ?";
+        String query = "SELECT b.id, b.`book_code`, b.`title`, b.`author`, b.`published_year`, b.`total_copies`, b.`available_copies`, c.`id` AS category_id, c.`category` AS category_name FROM book b INNER JOIN category c ON b.`category_id` = c.`id` WHERE b.`book_code` = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, code);
@@ -34,6 +34,7 @@ public class MySQLBookRepository implements BookRepository {
                     );
 
                     Book book = new Book(
+                            resultSet.getInt("id"),
                             resultSet.getString("book_code"),
                             resultSet.getString("title"),
                             resultSet.getString("author"),
@@ -62,7 +63,7 @@ public class MySQLBookRepository implements BookRepository {
     @Override
     public List<Book> findAll() {
         List<Book> books = new ArrayList<>();
-        String query = "SELECT b.book_code, b.title, b.author, b.published_year, b.total_copies, b.available_copies, c.id AS category_id, c.category AS category_name FROM book b INNER JOIN category c ON b.category_id = c.id";
+        String query = "SELECT b.id, b.book_code, b.title, b.author, b.published_year, b.total_copies, b.available_copies, c.id AS category_id, c.category AS category_name FROM book b INNER JOIN category c ON b.category_id = c.id";
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
 
@@ -74,6 +75,7 @@ public class MySQLBookRepository implements BookRepository {
                     );
 
                     Book book = new Book(
+                            resultSet.getInt("id"),
                             resultSet.getString("book_code"),
                             resultSet.getString("title"),
                             resultSet.getString("author"),
@@ -95,14 +97,14 @@ public class MySQLBookRepository implements BookRepository {
 
     @Override
     public boolean save(Book book) {
-        if (book == null || existsById(book.getId())) {
+        if (book == null || existsById(book.getCode())) {
             return false;
         }
 
         String query = "INSERT INTO `book` (`book_code`, `title`, `author`, `published_year`, `total_copies`, `available_copies`, `category_id`) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setString(1, book.getId());
+            statement.setString(1, book.getCode());
             statement.setString(2, book.getTitle());
             statement.setString(3, book.getAuthor());
             statement.setInt(4, book.getPublishedYear());
@@ -122,7 +124,7 @@ public class MySQLBookRepository implements BookRepository {
             return false;
         }
 
-        if (existsById(book.getId())) {
+        if (existsById(book.getCode())) {
             return false;
         }
 
@@ -135,7 +137,7 @@ public class MySQLBookRepository implements BookRepository {
             statement.setInt(4, book.getTotalCopies());
             statement.setInt(5, book.getAvailableCopies());
             statement.setInt(6, book.getCategory().getId());
-            statement.setString(7, book.getId());
+            statement.setString(7, book.getCode());
 
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -144,15 +146,15 @@ public class MySQLBookRepository implements BookRepository {
     }
 
     @Override
-    public boolean deleteById(String id) {
-        if (id == null) {
+    public boolean deleteById(String code) {
+        if (code == null) {
             return false;
         }
 
         String query = "DELETE FROM `book` WHERE `book_code` = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setString(1, id);
+            statement.setString(1, code);
             int rowsAffected = statement.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {

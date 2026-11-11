@@ -37,7 +37,7 @@ public class InMemoryBookRepository implements BookRepository {
 
     @Override
     public boolean save(Book book) {
-        if (book == null || existsById(book.getId())) {
+        if (book == null || existsById(book.getCode())) {
             return false;
         }
 
