@@ -22,9 +22,9 @@ public class BookAvailabilityRow extends HBox {
         VBox information = new VBox(8, bookTitle, details);
         information.setAlignment(Pos.CENTER_LEFT);
 
-        Label qty = new Label(book.getTotalQuantity() + " / " + book.getAvailableQuantity());
+        Label qty = new Label(book.getTotalCopies() + " / " + book.getAvailableCopies());
         Label status = new Label();
-        if (book.getAvailableQuantity() == 0) {
+        if (book.getAvailableCopies() == 0) {
             qty.getStyleClass().add("unavailable");
             status.setText("Unavailable");
             status.getStyleClass().add("unavailable");

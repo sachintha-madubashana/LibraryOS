@@ -83,7 +83,7 @@ public class IssueBookController {
             return;
         }
 
-        bookDropdown.getItems().addAll(bookResult.getData().stream().map(book -> book.getId() + " - " + book.getTitle()).toList());
+        bookDropdown.getItems().addAll(bookResult.getData().stream().map(book -> book.getCode() + " - " + book.getTitle()).toList());
         bookDropdown.setValue("Select");
         bookDropdown.setOnSelectionChanged(event -> {
             Result<Book> result = AppServices.getInstance().getBookService().getBookById(bookDropdown.getValue().split(" - ")[0]);

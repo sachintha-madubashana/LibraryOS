@@ -4,31 +4,53 @@ import java.io.Serializable;
 
 public class Book implements Serializable {
 
-    private String id;
+    private Integer id;
+    private String code;
     private String title;
     private String author;
-    private String category;
-    private int totalQuantity;
-    private int availableQuantity;
+    private Integer publishedYear;
+    private Category category;
+    private int totalCopies;
+    private int availableCopies;
 
     public Book() {
     }
 
-    public Book(String id, String title, String author, String category, int totalQuantity, int availableQuantity) {
+    public Book(Integer id, String code, String title, String author, Integer publishedYear, Category category, int totalCopies, int availableCopies) {
         this.id = id;
+        this.code = code;
         this.title = title;
         this.author = author;
+        this.publishedYear = publishedYear;
         this.category = category;
-        this.totalQuantity = totalQuantity;
-        this.availableQuantity = availableQuantity;
+        this.totalCopies = totalCopies;
+        this.availableCopies = availableCopies;
     }
 
-    public String getId() {
+    public Book(String code, String title, String author, Integer publishedYear, Category category, int totalCopies, int availableCopies) {
+        this.code = code;
+        this.title = title;
+        this.author = author;
+        this.publishedYear = publishedYear;
+        this.category = category;
+        this.totalCopies = totalCopies;
+        this.availableCopies = availableCopies;
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getTitle() {
@@ -47,27 +69,35 @@ public class Book implements Serializable {
         this.author = author;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
-    public int getTotalQuantity() {
-        return totalQuantity;
+    public int getTotalCopies() {
+        return totalCopies;
     }
 
-    public void setTotalQuantity(int totalQuantity) {
-        this.totalQuantity = totalQuantity;
+    public void setTotalCopies(int totalCopies) {
+        this.totalCopies = totalCopies;
     }
 
-    public int getAvailableQuantity() {
-        return availableQuantity;
+    public int getAvailableCopies() {
+        return availableCopies;
     }
 
-    public void setAvailableQuantity(int availableQuantity) {
-        this.availableQuantity = availableQuantity;
+    public void setAvailableCopies(int availableCopies) {
+        this.availableCopies = availableCopies;
+    }
+
+    public Integer getPublishedYear() {
+        return publishedYear;
+    }
+
+    public void setPublishedYear(Integer publishedYear) {
+        this.publishedYear = publishedYear;
     }
 }

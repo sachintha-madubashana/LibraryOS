@@ -47,13 +47,13 @@ public class BookInfoCard extends VBox {
 
         Label titleLabel = createLabel(book.getTitle(), "book-info-name");
         Label authorLabel = createLabel(book.getAuthor(), "book-info-id");
-        Label idLabel = createLabel(book.getId(), "book-info-detail");
+        Label idLabel = createLabel(book.getCode(), "book-info-detail");
 
         Label availabilityLabel = createLabel("AVAILABLE", "book-info-quantity-label");
-        Label availabilityCountLabel = createLabel(String.valueOf(book.getAvailableQuantity()), "book-info-available-count");
+        Label availabilityCountLabel = createLabel(String.valueOf(book.getAvailableCopies()), "book-info-available-count");
 
         Label totalLabel = createLabel("TOTAL", "book-info-quantity-label");
-        Label totalCountLabel = createLabel(String.valueOf(book.getTotalQuantity()), "book-info-total-count");
+        Label totalCountLabel = createLabel(String.valueOf(book.getTotalCopies()), "book-info-total-count");
 
         VBox availabilityContainer = new VBox(availabilityLabel, availabilityCountLabel);
         availabilityContainer.getStyleClass().add("book-info-quantity-container");
