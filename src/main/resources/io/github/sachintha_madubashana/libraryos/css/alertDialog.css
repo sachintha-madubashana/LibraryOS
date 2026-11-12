@@ -1,0 +1,246 @@
+/* ---------------------------------------------------------
+   ALERT DIALOG
+   --------------------------------------------------------- */
+.alert-dialog {
+    -fx-background-color: -fx-card;
+
+    -fx-padding: 20px;
+    -fx-spacing: 12px;
+
+    -fx-alignment: center;
+
+    -fx-pref-width: 360px;
+    -fx-max-width: 360px;
+
+    -fx-background-radius: 16px;
+    -fx-border-radius: 16px;
+
+    -fx-border-color: -fx-border;
+    -fx-border-width: 1px;
+}
+
+/*  Dialog Pane  */
+.alert-dialog .dialog-pane {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+/*  Icon Container  */
+.alert-dialog-icon-container {
+    -fx-alignment: center;
+
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+
+    -fx-pref-width: 40px;
+    -fx-pref-height: 40px;
+
+    -fx-max-width: 40px;
+    -fx-max-height: 40px;
+
+    -fx-background-radius: 10px;
+}
+
+/*  Icon  */
+.alert-dialog .alert-dialog-icon-container .ikonli-font-icon {
+    -fx-icon-size: 22px;
+    -fx-fill: -fx-foreground;
+}
+
+/*  Primary Icon  */
+.alert-dialog-primary .alert-dialog-icon-container {
+    -fx-background-color: -fx-secondary;
+}
+
+/*  Destructive Icon  */
+.alert-dialog-destructive .alert-dialog-icon-container {
+    -fx-background-color: #FEE2E2;
+}
+.alert-dialog-destructive .alert-dialog-icon-container .ikonli-font-icon {
+    -fx-fill: -fx-destructive;
+}
+
+/*  Title  */
+.alert-dialog-title {
+    -fx-text-fill: -fx-card-foreground;
+
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+
+    -fx-text-alignment: center;
+
+    -fx-padding: 2px 0 0 0;
+}
+
+/*  Description  */
+.alert-dialog-description {
+    -fx-text-fill: -fx-muted-foreground;
+    -fx-font-size: 13px;
+    -fx-text-alignment: center;
+    -fx-line-spacing: 3px;
+
+    -fx-max-width: 320px;
+}
+
+/*  Description: Collapsed  */
+.alert-dialog-description.description-collapsed {
+    -fx-max-height: 115px;
+}
+
+/*  Description: Expanded  */
+.alert-dialog-description.description-expanded {
+    -fx-max-height: Infinity;
+}
+
+/*  Expand Button  */
+.alert-dialog-expand-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-foreground;
+
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+
+    -fx-padding: 2px 4px;
+
+    -fx-border-color: transparent;
+    -fx-background-radius: 4px;
+
+    -fx-cursor: hand;
+}
+
+.alert-dialog-expand-button:hover {
+    -fx-background-color: -fx-accent;
+}
+
+/*  Footer  */
+.alert-dialog-footer {
+    -fx-background-color: -fx-card;
+    -fx-padding: 12px 16px 16px 16px;
+    -fx-border-width: 0;
+    -fx-background-radius: 0 0 16px 16px;
+    -fx-spacing: 8px;
+}
+
+/*  Footer Buttons  */
+.alert-dialog-cancel-button,
+.alert-dialog-confirm-button {
+    -fx-max-width: Infinity;
+
+    -fx-pref-height: 36px;
+    -fx-min-height: 36px;
+
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+
+    -fx-cursor: hand;
+    -fx-alignment: center;
+}
+
+/*  Cancel Button  */
+.alert-dialog-cancel-button {
+    -fx-background-color: -fx-secondary;
+    -fx-text-fill: -fx-secondary-foreground;
+
+    -fx-border-color: -fx-border;
+    -fx-border-width: 1px;
+}
+
+.alert-dialog-cancel-button:hover {
+    -fx-background-color: -fx-secondary-hover;
+}
+
+.alert-dialog-cancel-button:pressed {
+    -fx-background-color: -fx-secondary-active;
+}
+
+/*  Primary Confirm Button  */
+.alert-dialog-primary .alert-dialog-confirm-button {
+    -fx-background-color: -fx-primary;
+    -fx-text-fill: -fx-primary-foreground;
+
+    -fx-border-color: transparent;
+}
+
+.alert-dialog-primary .alert-dialog-confirm-button:hover {
+    -fx-background-color: -fx-primary-hover;
+}
+
+.alert-dialog-primary .alert-dialog-confirm-button:pressed {
+    -fx-background-color: -fx-primary-active;
+}
+
+/*  Destructive Confirm Button  */
+.alert-dialog-destructive .alert-dialog-confirm-button {
+    -fx-background-color: -fx-destructive;
+    -fx-text-fill: -fx-destructive-foreground;
+
+    -fx-border-color: transparent;
+}
+
+.alert-dialog-destructive .alert-dialog-confirm-button:hover {
+    -fx-background-color: -fx-destructive-hover;
+}
+
+.alert-dialog-destructive .alert-dialog-confirm-button:pressed {
+    -fx-background-color: -fx-destructive-active;
+}
+
+/*  Focus  */
+.alert-dialog .button:focused,
+.alert-dialog .alert-dialog-expand-button:focused {
+    -fx-border-color: -fx-ring;
+}
+
+/*  Disabled  */
+.alert-dialog .button:disabled {
+    -fx-opacity: 0.5;
+}
+
+/*  Description Scroll  */
+.alert-dialog-description-scroll-container {
+    -fx-background-color: transparent;
+
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+
+    -fx-fit-to-width: true;
+}
+
+.alert-dialog-description-scroll-container .viewport {
+    -fx-background-color: transparent;
+}
+
+.alert-dialog-description-scroll-container .content {
+    -fx-background-color: transparent;
+}
+
+/*  Scrollbars  */
+.alert-dialog-description-scroll-container .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-pref-width: 6px;
+}
+
+.alert-dialog-description-scroll-container .scroll-bar .track {
+    -fx-background-color: transparent;
+}
+
+.alert-dialog-description-scroll-container .scroll-bar .thumb {
+    -fx-background-color: -fx-border;
+    -fx-background-radius: 999px;
+}
+
+.alert-dialog-description-scroll-container .scroll-bar .thumb:hover {
+    -fx-background-color: -fx-muted-foreground;
+}
+
+.alert-dialog-description-scroll-container .scroll-bar:horizontal {
+    -fx-opacity: 0;
+    -fx-pref-height: 0;
+}
+
+.alert-dialog-description-scroll-container .corner {
+    -fx-background-color: transparent;
+}

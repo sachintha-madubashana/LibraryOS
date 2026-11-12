@@ -17,4 +17,5 @@ module io.github.sachintha_madubashana.libraryos {
     opens io.github.sachintha_madubashana.libraryos.controller.component.table to javafx.fxml;
     exports io.github.sachintha_madubashana.libraryos.service;
     exports io.github.sachintha_madubashana.libraryos.common.result;
+    exports io.github.sachintha_madubashana.libraryos.manager;
 }

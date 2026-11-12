@@ -1,10 +1,21 @@
 package io.github.sachintha_madubashana.libraryos.controller;
 
 import io.github.sachintha_madubashana.libraryos.Launcher;
+import io.github.sachintha_madubashana.libraryos.controller.component.AlertDialog;
+import io.github.sachintha_madubashana.libraryos.controller.component.notification.ForegroundOverlay;
+import io.github.sachintha_madubashana.libraryos.controller.component.notification.NotificationOverlay;
+import io.github.sachintha_madubashana.libraryos.event.DialogEvent;
 import io.github.sachintha_madubashana.libraryos.event.NavigationEvent;
+import io.github.sachintha_madubashana.libraryos.event.NotificationEvent;
+import io.github.sachintha_madubashana.libraryos.manager.DialogManager;
+import io.github.sachintha_madubashana.libraryos.manager.NotificationManager;
+import io.github.sachintha_madubashana.libraryos.model.DialogData;
+import io.github.sachintha_madubashana.libraryos.model.Notification;
 import io.github.sachintha_madubashana.libraryos.navigation.ScenesManager;
 import io.github.sachintha_madubashana.libraryos.navigation.WindowManager;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
@@ -12,6 +23,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.kordamp.ikonli.feather.Feather;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -21,6 +33,16 @@ import java.util.Objects;
 import static io.github.sachintha_madubashana.libraryos.navigation.ScenesManager.*;
 
 public class MainController {
+    private final ScenesManager scenesManager;
+    private NotificationManager notificationManager;
+    private DialogManager dialogManager;
+
+    @FXML
+    private StackPane rootPane;
+    @FXML
+    private StackPane foregroundPane;
+    @FXML
+    private BorderPane backgroundPane;
     @FXML
     private BorderPane contentArea;
     @FXML
@@ -45,8 +67,8 @@ public class MainController {
     private ScrollPane sidebarScroll;
     @FXML
     private ImageView logoImage;
-
-    private final ScenesManager scenesManager;
+    @FXML
+    private VBox foregroundNotificationContainer;
 
     public MainController() {
         this.scenesManager = new ScenesManager();
@@ -58,8 +80,18 @@ public class MainController {
         initializeIcons();
         configureSidebarScroll(sidebarScroll);
 
-        contentArea.addEventHandler(NavigationEvent.NAVIGATE, event -> {
+        rootPane.addEventHandler(NavigationEvent.NAVIGATE, event -> {
             navigate(event.getTargetScene());
+            event.consume();
+        });
+
+        rootPane.addEventHandler(NotificationEvent.NOTIFICATION, event -> {
+            showAlert(event.getTargetNotification());
+            event.consume();
+        });
+
+        rootPane.addEventHandler(DialogEvent.DIALOG_EVENT, event -> {
+            showDialog(event.getTargetDialogData());
             event.consume();
         });
 
@@ -71,6 +103,7 @@ public class MainController {
         returnBookBtn.setOnAction(actionEvent -> navigate(RETURN_BOOK));
         historyBtn.setOnAction(actionEvent -> navigate(HISTORY));
         signOutBtn.setOnAction(actionEvent -> signOut());
+        userBtn.setOnAction(actionEvent -> rootPane.fireEvent(new NotificationEvent(new Notification("Hi", "This is test notification", Notification.Type.ALERT_SUCCESS))));
 
         ImageView userIcon = new ImageView(String.valueOf(Launcher.class.getResource("image/user.png")));
         userIcon.setFitWidth(18);
@@ -83,6 +116,14 @@ public class MainController {
         userBtn.setGraphic(avatarContainer);
 
         navigate(DASHBOARD);
+
+        ForegroundOverlay overlay = new NotificationOverlay();
+        StackPane.setAlignment(overlay.getContainer(), Pos.BOTTOM_RIGHT);
+        StackPane.setMargin(overlay.getContainer(), new Insets(20));
+        foregroundPane.getChildren().add(overlay.getContainer());
+        notificationManager = new NotificationManager(overlay);
+
+        this.dialogManager = new DialogManager(rootPane);
     }
 
     private void navigate(String sceneName) {
@@ -113,10 +154,24 @@ public class MainController {
     }
 
     private void signOut() {
-        Stage currentStage = (Stage) signOutBtn.getScene().getWindow();
-        currentStage.close();
-        new WindowManager().openLoginStage();
+        rootPane.fireEvent(new DialogEvent(new DialogData(
+                AlertDialog.Type.PRIMARY,
+                "Sign Out",
+                "Are you sure you want to sign out? Do you want to allow the USB accessory to connect to this device? This will allow the accessory to access data on your device and perform actions as if it were a trusted application. You can change this setting later in the device's settings. Do you want to allow the USB accessory to connect to this device? This will allow the accessory to access data on your device and perform actions as if it were a trusted application. You can change this setting later in the device's settings. Do you want to allow the USB accessory to connect to this device? This will allow the accessory to access data on your device and perform actions as if it were a trusted application. You can change this setting later in the device's settings. Do you want to allow the USB accessory to connect to this device? This will allow the accessory to access data on your device and perform actions as if it were a trusted application. You can change this setting later in the device's settings. Do you want to allow the USB accessory to connect to this device? This will allow the accessory to access data on your device and perform actions as if it were a trusted application. You can change this setting later in the device's settings. Do you want to allow the USB accessory to connect to this device? This will allow the accessory to access data on your device and perform actions as if it were a trusted application. You can change this setting later in the device's settings. Do you want to allow the USB accessory to connect to this device? This will allow the accessory to access data on your device and perform actions as if it were a trusted application. You can change this setting later in the device's settings. ",
+                new FontIcon(Feather.LOG_OUT),
+                "Sign Out",
+                "Cancel",
+                () -> {
+                    Stage currentStage = (Stage) signOutBtn.getScene().getWindow();
+                    currentStage.close();
+                    new WindowManager().openLoginStage();
+                },
+                () -> {
+                    showAlert(new Notification("Sign-out canceled", "You have canceled the sign-out process.", Notification.Type.ALERT_INFO));
+                })
+        ));
     }
+
     private void configureSidebarScroll(ScrollPane scrollPane) {
         scrollPane.addEventFilter(ScrollEvent.SCROLL, event -> {
             double delta = event.getDeltaY();
@@ -130,5 +185,30 @@ public class MainController {
             scrollPane.setVvalue(newValue);
             event.consume();
         });
+    }
+
+    private void showAlert(Notification notification) {
+        notificationManager.showNotification(notification);
+    }
+
+    private void showDialog(DialogData dialogData) {
+        dialogManager.showDialog(dialogData);
+//        AlertDialog dialog = new AlertDialog(rootPane.getScene().getWindow())
+//                .setType(AlertDialog.Type.PRIMARY)
+//                .setIcon(new FontIcon(Feather.BLUETOOTH))
+//                .setTitle("Allow accessory to connect?")
+//                .setDescription(
+//                        "Do you want to allow the USB accessory to connect to this device? This will allow the accessory to access data on your device and perform actions as if it were a trusted application. You can change this setting later in the device's settings. "
+////                                "Do you want to allow the USB accessory to connect to this device? This will allow the accessory to access data on your device and perform actions as if it were a trusted application. You can change this setting later in the device's settings. Do you want to allow the USB accessory to connect to this device? This will allow the accessory to access data on your device and perform actions as if it were a trusted application. You can change this setting later in the device's settings. Do you want to allow the USB accessory to connect to this device? This will allow the accessory to access data on your device and perform actions as if it were a trusted application. You can change this setting later in the device's settings. Do you want to allow the USB accessory to connect to this device? This will allow the accessory to access data on your device and perform actions as if it were a trusted application. You can change this setting later in the device's settings. Do you want to allow the USB accessory to connect to this device? This will allow the accessory to access data on your device and perform actions as if it were a trusted application. You can change this setting later in the device's settings. Do you want to allow the USB accessory to connect to this device? This will allow the accessory to access data on your device and perform actions as if it were a trusted application. You can change this setting later in the device's settings. Do you want to allow the USB accessory to connect to this device? This will allow the accessory to access data on your device and perform actions as if it were a trusted application. You can change this setting later in the device's settings. "
+//                )
+//                .setCancelText("Don't allow")
+//                .setConfirmText("Allow")
+//                .onConfirm(() -> {
+//                    System.out.println("Accessory allowed.");
+//                });
+//        BoxBlur blurEffect = new BoxBlur(5, 5, 3);
+//        backgroundPane.setEffect(blurEffect);
+//        boolean confirmed = dialog.showAndWait();
+//        backgroundPane.setEffect(null);
     }
 }
