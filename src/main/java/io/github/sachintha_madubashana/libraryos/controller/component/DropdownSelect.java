@@ -149,6 +149,7 @@ public class DropdownSelect<T> extends VBox {
     // -------------------------------------------------------------------------
     public void clearSelection() {
         comboBox.setPromptText("Select");
+        comboBox.setValue(null);
         comboBox.getSelectionModel().clearSelection();
     }
 

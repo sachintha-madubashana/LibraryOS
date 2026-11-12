@@ -37,6 +37,16 @@ public class InMemoryBorrowingRepository implements BorrowingRepository {
     }
 
     @Override
+    public Integer countAll() {
+        return borrowings.size();
+    }
+
+    @Override
+    public BorrowingRecord findLast() {
+        return borrowings.isEmpty() ? null : borrowings.get(borrowings.size() - 1);
+    }
+
+    @Override
     public boolean save(BorrowingRecord borrowingRecord) {
         if (borrowingRecord == null || existsById(borrowingRecord.getRecordId())) {
             return false;

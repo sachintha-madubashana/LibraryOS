@@ -93,11 +93,10 @@ public class BorrowingService {
     }
 
     public Result<String> generateBorrowingId() {
-        List<BorrowingRecord> borrowingRecords   = borrowingRepository.findAll();
+        BorrowingRecord lastBorrowingRecord = borrowingRepository.findLast();
         String newRecordId = getNewBorrowingId(0);
 
-        if (!borrowingRecords.isEmpty()) {
-            BorrowingRecord lastBorrowingRecord = borrowingRecords.get(borrowingRecords.size() - 1);
+        if (!lastBorrowingRecord.getRecordId().isEmpty()) {
             int recordCount = Integer.parseInt(lastBorrowingRecord.getRecordId().substring(2));
             newRecordId = getNewBorrowingId(recordCount);
         }
@@ -110,7 +109,7 @@ public class BorrowingService {
     }
 
     private String getNewBorrowingId(int number) {
-        return "br" + String.format("%05d", (number + 1));
+        return "br" + String.format("%06d", (number + 1));
     }
 
     public Result<List<BorrowingRecord>> findActiveLoans() {

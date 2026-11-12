@@ -21,7 +21,7 @@ public class MySQLBorrowingRepository implements BorrowingRepository{
             return Optional.empty();
         }
 
-        String query = "SELECT `borrowing_code`,`issue_date`,`due_date`, `retuned_date`, `book_code`, `title`, `author`, `published_year`, `total_copies`, `available_copies`, `category_id`, `category`, `member_code`, `name`, `email`,`phone`, `address`,`joined_date`, `status`  FROM borrowing_record INNER JOIN `book` ON `book_id` = `book`.`id` INNER JOIN `member` ON `member_id` = `member`.`id` INNER JOIN `borrowing_status` ON `borrowing_status_id` = `borrowing_status`.`id` INNER JOIN `category` ON book.category_id = category.id WHERE `borrowing_code` = ?";
+        String query = "SELECT book.`id` AS book_id, `borrowing_code`,`issue_date`,`due_date`, `retuned_date`, `book_code`, `title`, `author`, `published_year`, `total_copies`, `available_copies`, `category_id`, `category`, member.`id` AS member_id, `member_code`, `name`, `email`,`phone`, `address`,`joined_date`, `status`  FROM borrowing_record INNER JOIN `book` ON `book_id` = `book`.`id` INNER JOIN `member` ON `member_id` = `member`.`id` INNER JOIN `borrowing_status` ON `borrowing_status_id` = `borrowing_status`.`id` INNER JOIN `category` ON book.category_id = category.id WHERE `borrowing_code` = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, code);
@@ -45,11 +45,42 @@ public class MySQLBorrowingRepository implements BorrowingRepository{
 
     @Override
     public List<BorrowingRecord> findAll() {
-        String query = "SELECT `borrowing_code`,`issue_date`,`due_date`, `retuned_date`, `book_code`, `title`, `author`, `published_year`, `total_copies`, `available_copies`, `category_id`, `category`, `member_code`, `name`, `email`,`phone`, `address`,`joined_date`, `status`  FROM borrowing_record INNER JOIN `book` ON `book_id` = `book`.`id` INNER JOIN `member` ON `member_id` = `member`.`id` INNER JOIN `borrowing_status` ON `borrowing_status_id` = `borrowing_status`.`id` INNER JOIN `category` ON book.category_id = category.id";
+        String query = "SELECT book.`id` AS book_id, `borrowing_code`,`issue_date`,`due_date`, `retuned_date`, `book_code`, `title`, `author`, `published_year`, `total_copies`, `available_copies`, `category_id`, `category`, member.`id` AS member_id, `member_code`, `name`, `email`,`phone`, `address`,`joined_date`, `status`  FROM borrowing_record INNER JOIN `book` ON `book_id` = `book`.`id` INNER JOIN `member` ON `member_id` = `member`.`id` INNER JOIN `borrowing_status` ON `borrowing_status_id` = `borrowing_status`.`id` INNER JOIN `category` ON book.category_id = category.id ORDER BY borrowing_code DESC";
 
         return getBorrowingRecords(query);
     }
 
+    @Override
+    public Integer countAll() {
+        String query = "SELECT COUNT(*) AS total FROM borrowing_record";
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("total");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to count borrowing records.", e);
+        }
+
+        return 0;
+    }
+
+    @Override
+    public BorrowingRecord findLast() {
+        String query = "SELECT book.`id` AS book_id, `borrowing_code`,`issue_date`,`due_date`, `retuned_date`, `book_code`, `title`, `author`, `published_year`, `total_copies`, `available_copies`, `category_id`, `category`, member.`id` AS member_id, `member_code`, `name`, `email`,`phone`, `address`,`joined_date`, `status`  FROM borrowing_record INNER JOIN `book` ON `book_id` = `book`.`id` INNER JOIN `member` ON `member_id` = `member`.`id` INNER JOIN `borrowing_status` ON `borrowing_status_id` = `borrowing_status`.`id` INNER JOIN `category` ON book.category_id = category.id ORDER BY borrowing_code DESC LIMIT 1";
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return createBorrowingRecordObj(resultSet);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to find last borrowing record.", e);
+        }
+
+        return null;
+    }
 
     @Override
     public boolean save(BorrowingRecord borrowingRecord) {
@@ -66,7 +97,7 @@ public class MySQLBorrowingRepository implements BorrowingRepository{
             statement.setDate(4, java.sql.Date.valueOf(borrowingRecord.getIssueDate()));
             statement.setDate(5, java.sql.Date.valueOf(borrowingRecord.getDueDate()));
             statement.setDate(6, borrowingRecord.getReturnDate() != null ? Date.valueOf(borrowingRecord.getReturnDate()) : null);
-            statement.setInt(7, borrowingRecord.getStatus().ordinal());
+            statement.setInt(7, borrowingRecord.getStatus().getValue());
 
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -115,14 +146,14 @@ public class MySQLBorrowingRepository implements BorrowingRepository{
 
     @Override
     public List<BorrowingRecord> findActiveLoans()  {
-        String query = "SELECT `borrowing_code`,`issue_date`,`due_date`, `retuned_date`, `book_code`, `title`, `author`, `published_year`, `total_copies`, `available_copies`, `category_id`, `category`, `member_code`, `name`, `email`,`phone`, `address`,`joined_date`, `status`  FROM borrowing_record INNER JOIN `book` ON `book_id` = `book`.`id` INNER JOIN `member` ON `member_id` = `member`.`id` INNER JOIN `borrowing_status` ON `borrowing_status_id` = `borrowing_status`.`id` INNER JOIN `category` ON book.category_id = category.id WHERE `borrowing_status`.`id` != " + BorrowStatus.RETURNED.getValue();
+        String query = "SELECT book.`id` AS book_id, `borrowing_code`,`issue_date`,`due_date`, `retuned_date`, `book_code`, `title`, `author`, `published_year`, `total_copies`, `available_copies`, `category_id`, `category`,member.`id` AS member_id, `member_code`, `name`, `email`,`phone`, `address`,`joined_date`, `status`  FROM borrowing_record INNER JOIN `book` ON `book_id` = `book`.`id` INNER JOIN `member` ON `member_id` = `member`.`id` INNER JOIN `borrowing_status` ON `borrowing_status_id` = `borrowing_status`.`id` INNER JOIN `category` ON book.category_id = category.id WHERE `borrowing_status`.`id` != " + BorrowStatus.RETURNED.getValue();
 
         return getBorrowingRecords(query);
     }
 
     @Override
     public List<BorrowingRecord> findAllOverdue() {
-        String query = "SELECT `borrowing_code`,`issue_date`,`due_date`, `retuned_date`, `book_code`, `title`, `author`, `published_year`, `total_copies`, `available_copies`, `category_id`, `category`, `member_code`, `name`, `email`,`phone`, `address`,`joined_date`, `status`  FROM borrowing_record INNER JOIN `book` ON `book_id` = `book`.`id` INNER JOIN `member` ON `member_id` = `member`.`id` INNER JOIN `borrowing_status` ON `borrowing_status_id` = `borrowing_status`.`id` INNER JOIN `category` ON book.category_id = category.id WHERE `borrowing_status`.`id` = " + BorrowStatus.OVERDUE.getValue();
+        String query = "SELECT book.`id` AS book_id, `borrowing_code`,`issue_date`,`due_date`, `retuned_date`, `book_code`, `title`, `author`, `published_year`, `total_copies`, `available_copies`, `category_id`, `category`, member.`id` AS member_id, `member_code`, `name`, `email`,`phone`, `address`,`joined_date`, `status`  FROM borrowing_record INNER JOIN `book` ON `book_id` = `book`.`id` INNER JOIN `member` ON `member_id` = `member`.`id` INNER JOIN `borrowing_status` ON `borrowing_status_id` = `borrowing_status`.`id` INNER JOIN `category` ON book.category_id = category.id WHERE `borrowing_status`.`id` = " + BorrowStatus.OVERDUE.getValue();
 
         return getBorrowingRecords(query);
     }
@@ -134,6 +165,7 @@ public class MySQLBorrowingRepository implements BorrowingRepository{
         );
 
         Book book = new Book(
+                resultSet.getInt("book_id"),
                 resultSet.getString("book_code"),
                 resultSet.getString("title"),
                 resultSet.getString("author"),
@@ -144,6 +176,7 @@ public class MySQLBorrowingRepository implements BorrowingRepository{
         );
 
         Member member = new Member(
+                resultSet.getInt("member_id"),
                 resultSet.getString("member_code"),
                 resultSet.getString("name"),
                 resultSet.getString("email"),

@@ -14,4 +14,6 @@ public interface BorrowingRepository {
     boolean deleteById(String id);
     List<BorrowingRecord> findActiveLoans();
     List<BorrowingRecord> findAllOverdue();
+    Integer countAll();
+    BorrowingRecord findLast();
 }
