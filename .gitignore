@@ -48,3 +48,4 @@ build/
 Thumbs.db
 /src/main/resources/io/github/sachintha_madubashana/libraryos/bin/
 /src/main/java/io/github/sachintha_madubashana/libraryos/bin
+.env
