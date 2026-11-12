@@ -90,4 +90,9 @@ public class Member implements Serializable {
     public void setJoinedDate(LocalDate joinedDate) {
         this.joinedDate = joinedDate;
     }
+
+    @Override
+    public String toString() {
+        return code.toUpperCase() + " - " + fullName;
+    }
 }

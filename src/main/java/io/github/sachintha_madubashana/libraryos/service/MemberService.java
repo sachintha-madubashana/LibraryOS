@@ -129,6 +129,6 @@ public class MemberService {
     }
 
     private String getNewMemberId(int number) {
-        return "MB" + String.format("%05d", (number + 1));
+        return "mb" + String.format("%05d", (number + 1));
     }
 }

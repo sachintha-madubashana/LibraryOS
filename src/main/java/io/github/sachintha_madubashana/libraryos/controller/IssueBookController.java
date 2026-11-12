@@ -16,15 +16,16 @@ import javafx.scene.layout.VBox;
 import org.kordamp.ikonli.feather.Feather;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Objects;
 
 public class IssueBookController {
     @FXML
-    private DropdownSelect<String> memberDropdown;
+    private DropdownSelect<Member> memberDropdown;
 
     @FXML
-    private DropdownSelect<String> bookDropdown;
+    private DropdownSelect<Book> bookDropdown;
 
     @FXML
     private InputField issueDateInput;
@@ -52,8 +53,8 @@ public class IssueBookController {
 
     @FXML
     private void initialize() {
-        issueDateInput.setDateValue(LocalDate.now());
-        dueDateInput.setDateValue(LocalDate.now().plusDays(7));
+        issueDateInput.setDateValue(LocalDate.now(ZoneId.systemDefault()));
+        dueDateInput.setDateValue(LocalDate.now(ZoneId.systemDefault()).plusDays(7));
 
         Result<List<Member>> memberResult = AppServices.getInstance().getMemberService().getMembers();
 
@@ -62,10 +63,13 @@ public class IssueBookController {
             return;
         }
 
-        memberDropdown.getItems().addAll(memberResult.getData().stream().map(member -> member.getId() + " - " + member.getFullName()).toList());
-        memberDropdown.setValue("Select");
+        memberDropdown.getItems().addAll(memberResult.getData());
         memberDropdown.setOnSelectionChanged((event -> {
-            Result<Member> result = AppServices.getInstance().getMemberService().getMemberById(memberDropdown.getValue().split(" - ")[0]);
+            if (memberDropdown.getValue() == null) {
+                return;
+            }
+
+            Result<Member> result = AppServices.getInstance().getMemberService().getMemberById(memberDropdown.getValue().getCode());
 
             if (result.isError()) {
                 System.out.println(result.getMessage());
@@ -83,10 +87,13 @@ public class IssueBookController {
             return;
         }
 
-        bookDropdown.getItems().addAll(bookResult.getData().stream().map(book -> book.getCode() + " - " + book.getTitle()).toList());
-        bookDropdown.setValue("Select");
+        bookDropdown.getItems().addAll(bookResult.getData());
         bookDropdown.setOnSelectionChanged(event -> {
-            Result<Book> result = AppServices.getInstance().getBookService().getBookById(bookDropdown.getValue().split(" - ")[0]);
+            if (bookDropdown.getValue() == null) {
+                return;
+            }
+
+            Result<Book> result = AppServices.getInstance().getBookService().getBookById(bookDropdown.getValue().getCode());
 
             if (result.isError()) {
                 System.out.println(result.getMessage());
@@ -138,10 +145,8 @@ public class IssueBookController {
     }
 
     private void clear() {
-        memberDropdown.clearValue();
-        memberDropdown.setValue("Select");
-        bookDropdown.clearValue();
-        bookDropdown.setValue("Select");
+        memberDropdown.clearSelection();
+        bookDropdown.clearSelection();
         issueDateInput.clear();
         dueDateInput.clear();
         loadEmptyInfoCards();

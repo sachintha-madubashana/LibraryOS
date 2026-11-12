@@ -14,9 +14,6 @@
     <StackPane styleClass="dropdown-container">
         <ComboBox fx:id="comboBox" maxWidth="Infinity" StackPane.alignment="CENTER_LEFT" />
         <FontIcon iconLiteral="fth-chevron-down" mouseTransparent="true" styleClass="dropdown-arrow" translateX="-20.0" StackPane.alignment="CENTER_RIGHT" />
-      <VBox.margin>
-         <Insets />
-      </VBox.margin>
     </StackPane>
     <Label fx:id="errorLabel" managed="false" styleClass="input-error-label" visible="false" wrapText="true" />
 </fx:root>

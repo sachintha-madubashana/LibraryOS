@@ -100,4 +100,9 @@ public class Book implements Serializable {
     public void setPublishedYear(Integer publishedYear) {
         this.publishedYear = publishedYear;
     }
+
+    @Override
+    public String toString() {
+        return code.toUpperCase() + " - " + title;
+    }
 }

@@ -110,7 +110,7 @@ public class BorrowingService {
     }
 
     private String getNewBorrowingId(int number) {
-        return "BR" + String.format("%05d", (number + 1));
+        return "br" + String.format("%05d", (number + 1));
     }
 
     public Result<List<BorrowingRecord>> findActiveLoans() {
