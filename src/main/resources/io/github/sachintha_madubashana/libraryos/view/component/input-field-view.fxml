@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import org.kordamp.ikonli.javafx.*?>
@@ -19,15 +20,20 @@
 
         <PasswordField fx:id="passwordField" prefHeight="40.0" prefWidth="253.0" styleClass="input-text-field" visible="false" HBox.hgrow="ALWAYS" />
 
-        <DatePicker fx:id="datePicker" prefHeight="40.0" prefWidth="253.0" styleClass="input-date-picker" visible="false" HBox.hgrow="ALWAYS" />
+        <DatePicker fx:id="datePicker" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="253.0" styleClass="input-date-picker" visible="false" HBox.hgrow="ALWAYS" />
 
         <TextField fx:id="yearField" prefHeight="40.0" prefWidth="253.0" styleClass="input-text-field" visible="false" HBox.hgrow="ALWAYS" />
+      <TextArea fx:id="textArea" managed="false" minHeight="80.0" prefHeight="100.0" prefWidth="253.0" styleClass="input-text-area" visible="false" wrapText="true" HBox.hgrow="ALWAYS" />
 
-        <Button fx:id="passwordShowHideButton" mnemonicParsing="false" onAction="#changeEye" styleClass="eye-button" visible="false">
+        <Button fx:id="showHideButton" mnemonicParsing="false" styleClass="eye-button" visible="false">
             <graphic>
-                <FontIcon fx:id="passwordShowHideButtonIcon" iconLiteral="fth-eye" iconSize="16" styleClass="eye-button-icon" />
+                <FontIcon fx:id="showHideButtonIcon" iconLiteral="fth-eye" iconSize="16" styleClass="eye-button-icon" />
             </graphic>
         </Button>
     </HBox>
      <Label fx:id="errorLabel" managed="false" styleClass="input-error-label" visible="false" wrapText="true" />
+   <cursor>
+      <Cursor fx:constant="HAND" />
+   </cursor>
 </fx:root>
+

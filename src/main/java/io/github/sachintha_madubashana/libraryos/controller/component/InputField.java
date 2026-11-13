@@ -1,14 +1,15 @@
 package io.github.sachintha_madubashana.libraryos.controller.component;
 
 import io.github.sachintha_madubashana.libraryos.Launcher;
-import io.github.sachintha_madubashana.libraryos.model.InputType;
 import javafx.beans.property.*;
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import org.kordamp.ikonli.feather.Feather;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.IOException;
@@ -40,17 +41,13 @@ public class InputField extends VBox {
     @FXML
     private Label requiredIndicator;
 
-    // -------------------------------------------------------------------------
     // Internal State
-    // -------------------------------------------------------------------------
     @FXML
     private HBox container;
     @FXML
     private FontIcon icon;
 
-    // -------------------------------------------------------------------------
     // JavaFX Properties
-    // -------------------------------------------------------------------------
     @FXML
     private TextField textField;
     @FXML
@@ -60,24 +57,20 @@ public class InputField extends VBox {
     @FXML
     private TextField yearField;
     @FXML
-    private FontIcon passwordShowHideButtonIcon;
+    private FontIcon showHideButtonIcon;
     @FXML
-    private Button passwordShowHideButton;
+    private Button showHideButton;
     @FXML
     private Label errorLabel;
+    @FXML
+    private TextArea textArea;
+
     private TextField currentTextField;
     private boolean passwordVisible = false;
 
-    // -------------------------------------------------------------------------
     // Constructor
-    // -------------------------------------------------------------------------
-
     public InputField() {
-        FXMLLoader fxmlLoader = new FXMLLoader(
-                Launcher.class.getResource(
-                        "view/component/input-field-view.fxml"
-                )
-        );
+        FXMLLoader fxmlLoader = new FXMLLoader(Launcher.class.getResource("view/component/input-field-view.fxml"));
 
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -85,21 +78,13 @@ public class InputField extends VBox {
         try {
             fxmlLoader.load();
         } catch (IOException e) {
-            throw new RuntimeException(
-                    "Failed to load InputField FXML.",
-                    e
-            );
+            throw new RuntimeException("Failed to load InputField FXML.", e);
         }
     }
 
-
-    // -------------------------------------------------------------------------
     // Initialization
-    // -------------------------------------------------------------------------
-
     @FXML
     private void initialize() {
-
         // Property bindings
         label.textProperty().bind(labelText);
 
@@ -108,6 +93,7 @@ public class InputField extends VBox {
         datePicker.promptTextProperty().bind(promptText);
         datePicker.valueProperty().bindBidirectional(dateValue);
         yearField.promptTextProperty().bind(promptText);
+        textArea.promptTextProperty().bind(promptText);
 
         icon.visibleProperty().bind(iconEnabled);
         icon.managedProperty().bind(iconEnabled);
@@ -147,6 +133,7 @@ public class InputField extends VBox {
 
             yearValue.set(Integer.parseInt(newValue));
         });
+
         errorMessage.addListener(
                 (obs, oldValue, newValue) -> updateErrorState()
         );
@@ -166,12 +153,22 @@ public class InputField extends VBox {
                 (obs, oldValue, newValue) ->
                         updateFocus(newValue)
         );
+        textArea.focusedProperty().addListener(
+                (obs, oldValue, newValue) ->
+                        updateFocus(newValue)
+        );
+        datePicker.focusedProperty().addListener(
+                (obs, oldValue, newValue) ->
+                        updateFocus(newValue)
+        );
+        datePicker.showingProperty().addListener((observable, oldValue, newValue) -> {
+            showHideButton.setDisable(Boolean.TRUE.equals(newValue));
+        });
 
 
         // Number validation.
         textField.textProperty().addListener(
                 (obs, oldValue, newValue) -> {
-
                     if (inputType.get() != InputType.NUMBER) {
                         return;
                     }
@@ -182,10 +179,8 @@ public class InputField extends VBox {
                 }
         );
 
-
         // Initial component state
-        passwordShowHideButton.setVisible(false);
-        passwordShowHideButton.setManaged(false);
+        setManagedAndVisible(showHideButton, false);
 
         updateLabelVisibility();
         updateRequiredIndicator();
@@ -195,35 +190,18 @@ public class InputField extends VBox {
         updateErrorState();
     }
 
-
-    // -------------------------------------------------------------------------
     // Label
-    // -------------------------------------------------------------------------
-
     private void updateLabelVisibility() {
-
-        boolean hasLabel =
-                labelText.get() != null &&
-                        !labelText.get().isBlank();
-
+        boolean hasLabel = labelText.get() != null && !labelText.get().isBlank();
         setManagedAndVisible(labelContainer, hasLabel);
     }
 
     private void updateRequiredIndicator() {
-
-        boolean showRequired =
-                required.get() &&
-                        labelText.get() != null &&
-                        !labelText.get().isBlank();
-
+        boolean showRequired = required.get() && labelText.get() != null && !labelText.get().isBlank();
         setManagedAndVisible(requiredIndicator, showRequired);
     }
 
-
-    // -------------------------------------------------------------------------
     // Input Type
-    // -------------------------------------------------------------------------
-
     private void switchInputField(InputType type) {
 
         if (type == null) {
@@ -234,7 +212,14 @@ public class InputField extends VBox {
         setManagedAndVisible(passwordField, false);
         setManagedAndVisible(datePicker, false);
         setManagedAndVisible(yearField, false);
-        setManagedAndVisible(passwordShowHideButton, false);
+        setManagedAndVisible(showHideButton, false);
+        setManagedAndVisible(textArea, false);
+
+        container.getStyleClass().remove("input-box-single-line");
+
+        if (type != InputType.TEXT_AREA) {
+            container.getStyleClass().add("input-box-single-line");
+        }
 
         if (type != InputType.PASSWORD) {
             passwordVisible = false;
@@ -259,28 +244,33 @@ public class InputField extends VBox {
             case PASSWORD -> {
                 currentTextField = passwordField;
                 setManagedAndVisible(passwordField, true);
-                setManagedAndVisible(passwordShowHideButton, true);
-                passwordShowHideButtonIcon.setIconLiteral("fth-eye");
+                setManagedAndVisible(showHideButton, true);
+                showHideButtonIcon.setIconLiteral("fth-eye");
                 setDefaultIcon("fth-lock");
+                showHideButton.setOnAction(event -> changeEye());
             }
             case DATE -> {
                 currentTextField = null;
                 setManagedAndVisible(datePicker, true);
+                setManagedAndVisible(showHideButton, true);
+                showHideButtonIcon.setIconLiteral(Feather.CALENDAR.getDescription());
                 setDefaultIcon("fth-calendar");
+                showHideButton.setOnAction(event -> showDatePickerPopup());
             }
             case YEAR -> {
                 currentTextField = yearField;
                 setManagedAndVisible(yearField, true);
                 setDefaultIcon("fth-calendar");
             }
+            case TEXT_AREA -> {
+                currentTextField = null;
+                setManagedAndVisible(textArea, true);
+                setDefaultIcon("fth-align-left");
+            }
         }
     }
 
-
-    // -------------------------------------------------------------------------
     // Icon
-    // -------------------------------------------------------------------------
-
     private void setDefaultIcon(String defaultIcon) {
         if (iconLiteral.get() == null || iconLiteral.get().isBlank()) {
             iconLiteral.set(defaultIcon);
@@ -294,10 +284,7 @@ public class InputField extends VBox {
         }
     }
 
-    // -------------------------------------------------------------------------
     // Focus
-    // -------------------------------------------------------------------------
-
     private void updateFocus(boolean focused) {
         if (focused) {
             if (!container.getStyleClass().contains("input-box-focused")) {
@@ -311,18 +298,16 @@ public class InputField extends VBox {
 
     @Override
     public void requestFocus() {
-        if (currentTextField != null) {
+        if (textArea.isVisible()) {
+            textArea.requestFocus();
+        } else if (currentTextField != null) {
             currentTextField.requestFocus();
         } else if (datePicker != null) {
             datePicker.requestFocus();
         }
     }
 
-    // -------------------------------------------------------------------------
     // Password Visibility
-    // -------------------------------------------------------------------------
-
-    @FXML
     private void changeEye() {
         if (passwordVisible) {
             hidePassword();
@@ -331,12 +316,18 @@ public class InputField extends VBox {
         }
     }
 
+    // Date Picker Popup Show/Hide
+    private void showDatePickerPopup() {
+        this.requestFocus();
+        datePicker.show();
+    }
+
     private void showPassword() {
         textField.setText(passwordField.getText());
         setManagedAndVisible(passwordField, false);
         setManagedAndVisible(textField, true);
         currentTextField = textField;
-        passwordShowHideButtonIcon.setIconLiteral("fth-eye-off");
+        showHideButtonIcon.setIconLiteral("fth-eye-off");
         passwordVisible = true;
     }
 
@@ -345,15 +336,11 @@ public class InputField extends VBox {
         setManagedAndVisible(textField, false);
         setManagedAndVisible(passwordField, true);
         currentTextField = passwordField;
-        passwordShowHideButtonIcon.setIconLiteral("fth-eye");
+        showHideButtonIcon.setIconLiteral("fth-eye");
         passwordVisible = false;
     }
 
-
-    // -------------------------------------------------------------------------
     // Utility
-    // -------------------------------------------------------------------------
-
     private void setManagedAndVisible(Node node, boolean visible) {
         node.setVisible(visible);
         node.setManaged(visible);
@@ -377,11 +364,7 @@ public class InputField extends VBox {
         }
     }
 
-
-    // -------------------------------------------------------------------------
     // Label Text Property
-    // -------------------------------------------------------------------------
-
     public String getLabelText() {
         return labelText.get();
     }
@@ -394,11 +377,7 @@ public class InputField extends VBox {
         return labelText;
     }
 
-
-    // -------------------------------------------------------------------------
     // Icon Property
-    // -------------------------------------------------------------------------
-
     public String getIconLiteral() {
         return iconLiteral.get();
     }
@@ -411,10 +390,7 @@ public class InputField extends VBox {
         return iconLiteral;
     }
 
-    // -------------------------------------------------------------------------
     // Prompt Text Property
-    // -------------------------------------------------------------------------
-
     public String getPromptText() {
         return promptText.get();
     }
@@ -427,27 +403,29 @@ public class InputField extends VBox {
         return promptText;
     }
 
-    // -------------------------------------------------------------------------
     // Input Value
-    // -------------------------------------------------------------------------
-
     public String getInputValue() {
+        if (textArea.isVisible()) {
+            return textArea.getText();
+        }
+
         return currentTextField != null
                 ? currentTextField.getText()
                 : "";
     }
 
     public void setInputValue(String value) {
+        if (textArea.isVisible()) {
+            textArea.setText(value);
+            return;
+        }
+
         if (currentTextField != null) {
             currentTextField.setText(value);
         }
     }
 
-
-    // -------------------------------------------------------------------------
     // Input Type Property
-    // -------------------------------------------------------------------------
-
     public InputType getInputType() {
         return inputType.get();
     }
@@ -460,11 +438,7 @@ public class InputField extends VBox {
         return inputType;
     }
 
-
-    // -------------------------------------------------------------------------
     // Icon Enabled Property
-    // -------------------------------------------------------------------------
-
     public boolean isIconEnabled() {
         return iconEnabled.get();
     }
@@ -477,11 +451,7 @@ public class InputField extends VBox {
         return iconEnabled;
     }
 
-
-    // -------------------------------------------------------------------------
     // Required Property
-    // -------------------------------------------------------------------------
-
     public boolean isRequired() {
         return required.get();
     }
@@ -494,11 +464,7 @@ public class InputField extends VBox {
         return required;
     }
 
-
-    // -------------------------------------------------------------------------
     // Date Property
-    // -------------------------------------------------------------------------
-
     public LocalDate getDateValue() {
         return dateValue.get();
     }
@@ -511,10 +477,7 @@ public class InputField extends VBox {
         return dateValue;
     }
 
-    // -------------------------------------------------------------------------
     // Year Property
-    // -------------------------------------------------------------------------
-
     public Integer getYearValue() {
         return yearValue.get();
     }
@@ -533,11 +496,7 @@ public class InputField extends VBox {
         return yearValue;
     }
 
-
-    // -------------------------------------------------------------------------
     // Error Property
-    // -------------------------------------------------------------------------
-
     public String getErrorMessage() {
         return errorMessage.get();
     }
@@ -556,7 +515,6 @@ public class InputField extends VBox {
 
     public boolean hasError() {
         String message = errorMessage.get();
-
         return message != null && !message.isBlank();
     }
 
@@ -564,7 +522,43 @@ public class InputField extends VBox {
         if (currentTextField != null) {
             currentTextField.clear();
         }
+        textArea.clear();
         yearField.clear();
         errorMessage.set(null);
+    }
+
+    //set context menu
+    public void setContextMenu(ContextMenu contextMenu) {
+        if (textArea.isVisible()) {
+            textArea.setContextMenu(contextMenu);
+            return;
+        }
+
+        if (currentTextField != null) {
+            currentTextField.setContextMenu(contextMenu);
+        }
+    }
+
+    //Listeners
+    public void setOnInputChange(ChangeListener<String> listener) {
+        if (textArea.isVisible()) {
+            textArea.textProperty().addListener(listener);
+            return;
+        }
+
+        if (currentTextField != null) {
+            currentTextField.textProperty().addListener(listener);
+        }
+    }
+
+    public enum InputType {
+        DEFAULT,
+        TEXT,
+        EMAIL,
+        NUMBER,
+        PASSWORD,
+        DATE,
+        YEAR,
+        TEXT_AREA
     }
 }
