@@ -3,11 +3,11 @@ package io.github.sachintha_madubashana.libraryos.controller.component;
 import io.github.sachintha_madubashana.libraryos.Launcher;
 import javafx.beans.property.*;
 import javafx.collections.ObservableList;
+import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -17,24 +17,19 @@ import java.io.IOException;
 
 public class DropdownSelect<T> extends VBox {
 
-    @FXML
-    private HBox labelContainer;
-
-    @FXML
-    private Label label;
-
-    @FXML
-    private Label requiredIndicator;
-
-    @FXML
-    private Label errorLabel;
-
-    @FXML
-    private ComboBox<T> comboBox;
-
     private final StringProperty labelText = new SimpleStringProperty(this, "labelText", "");
     private final BooleanProperty required = new SimpleBooleanProperty(this, "required", false);
     private final StringProperty error = new SimpleStringProperty(this, "error", "");
+    @FXML
+    private HBox labelContainer;
+    @FXML
+    private Label label;
+    @FXML
+    private Label requiredIndicator;
+    @FXML
+    private Label errorLabel;
+    @FXML
+    private ComboBox<T> comboBox;
 
     public DropdownSelect() {
         FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("view/component/dropdown-select.fxml"));
@@ -53,19 +48,16 @@ public class DropdownSelect<T> extends VBox {
 
     private void initialize() {
         label.textProperty().bind(labelText);
-
         errorLabel.textProperty().bind(error);
-
-        labelText.addListener((obs, oldValue, newValue) -> {
-            updateLabelVisibility();
-            updateRequiredIndicator();
-        });
-        required.addListener((obs, oldValue, newValue) -> updateRequiredIndicator());
+        labelContainer.visibleProperty().bind(labelText.isNotEmpty());
+        labelContainer.managedProperty().bind(labelContainer.visibleProperty());
+        requiredIndicator.visibleProperty().bind(required.and(labelText.isNotEmpty()));
+        requiredIndicator.managedProperty().bind(requiredIndicator.visibleProperty());
+        errorLabel.visibleProperty().bind(error.isNotEmpty());
+        errorLabel.managedProperty().bind(errorLabel.visibleProperty());
         error.addListener((obs, oldValue, newValue) -> updateErrorState());
-
-        updateLabelVisibility();
-        updateRequiredIndicator();
         updateErrorState();
+        comboBox.setPromptText("Select");
     }
 
     // -------------------------------------------------------------------------
@@ -120,51 +112,26 @@ public class DropdownSelect<T> extends VBox {
         setError("");
     }
 
-    private void updateLabelVisibility() {
-        boolean hasLabel = labelText.get() != null && !labelText.get().isBlank();
-        setManagedAndVisible(labelContainer, hasLabel);
-    }
-
-    private void updateRequiredIndicator() {
-        boolean showRequired = required.get()
-                && labelText.get() != null
-                && !labelText.get().isBlank();
-        setManagedAndVisible(requiredIndicator, showRequired);
-    }
-
     private void updateErrorState() {
         boolean hasError = error.get() != null && !error.get().isBlank();
-        setManagedAndVisible(errorLabel, hasError);
-
-        if (hasError) {
-            if (!comboBox.getStyleClass().contains("input-error")) {
-                comboBox.getStyleClass().add("input-error");
-            }
-        } else {
-            comboBox.getStyleClass().remove("input-error");
-        }
+        comboBox.pseudoClassStateChanged(PseudoClass.getPseudoClass("error"), hasError);
     }
 
-//    // -------------------------------------------------------------------------
-//    // Items
-//    // -------------------------------------------------------------------------
-//
-//    public ObservableList<T> getItems() {
-//        return comboBox.getItems();
-//    }
-//
-//    public void setItems(ObservableList<T> items) {
-//        comboBox.setItems(items);
-//    }
-//
-//    public ObjectProperty<ObservableList<T>> itemsProperty() {
-//        return comboBox.itemsProperty();
-//    }
-
     // -------------------------------------------------------------------------
-    // ComboBox
+    // Items
     // -------------------------------------------------------------------------
 
+    public ObservableList<T> getItems() {
+        return comboBox.getItems();
+    }
+
+    public void setItems(ObservableList<T> items) {
+        comboBox.setItems(items);
+    }
+
+    // -------------------------------------------------------------------------
+    // Value
+    // -------------------------------------------------------------------------
     public T getValue() {
         return comboBox.getValue();
     }
@@ -177,16 +144,25 @@ public class DropdownSelect<T> extends VBox {
         return comboBox.valueProperty();
     }
 
-    public ObservableList<T> getItems() {
-        return comboBox.getItems();
-    }
-
-    public void clearValue() {
+    // -------------------------------------------------------------------------
+    // Selection
+    // -------------------------------------------------------------------------
+    public void clearSelection() {
+        comboBox.setPromptText("Select");
+        comboBox.setValue(null);
         comboBox.getSelectionModel().clearSelection();
     }
 
-    public ComboBox<T> getComboBox() {
-        return comboBox;
+    public void selectFirst() {
+        comboBox.getSelectionModel().selectFirst();
+    }
+
+    public void select(int index) {
+        comboBox.getSelectionModel().select(index);
+    }
+
+    public void setPromptText(String value) {
+        comboBox.setPromptText(value);
     }
 
     public void show() {
@@ -206,10 +182,9 @@ public class DropdownSelect<T> extends VBox {
         comboBox.requestFocus();
     }
 
-    private void setManagedAndVisible(Node node, boolean visible) {
-        node.setVisible(visible);
-        node.setManaged(visible);
-    }
+    // -------------------------------------------------------------------------
+    // Events
+    // -------------------------------------------------------------------------
 
     public void setOnSelectionChanged(EventHandler<ActionEvent> value) {
         comboBox.setOnAction(value);

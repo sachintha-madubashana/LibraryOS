@@ -17,7 +17,7 @@ public class MySQLMemberRepository implements MemberRepository{
 
     @Override
     public Optional<Member> findById(String code) {
-        String query = "SELECT `member_code`, `name`, `email`, `phone`, `address`,`joined_date` FROM `member` WHERE `member_code` = ?";
+        String query = "SELECT `id`, `member_code`, `name`, `email`, `phone`, `address`,`joined_date` FROM `member` WHERE `member_code` = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, code);
@@ -25,6 +25,7 @@ public class MySQLMemberRepository implements MemberRepository{
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     Member member = new Member(
+                            resultSet.getInt("id"),
                             resultSet.getString("member_code"),
                             resultSet.getString("name"),
                             resultSet.getString("email"),

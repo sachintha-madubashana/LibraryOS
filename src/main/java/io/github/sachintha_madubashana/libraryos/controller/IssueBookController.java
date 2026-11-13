@@ -3,28 +3,31 @@ package io.github.sachintha_madubashana.libraryos.controller;
 import io.github.sachintha_madubashana.libraryos.Launcher;
 import io.github.sachintha_madubashana.libraryos.common.result.Result;
 import io.github.sachintha_madubashana.libraryos.controller.component.*;
-import io.github.sachintha_madubashana.libraryos.model.Book;
-import io.github.sachintha_madubashana.libraryos.model.BorrowStatus;
-import io.github.sachintha_madubashana.libraryos.model.BorrowingRecord;
-import io.github.sachintha_madubashana.libraryos.model.Member;
+import io.github.sachintha_madubashana.libraryos.event.NotificationEvent;
+import io.github.sachintha_madubashana.libraryos.model.*;
 import io.github.sachintha_madubashana.libraryos.service.AppServices;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import org.kordamp.ikonli.feather.Feather;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Objects;
 
 public class IssueBookController {
     @FXML
-    private DropdownSelect<String> memberDropdown;
+    private HBox root;
 
     @FXML
-    private DropdownSelect<String> bookDropdown;
+    private DropdownSelect<Member> memberDropdown;
+
+    @FXML
+    private DropdownSelect<Book> bookDropdown;
 
     @FXML
     private InputField issueDateInput;
@@ -52,23 +55,26 @@ public class IssueBookController {
 
     @FXML
     private void initialize() {
-        issueDateInput.setDateValue(LocalDate.now());
-        dueDateInput.setDateValue(LocalDate.now().plusDays(7));
+        issueDateInput.setDateValue(LocalDate.now(ZoneId.systemDefault()));
+        dueDateInput.setDateValue(LocalDate.now(ZoneId.systemDefault()).plusDays(7));
 
         Result<List<Member>> memberResult = AppServices.getInstance().getMemberService().getMembers();
 
         if (memberResult.isError()) {
-            System.out.println(memberResult.getMessage());
+            showNotification(new Notification(memberResult.getMessage(), memberResult.getDescription(), Notification.Type.ALERT_ERROR));
             return;
         }
 
-        memberDropdown.getItems().addAll(memberResult.getData().stream().map(member -> member.getId() + " - " + member.getFullName()).toList());
-        memberDropdown.setValue("Select");
+        memberDropdown.getItems().addAll(memberResult.getData());
         memberDropdown.setOnSelectionChanged((event -> {
-            Result<Member> result = AppServices.getInstance().getMemberService().getMemberById(memberDropdown.getValue().split(" - ")[0]);
+            if (memberDropdown.getValue() == null) {
+                return;
+            }
+
+            Result<Member> result = AppServices.getInstance().getMemberService().getMemberById(memberDropdown.getValue().getCode());
 
             if (result.isError()) {
-                System.out.println(result.getMessage());
+                showNotification(new Notification(result.getMessage(), result.getDescription(), Notification.Type.ALERT_ERROR));
                 return;
             }
 
@@ -79,17 +85,20 @@ public class IssueBookController {
         Result<List<Book>> bookResult = AppServices.getInstance().getBookService().getAllBooks();
 
         if (bookResult.isError()) {
-            System.out.println(bookResult.getMessage());
+            showNotification(new Notification(bookResult.getMessage(), bookResult.getDescription(), Notification.Type.ALERT_ERROR));
             return;
         }
 
-        bookDropdown.getItems().addAll(bookResult.getData().stream().map(book -> book.getCode() + " - " + book.getTitle()).toList());
-        bookDropdown.setValue("Select");
+        bookDropdown.getItems().addAll(bookResult.getData());
         bookDropdown.setOnSelectionChanged(event -> {
-            Result<Book> result = AppServices.getInstance().getBookService().getBookById(bookDropdown.getValue().split(" - ")[0]);
+            if (bookDropdown.getValue() == null) {
+                return;
+            }
+
+            Result<Book> result = AppServices.getInstance().getBookService().getBookById(bookDropdown.getValue().getCode());
 
             if (result.isError()) {
-                System.out.println(result.getMessage());
+                showNotification(new Notification(result.getMessage(), result.getDescription(), Notification.Type.ALERT_ERROR));
                 return;
             }
 
@@ -138,19 +147,48 @@ public class IssueBookController {
     }
 
     private void clear() {
-        memberDropdown.clearValue();
-        memberDropdown.setValue("Select");
-        bookDropdown.clearValue();
-        bookDropdown.setValue("Select");
+        memberDropdown.clearSelection();
+        bookDropdown.clearSelection();
+        selectedBook = null;
+        selectedMember = null;
         issueDateInput.clear();
         dueDateInput.clear();
         loadEmptyInfoCards();
     }
 
+    private void clearInputErrors() {
+        memberDropdown.clearError();
+        bookDropdown.clearError();
+        issueDateInput.clearError();
+        dueDateInput.clearError();
+    }
+
     private void issueBook() {
+        clearInputErrors();
+
+        if  (selectedMember == null) {
+            memberDropdown.setError("Please select a member to issue the book.");
+            return;
+        }
+
+        if  (selectedBook == null) {
+            bookDropdown.setError("Please select a book to issue.");
+            return;
+        }
+
+        if(issueDateInput.getDateValue() == null) {
+            issueDateInput.setErrorMessage("Please select an issue date.");
+            return;
+        }
+
+        if(dueDateInput.getDateValue() == null) {
+            dueDateInput.setErrorMessage("Please select a due date.");
+            return;
+        }
+
         Result<String> borrowingIdResult = AppServices.getInstance().getBorrowingHistoryService().generateBorrowingId();
         if (borrowingIdResult.isError()) {
-            System.out.println("Error generating borrowing ID");
+            showNotification(new Notification(borrowingIdResult.getMessage(), borrowingIdResult.getDescription(), Notification.Type.ALERT_ERROR));
             return;
         }
 
@@ -160,12 +198,14 @@ public class IssueBookController {
 
         Result<BorrowingRecord> result = AppServices.getInstance().getBorrowingHistoryService().addBorrowing(borrowing);
         if (result.isError()) {
-            System.out.println(result.getMessage());
+            showNotification(new Notification(result.getMessage(), result.getDescription(), Notification.Type.ALERT_ERROR));
             return;
         }
-
-        AlertMessage alert = new AlertMessage(result);
         clear();
-        alert.showIn(column1);
+        showNotification(new Notification(result.getMessage(), result.getDescription(), Notification.Type.ALERT_SUCCESS));
+    }
+
+    private void showNotification(Notification notification) {
+        root.fireEvent(new NotificationEvent(notification));
     }
 }

@@ -97,6 +97,7 @@
     -fx-background-radius: 4px;
     -fx-text-fill: -fx-popover-foreground;
     -fx-padding: 8px 10px;
+    -fx-cell-size: 36px;
 }
 
 /* Item: Hover */
@@ -112,12 +113,15 @@
 }
 
 /* Error State */
-.dropdown-select .combo-box.input-error {
+
+/* ComboBox: Error */
+.dropdown-select .combo-box:error {
     -fx-border-color: -fx-destructive;
     -fx-effect: none;
 }
 
-.dropdown-select .combo-box.input-error:focused {
+/* ComboBox: Error Focus */
+.dropdown-select .combo-box:error:focused {
     -fx-border-color: -fx-destructive;
     -fx-effect: -fx-focus-shadow;
 }
