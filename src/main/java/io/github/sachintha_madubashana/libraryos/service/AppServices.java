@@ -1,6 +1,11 @@
 package io.github.sachintha_madubashana.libraryos.service;
 
-import io.github.sachintha_madubashana.libraryos.repository.*;
+import io.github.sachintha_madubashana.libraryos.repository.BookRepository;
+import io.github.sachintha_madubashana.libraryos.repository.BorrowingRepository;
+import io.github.sachintha_madubashana.libraryos.repository.MemberRepository;
+import io.github.sachintha_madubashana.libraryos.repository.mysql.MySQLBookRepository;
+import io.github.sachintha_madubashana.libraryos.repository.mysql.MySQLBorrowingRepository;
+import io.github.sachintha_madubashana.libraryos.repository.mysql.MySQLMemberRepository;
 
 public class AppServices {
 

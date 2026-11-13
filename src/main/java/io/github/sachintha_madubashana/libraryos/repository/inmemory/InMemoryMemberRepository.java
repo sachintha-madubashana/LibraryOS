@@ -1,6 +1,7 @@
-package io.github.sachintha_madubashana.libraryos.repository;
+package io.github.sachintha_madubashana.libraryos.repository.inmemory;
 
 import io.github.sachintha_madubashana.libraryos.model.Member;
+import io.github.sachintha_madubashana.libraryos.repository.MemberRepository;
 import io.github.sachintha_madubashana.libraryos.service.SampleData;
 import javafx.collections.FXCollections;
 

@@ -1,7 +1,8 @@
-package io.github.sachintha_madubashana.libraryos.repository;
+package io.github.sachintha_madubashana.libraryos.repository.mysql;
 
 import io.github.sachintha_madubashana.libraryos.database.DatabaseConnection;
 import io.github.sachintha_madubashana.libraryos.model.Member;
+import io.github.sachintha_madubashana.libraryos.repository.MemberRepository;
 
 import java.sql.*;
 import java.util.ArrayList;
