@@ -3,6 +3,9 @@ package io.github.sachintha_madubashana.libraryos.service;
 import io.github.sachintha_madubashana.libraryos.repository.BookRepository;
 import io.github.sachintha_madubashana.libraryos.repository.BorrowingRepository;
 import io.github.sachintha_madubashana.libraryos.repository.MemberRepository;
+import io.github.sachintha_madubashana.libraryos.repository.hibernate.HibernateBookRepository;
+import io.github.sachintha_madubashana.libraryos.repository.hibernate.HibernateBorrowingRepository;
+import io.github.sachintha_madubashana.libraryos.repository.hibernate.HibernateMemberRepository;
 import io.github.sachintha_madubashana.libraryos.repository.mysql.MySQLBookRepository;
 import io.github.sachintha_madubashana.libraryos.repository.mysql.MySQLBorrowingRepository;
 import io.github.sachintha_madubashana.libraryos.repository.mysql.MySQLMemberRepository;
@@ -16,9 +19,9 @@ public class AppServices {
     private final DashboardService dashboardService;
 
     private AppServices() {
-        BookRepository bookRepository = new MySQLBookRepository();
-        BorrowingRepository borrowingRepository = new MySQLBorrowingRepository();
-        MemberRepository memberRepository = new MySQLMemberRepository();
+        BookRepository bookRepository = new HibernateBookRepository();
+        BorrowingRepository borrowingRepository = new HibernateBorrowingRepository();
+        MemberRepository memberRepository = new HibernateMemberRepository();
 
         bookService = new BookService(bookRepository);
         borrowingService = new BorrowingService(borrowingRepository);
