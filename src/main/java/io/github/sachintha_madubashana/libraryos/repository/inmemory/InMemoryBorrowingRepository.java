@@ -1,7 +1,8 @@
-package io.github.sachintha_madubashana.libraryos.repository;
+package io.github.sachintha_madubashana.libraryos.repository.inmemory;
 
 import io.github.sachintha_madubashana.libraryos.model.BorrowStatus;
 import io.github.sachintha_madubashana.libraryos.model.BorrowingRecord;
+import io.github.sachintha_madubashana.libraryos.repository.BorrowingRepository;
 import io.github.sachintha_madubashana.libraryos.service.SampleData;
 
 import java.util.ArrayList;

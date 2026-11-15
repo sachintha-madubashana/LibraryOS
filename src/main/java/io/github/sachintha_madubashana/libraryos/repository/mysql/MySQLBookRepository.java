@@ -1,8 +1,9 @@
-package io.github.sachintha_madubashana.libraryos.repository;
+package io.github.sachintha_madubashana.libraryos.repository.mysql;
 
 import io.github.sachintha_madubashana.libraryos.database.DatabaseConnection;
 import io.github.sachintha_madubashana.libraryos.model.Book;
 import io.github.sachintha_madubashana.libraryos.model.Category;
+import io.github.sachintha_madubashana.libraryos.repository.BookRepository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
