@@ -46,19 +46,12 @@ public class HibernateBookRepository implements BookRepository {
 
     @Override
     public boolean save(Book book) {
-        if (book == null || existsById(book.getCode())) {
-            return false;
-        }
+        if (book == null || existsById(book.getCode())) return false;
 
         Transaction transaction = null;
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
-
             CategoryEntity categoryEntity = session.find(CategoryEntity.class, book.getCategory().getId());
-            if (categoryEntity == null) {
-                transaction.rollback();
-                return false;
-            }
+            if (categoryEntity == null) return false;
 
             BookEntity entity = new BookEntity();
             entity.setCode(book.getCode());
@@ -69,37 +62,27 @@ public class HibernateBookRepository implements BookRepository {
             entity.setAvailableCopies(book.getAvailableCopies());
             entity.setCategory(categoryEntity);
 
+            transaction = session.beginTransaction();
             session.persist(entity);
             transaction.commit();
             return true;
         } catch (Exception e) {
-            if (transaction != null && transaction.isActive()) {
-                transaction.rollback();
-            }
+            if (transaction != null && transaction.isActive()) transaction.rollback();
             throw new RuntimeException("Failed to save book.", e);
         }
     }
 
     @Override
     public boolean update(Book book) {
-        if (book == null || book.getId() == null) {
-            return false;
-        }
+        if (book == null || book.getId() == null) return false;
 
         Transaction transaction = null;
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
-
             BookEntity entity = session.find(BookEntity.class, book.getId());
-            if (entity == null) {
-                transaction.rollback();
-                return false;
-            }
+            if (entity == null) return false;
 
             CategoryEntity categoryEntity = session.find(CategoryEntity.class, book.getCategory().getId());
-            if (categoryEntity == null) {
-                return false;
-            }
+            if (categoryEntity == null) return false;
 
             entity.setTitle(book.getTitle());
             entity.setAuthor(book.getAuthor());
@@ -108,43 +91,34 @@ public class HibernateBookRepository implements BookRepository {
             entity.setAvailableCopies(book.getAvailableCopies());
             entity.setCategory(categoryEntity);
 
+            transaction = session.beginTransaction();
             session.merge(entity);
             transaction.commit();
             return true;
         } catch (Exception e) {
-            if (transaction != null && transaction.isActive()) {
-                transaction.rollback();
-            }
+            if (transaction != null && transaction.isActive()) transaction.rollback();
             throw new RuntimeException("Failed to update book.", e);
         }
     }
 
     @Override
     public boolean deleteById(String code) {
-        if (code == null) {
-            return false;
-        }
+        if (code == null) return false;
 
         Transaction transaction = null;
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
-
-            transaction = session.beginTransaction();
             BookEntity entity = session.createQuery("FROM BookEntity WHERE code = :code", BookEntity.class)
                     .setParameter("code", code)
                     .uniqueResult();
 
-            if (entity == null) {
-                transaction.rollback();
-                return false;
-            }
+            if (entity == null) return false;
 
+            transaction = session.beginTransaction();
             session.remove(entity);
             transaction.commit();
             return true;
         } catch (Exception e) {
-            if (transaction != null && transaction.isActive()) {
-                transaction.rollback();
-            }
+            if (transaction != null && transaction.isActive()) transaction.rollback();
             throw new RuntimeException("Failed to delete book.", e);
         }
     }
