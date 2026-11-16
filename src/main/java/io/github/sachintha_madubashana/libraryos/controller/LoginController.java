@@ -6,6 +6,7 @@ import io.github.sachintha_madubashana.libraryos.controller.component.InputField
 import io.github.sachintha_madubashana.libraryos.model.User;
 import io.github.sachintha_madubashana.libraryos.navigation.WindowManager;
 import io.github.sachintha_madubashana.libraryos.service.AuthenticationService;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -56,7 +57,7 @@ public class LoginController {
     }
 
     private void onCloseButtonClick() {
-        System.exit(0);
+        Platform.exit();
     }
 
     private void onLoginButtonClick() {

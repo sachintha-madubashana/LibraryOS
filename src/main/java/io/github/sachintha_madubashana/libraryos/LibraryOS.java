@@ -1,5 +1,7 @@
 package io.github.sachintha_madubashana.libraryos;
 
+import io.github.sachintha_madubashana.libraryos.database.DatabaseConnection;
+import io.github.sachintha_madubashana.libraryos.database.HibernateSessionFactory;
 import io.github.sachintha_madubashana.libraryos.navigation.WindowManager;
 import javafx.application.Application;
 import javafx.scene.text.Font;
@@ -41,10 +43,14 @@ public class LibraryOS extends javafx.application.Application {
                 throw new IllegalStateException("JavaFX could not parse the font: " + path);
             }
 
-//            System.out.println("Loaded font: " + font.getFamily() + " | " + font.getName());
-
         } catch (IOException e) {
             throw new IllegalStateException("Error reading font: " + path, e);
         }
+    }
+
+    @Override
+    public void stop() {
+        HibernateSessionFactory.closeSessionFactory();
+        DatabaseConnection.closeConnection();
     }
 }
