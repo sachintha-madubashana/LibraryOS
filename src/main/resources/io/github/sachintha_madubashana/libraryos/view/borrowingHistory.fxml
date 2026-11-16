@@ -16,9 +16,9 @@
                   <Button fx:id="overDueBtn" alignment="CENTER" minWidth="120.0" mnemonicParsing="false" text="Overdue" />
                </children>
             </HBox>
-         <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-         <InputField fx:id="usernameField" errorMessage="" iconEnabled="false" iconLiteral="" inputType="TEXT" promptText="Search records..." required="true" />
-         <Button alignment="CENTER" minWidth="120.0" mnemonicParsing="false" styleClass="button-primary" text="Search" textAlignment="CENTER" />
+         <Pane prefWidth="100.0" HBox.hgrow="ALWAYS" />
+         <InputField fx:id="searchInput" errorMessage="" iconEnabled="false" iconLiteral="" inputType="TEXT" maxHeight="1.7976931348623157E308" promptText="Search records..." required="true" HBox.hgrow="ALWAYS" />
+         <Button fx:id="searchBtn" alignment="CENTER" minWidth="120.0" mnemonicParsing="false" styleClass="button-primary" text="Search" textAlignment="CENTER" />
       </children>
    </HBox>
    </children>
