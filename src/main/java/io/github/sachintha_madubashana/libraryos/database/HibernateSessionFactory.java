@@ -11,13 +11,25 @@ import java.util.Properties;
 
 public class HibernateSessionFactory {
 
-    private static final SessionFactory sessionFactory;
+    private static SessionFactory sessionFactory;
 
-    static {
-        try {
+    private HibernateSessionFactory() {
+    }
+
+    public static synchronized  SessionFactory getSessionFactory() {
+        if (sessionFactory == null || sessionFactory.isClosed()) {
+            createSessionFactory();
+        }
+
+        return sessionFactory;
+    }
+
+    private static void createSessionFactory() {
             Properties prop = new Properties();
             try (InputStream input = new FileInputStream(".env")) {
                 prop.load(input);
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to load .env file", e);
             }
 
             String database = prop.getProperty("db.database", "library_os");
@@ -31,7 +43,7 @@ public class HibernateSessionFactory {
             configuration.setProperty("hibernate.connection.password", password);
             configuration.setProperty("hibernate.connection.driver_class", "com.mysql.cj.jdbc.Driver");
             configuration.setProperty("hibernate.show_sql", "false");
-            configuration.setProperty("hibernate.hbm2ddl.auto", "update");
+            configuration.setProperty("hibernate.hbm2ddl.auto", prop.getProperty("hibernate.ddl-auto", "validate"));
 
             configuration.addAnnotatedClass(CategoryEntity.class);
             configuration.addAnnotatedClass(BookEntity.class);
@@ -40,15 +52,16 @@ public class HibernateSessionFactory {
             configuration.addAnnotatedClass(BorrowingStatusEntity.class);
 
             sessionFactory = configuration.buildSessionFactory();
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to load .env file", e);
+    }
+
+    public static synchronized void closeSessionFactory() {
+        if (sessionFactory != null) {
+            try {
+                sessionFactory.close();
+                sessionFactory = null;
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to close Hibernate session", e);
+            }
         }
-    }
-
-    private HibernateSessionFactory() {
-    }
-
-    public static SessionFactory getSessionFactory() {
-        return sessionFactory;
     }
 }

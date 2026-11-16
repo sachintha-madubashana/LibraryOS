@@ -1,5 +1,7 @@
 package io.github.sachintha_madubashana.libraryos.service;
 
+import io.github.sachintha_madubashana.libraryos.database.DatabaseConnection;
+import io.github.sachintha_madubashana.libraryos.database.HibernateSessionFactory;
 import io.github.sachintha_madubashana.libraryos.repository.BookRepository;
 import io.github.sachintha_madubashana.libraryos.repository.BorrowingRepository;
 import io.github.sachintha_madubashana.libraryos.repository.MemberRepository;
