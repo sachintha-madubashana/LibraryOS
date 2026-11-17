@@ -25,7 +25,7 @@ public class SampleData {
     }
 
     private static void createUsers() {
-        users.add(new User("admin", "$2a$10$Bqd9aN3td7ZGGBV2g6UNJOnNYU0/R1ahJqIqlnDqiP0J6qJV3rQrS"));
+        users.add(new User("admin", "$2a$12$9.g7Y2zY0leOKA3puWtiDOzyDkjsUf8tXhr3A0GmxRlZ7CFFRdfJm"));
     }
 
     public static List<User> getUsers() {

@@ -58,8 +58,7 @@ public class LoginController {
     }
 
     private void onLoginButtonClick() {
-        User credential = new User(usernameField.getInputValue(), null);
-        credential.setRawPassword(passwordField.getInputValue());
+        User credential = new User(usernameField.getInputValue(), passwordField.getInputValue());
         Result<User> result = AppServices.getInstance().getAuthenticationService().authenticate(credential);
         if (result.isSuccess()) {
             try {
