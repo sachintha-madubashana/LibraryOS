@@ -3,8 +3,8 @@ package io.github.sachintha_madubashana.libraryos.repository.inmemory;
 import io.github.sachintha_madubashana.libraryos.model.Member;
 import io.github.sachintha_madubashana.libraryos.repository.MemberRepository;
 import io.github.sachintha_madubashana.libraryos.service.SampleData;
-import javafx.collections.FXCollections;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,7 +12,7 @@ public class InMemoryMemberRepository implements MemberRepository {
     private final List<Member> members;
 
     public InMemoryMemberRepository() {
-        members = FXCollections.observableArrayList(SampleData.getMembers());
+        members = new ArrayList<>(SampleData.getMembers());
     }
 
     @Override

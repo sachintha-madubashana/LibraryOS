@@ -14,7 +14,6 @@ public class User implements Serializable {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
-//        this.password = hashPassword(password);
     }
 
     public String getUsername() {
@@ -31,7 +30,6 @@ public class User implements Serializable {
 
     public void setRawPassword(String rawPassword) {
         this.rawPassword = rawPassword;
-//        System.out.println("Raw Password: " + hashPassword(rawPassword));
     }
 
     public boolean isEquals(User credential) {
