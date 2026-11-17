@@ -6,15 +6,15 @@ import java.io.Serializable;
 
 public class User implements Serializable {
 
-    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
     private final String username;
     private final String password;
-    private final String rawPassword;
+    private String rawPassword;
 
     public User(String username, String password) {
         this.username = username;
-        this.rawPassword = password;
-        this.password = hashPassword(password);
+        this.password = password;
+//        this.password = hashPassword(password);
     }
 
     public String getUsername() {
@@ -25,12 +25,24 @@ public class User implements Serializable {
         return password;
     }
 
+    public String getRawPassword() {
+        return rawPassword;
+    }
+
+    public void setRawPassword(String rawPassword) {
+        this.rawPassword = rawPassword;
+//        System.out.println("Raw Password: " + hashPassword(rawPassword));
+    }
+
     public boolean isEquals(User credential) {
         if (credential == null || this.username == null || !this.username.equals(credential.getUsername())) {
             return false;
         }
-        String candidatePassword = credential.rawPassword != null ? credential.rawPassword : credential.getPassword();
-        return verifyPassword(candidatePassword);
+        if (credential.rawPassword == null || credential.rawPassword.isEmpty()) {
+            return false;
+        }
+
+        return verifyPassword(credential.rawPassword);
     }
 
     public String hashPassword(String plainPassword) {
