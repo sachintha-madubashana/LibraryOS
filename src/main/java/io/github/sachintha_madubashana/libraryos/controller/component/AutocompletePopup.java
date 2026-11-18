@@ -29,9 +29,7 @@ public class AutocompletePopup<T> extends Popup {
         suggestions = FXCollections.observableArrayList();
 
         container = new VBox();
-        container.getStyleClass().addAll(
-                "autocomplete-popup"
-        );
+        container.getStyleClass().addAll("autocomplete-popup");
 
         listView = new ListView<>();
         listView.getStyleClass().add("autocomplete-list");
@@ -116,9 +114,7 @@ public class AutocompletePopup<T> extends Popup {
             return;
         }
 
-        Bounds bounds = anchor.localToScreen(
-                anchor.getBoundsInLocal()
-        );
+        Bounds bounds = anchor.localToScreen(anchor.getLayoutBounds());
 
         if (bounds == null) {
             return;
@@ -132,11 +128,16 @@ public class AutocompletePopup<T> extends Popup {
 
         updatePopupHeight();
 
+        container.applyCss();
+        double shadowOffsetX = container.getLayoutBounds().getMinX() - container.getBoundsInLocal().getMinX();
+        double targetX = bounds.getMinX() - shadowOffsetX;
+        double targetY = bounds.getMaxY();
+
         if (!isShowing()) {
-            show(anchor, bounds.getMinX(), bounds.getMaxY() + 4);
+            show(anchor, targetX, targetY);
         } else {
-            setX(bounds.getMinX());
-            setY(bounds.getMaxY() + 4);
+            setX(targetX);
+            setY(targetY);
         }
     }
 
