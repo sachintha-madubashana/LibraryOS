@@ -194,6 +194,22 @@ public class HibernateBorrowingRepository implements BorrowingRepository {
         }
     }
 
+    public List<BorrowingRecord> findByStatus(BorrowStatus status) {
+        if (status == null) return new ArrayList<>();
+
+        try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
+            List<BorrowingRecordEntity> entities = session
+                    .createQuery("FROM BorrowingRecordEntity WHERE status.id = :statusId", BorrowingRecordEntity.class)
+                    .setParameter("statusId", status.getValue())
+                    .list();
+            List<BorrowingRecord> records = new ArrayList<>();
+            for (BorrowingRecordEntity entity : entities) {
+                records.add(toDto(entity));
+            }
+            return records;
+        }
+    }
+
     private BorrowingRecord toDto(BorrowingRecordEntity entity) {
         Category category = new Category(
                 entity.getBook().getCategory().getId(),

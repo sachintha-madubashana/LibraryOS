@@ -213,4 +213,10 @@ public class MySQLBorrowingRepository implements BorrowingRepository{
         return borrowingRecords;
     }
 
+    @Override
+    public List<BorrowingRecord> findByStatus(BorrowStatus status) {
+        if (status == null) return new ArrayList<>();
+
+        return getBorrowingRecords("SELECT * FROM borrowing_records WHERE status = '" + status.name() + "'");
+    }
 }

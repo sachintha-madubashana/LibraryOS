@@ -6,9 +6,11 @@ import io.github.sachintha_madubashana.libraryos.controller.component.Pagination
 import io.github.sachintha_madubashana.libraryos.controller.component.table.DataColumn;
 import io.github.sachintha_madubashana.libraryos.controller.component.table.DataTable;
 import io.github.sachintha_madubashana.libraryos.model.Book;
+import io.github.sachintha_madubashana.libraryos.model.BorrowStatus;
 import io.github.sachintha_madubashana.libraryos.model.BorrowingRecord;
 import io.github.sachintha_madubashana.libraryos.model.Member;
 import io.github.sachintha_madubashana.libraryos.service.AppServices;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -46,15 +48,19 @@ public class BorrowingHistoryController {
     InputField searchInput;
 
     ObservableList<BorrowingRecord> borrowings;
+    private Button selectedFilterBtn;
 
     @FXML
     private void initialize() {
+        borrowings = FXCollections.observableArrayList();
+        initiateButtonActions();
+        filterBorrowings(BorrowStatus.ALL);
+        selectButton(allBtn);
         generateTable();
         AutocompletePopup<BorrowingRecord> popup = new AutocompletePopup<>();
         searchInput.setOnInputChange((obs, oldValue, newValue) -> {
             if (newValue == null || newValue.isBlank()) {
                 popup.hide();
-                System.out.println("Input is empty");
                 return;
             }
 
@@ -67,12 +73,11 @@ public class BorrowingHistoryController {
                 popup.showBelow(searchInput);
             } else {
                 popup.hide();
-                System.out.println("No matching records found");
             }
         });
         popup.setOnSuggestionSelected(selectedStudent -> {
             searchInput.setInputValue(selectedStudent.toString());
-            System.out.println("Selected record: " + selectedStudent.getRecordId());
+//            table.setItems(filtered);
         });
     }
 
@@ -89,7 +94,6 @@ public class BorrowingHistoryController {
                 DataColumn.of("RETURN DATE", BorrowingRecord::getReturnDate).width(120),
                 DataColumn.of("STATUS", BorrowingRecord::getStatus).width(110)
         );
-        borrowings = FXCollections.observableArrayList(AppServices.getInstance().getBorrowingHistoryService().getBorrowings().getData());
 
         table.setItems(borrowings);
 
@@ -104,7 +108,8 @@ public class BorrowingHistoryController {
                 }
         );
 
-        Label paginationLabel = new Label(borrowings.size() + " records shown");
+        Label paginationLabel = new Label();
+        paginationLabel.textProperty().bind(Bindings.size(borrowings).asString().concat(" records shown"));
         paginationLabel.getStyleClass().add("text-caption");
         paginationLabel.setAlignment(Pos.CENTER_LEFT);
         paginationLabel.setMaxWidth(Double.MAX_VALUE);
@@ -118,5 +123,54 @@ public class BorrowingHistoryController {
         VBox.setVgrow(table, Priority.ALWAYS);
 
         root.getChildren().addAll(table, paginationContainer);
+    }
+
+    private void initiateButtonActions() {
+        allBtn.setOnAction(event -> {
+            resetButtonStyles(borrowed, returnedBtn, overDueBtn);
+            filterBorrowings(BorrowStatus.ALL);
+            selectButton(allBtn);
+        });
+
+        borrowed.setOnAction(event -> {
+            resetButtonStyles(allBtn, returnedBtn, overDueBtn);
+            filterBorrowings(BorrowStatus.BORROWED);
+            selectButton(borrowed);
+        });
+
+        returnedBtn.setOnAction(event -> {
+            resetButtonStyles(allBtn, borrowed, overDueBtn);
+            filterBorrowings(BorrowStatus.RETURNED);
+            selectButton(returnedBtn);
+        });
+
+        overDueBtn.setOnAction(event -> {
+            resetButtonStyles(allBtn, borrowed, returnedBtn);
+            filterBorrowings(BorrowStatus.OVERDUE);
+            selectButton(overDueBtn);
+        });
+    }
+
+    private void filterBorrowings(BorrowStatus status) {
+        switch (status) {
+            case BORROWED, OVERDUE, RETURNED -> borrowings.setAll(AppServices.getInstance().getBorrowingHistoryService().filterLoans(status).getData());
+            default -> borrowings.setAll(AppServices.getInstance().getBorrowingHistoryService().getBorrowings().getData());
+        }
+    }
+
+    private void resetButtonStyles(Button ... buttons) {
+        for (Button button : buttons) {
+            deselectButton(button);
+        }
+    }
+
+    private void selectButton(Button button) {
+        button.getStyleClass().remove("button-secondary");
+        button.getStyleClass().add("button-primary");
+    }
+
+    private void deselectButton(Button button) {
+        button.getStyleClass().remove("button-primary");
+        button.getStyleClass().add("button-secondary");
     }
 }

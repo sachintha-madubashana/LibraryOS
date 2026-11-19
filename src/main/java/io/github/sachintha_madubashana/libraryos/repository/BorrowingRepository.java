@@ -1,5 +1,6 @@
 package io.github.sachintha_madubashana.libraryos.repository;
 
+import io.github.sachintha_madubashana.libraryos.model.BorrowStatus;
 import io.github.sachintha_madubashana.libraryos.model.BorrowingRecord;
 
 import java.util.List;
@@ -16,4 +17,5 @@ public interface BorrowingRepository {
     List<BorrowingRecord> findAllOverdue();
     Integer countAll();
     BorrowingRecord findLast();
+    List<BorrowingRecord> findByStatus(BorrowStatus status);
 }

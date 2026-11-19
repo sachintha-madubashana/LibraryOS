@@ -1,6 +1,7 @@
 package io.github.sachintha_madubashana.libraryos.model;
 
 public enum BorrowStatus {
+    ALL(0),
     BORROWED(1),
     RETURNED(2),
     OVERDUE(3);
