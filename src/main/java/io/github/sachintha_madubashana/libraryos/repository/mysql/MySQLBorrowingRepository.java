@@ -5,10 +5,8 @@ import io.github.sachintha_madubashana.libraryos.model.*;
 import io.github.sachintha_madubashana.libraryos.repository.BorrowingRepository;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.sql.Date;
+import java.util.*;
 
 public class MySQLBorrowingRepository implements BorrowingRepository{
     private final Connection connection;
@@ -50,22 +48,6 @@ public class MySQLBorrowingRepository implements BorrowingRepository{
         String query = "SELECT book.`id` AS book_id, `borrowing_code`,`issue_date`,`due_date`, `retuned_date`, `book_code`, `title`, `author`, `published_year`, `total_copies`, `available_copies`, `category_id`, `category`, member.`id` AS member_id, `member_code`, `name`, `email`,`phone`, `address`,`joined_date`, `status`  FROM borrowing_record INNER JOIN `book` ON `book_id` = `book`.`id` INNER JOIN `member` ON `member_id` = `member`.`id` INNER JOIN `borrowing_status` ON `borrowing_status_id` = `borrowing_status`.`id` INNER JOIN `category` ON book.category_id = category.id ORDER BY borrowing_code DESC";
 
         return getBorrowingRecords(query);
-    }
-
-    @Override
-    public Integer countAll() {
-        String query = "SELECT COUNT(*) AS total FROM borrowing_record";
-
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                return resultSet.getInt("total");
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed to count borrowing records.", e);
-        }
-
-        return 0;
     }
 
     @Override
@@ -146,20 +128,6 @@ public class MySQLBorrowingRepository implements BorrowingRepository{
         }
     }
 
-    @Override
-    public List<BorrowingRecord> findActiveLoans()  {
-        String query = "SELECT book.`id` AS book_id, `borrowing_code`,`issue_date`,`due_date`, `retuned_date`, `book_code`, `title`, `author`, `published_year`, `total_copies`, `available_copies`, `category_id`, `category`,member.`id` AS member_id, `member_code`, `name`, `email`,`phone`, `address`,`joined_date`, `status`  FROM borrowing_record INNER JOIN `book` ON `book_id` = `book`.`id` INNER JOIN `member` ON `member_id` = `member`.`id` INNER JOIN `borrowing_status` ON `borrowing_status_id` = `borrowing_status`.`id` INNER JOIN `category` ON book.category_id = category.id WHERE `borrowing_status`.`id` != " + BorrowStatus.RETURNED.getValue();
-
-        return getBorrowingRecords(query);
-    }
-
-    @Override
-    public List<BorrowingRecord> findAllOverdue() {
-        String query = "SELECT book.`id` AS book_id, `borrowing_code`,`issue_date`,`due_date`, `retuned_date`, `book_code`, `title`, `author`, `published_year`, `total_copies`, `available_copies`, `category_id`, `category`, member.`id` AS member_id, `member_code`, `name`, `email`,`phone`, `address`,`joined_date`, `status`  FROM borrowing_record INNER JOIN `book` ON `book_id` = `book`.`id` INNER JOIN `member` ON `member_id` = `member`.`id` INNER JOIN `borrowing_status` ON `borrowing_status_id` = `borrowing_status`.`id` INNER JOIN `category` ON book.category_id = category.id WHERE `borrowing_status`.`id` = " + BorrowStatus.OVERDUE.getValue();
-
-        return getBorrowingRecords(query);
-    }
-
     private BorrowingRecord createBorrowingRecordObj(ResultSet resultSet) throws SQLException {
         Category category = new Category(
                 resultSet.getInt("category_id"),
@@ -198,9 +166,12 @@ public class MySQLBorrowingRepository implements BorrowingRepository{
         );
     }
 
-    private List<BorrowingRecord> getBorrowingRecords(String query) {
+    private List<BorrowingRecord> getBorrowingRecords(String query, String... params) {
         List<BorrowingRecord> borrowingRecords = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
+            for (int i = 0; i < params.length; i++) {
+                statement.setString(i + 1, params[i]);
+            }
             var resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
@@ -215,15 +186,54 @@ public class MySQLBorrowingRepository implements BorrowingRepository{
     }
 
     @Override
-    public List<BorrowingRecord> findByStatus(BorrowStatus status) {
-        if (status == null) return new ArrayList<>();
+    public List<BorrowingRecord> findByStatuses(List<BorrowStatus> statuses) {
+        if(statuses == null || statuses.isEmpty()) {
+            throw new IllegalArgumentException("Statuses list cannot be null or empty.");
+        }
 
-        return getBorrowingRecords("SELECT * FROM borrowing_records WHERE status = '" + status.name() + "'");
+        StringBuilder query = new StringBuilder("SELECT book.`id` AS book_id, `borrowing_code`,`issue_date`,`due_date`, `retuned_date`, `book_code`, `title`, `author`, `published_year`, `total_copies`, `available_copies`, `category_id`, `category`, member.`id` AS member_id, `member_code`, `name`, `email`,`phone`, `address`,`joined_date`, `status`  FROM borrowing_record INNER JOIN `book` ON `book_id` = `book`.`id` INNER JOIN `member` ON `member_id` = `member`.`id` INNER JOIN `borrowing_status` ON `borrowing_status_id` = `borrowing_status`.`id` INNER JOIN `category` ON book.category_id = category.id WHERE 1=0");
+        String[] params = new String[statuses.size()];
+
+        for (int i = 0; i < statuses.size(); i++) {
+            query.append(" OR borrowing_status_id = ?");
+            params[i] = String.valueOf(statuses.get(i).getValue());
+        }
+
+        return getBorrowingRecords(query.toString(), params);
     }
 
-    // TODO: Implement this method in MySQLBorrowingRepository
     @Override
     public Map<BorrowStatus, Long> countByStatuses(List<BorrowStatus> statuses) {
-        return Map.of();
+        if(statuses == null || statuses.isEmpty()) {
+            throw new IllegalArgumentException("Statuses list cannot be null or empty.");
+        }
+
+        StringBuilder query = new StringBuilder("SELECT borrowing_status_id, COUNT(*) AS count FROM borrowing_record WHERE 1=0");
+        String[] params = new String[statuses.size()];
+
+        for (int i = 0; i < statuses.size(); i++) {
+            query.append(" OR borrowing_status_id = ?");
+            params[i] = String.valueOf(statuses.get(i).getValue());
+        }
+
+        query.append(" GROUP BY borrowing_status_id");
+        Map<BorrowStatus, Long> statusCountMap = new EnumMap<>(BorrowStatus.class);
+
+        try (PreparedStatement statement = connection.prepareStatement(query.toString())) {
+            for (int j = 0; j < params.length; j++) {
+                statement.setString(j + 1, params[j]);
+            }
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                BorrowStatus status = BorrowStatus.fromValue(resultSet.getInt("borrowing_status_id"));
+                Long count = resultSet.getLong("count");
+                statusCountMap.put(status, count);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to count borrowing records by statuses.", e);
+        }
+
+        return statusCountMap;
     }
 }

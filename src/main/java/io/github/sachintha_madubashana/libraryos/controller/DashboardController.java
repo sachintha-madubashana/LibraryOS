@@ -103,7 +103,6 @@ public class DashboardController {
     private void loadStatsCardData() {
         Result<Map<BorrowStatus, Long>> borrowingCountsResult = AppServices.getInstance().getDashboardService().countBorrowings();
         if (borrowingCountsResult.isError()) {
-            System.out.println("Error: " + borrowingCountsResult.getMessage() + " - " + borrowingCountsResult.getDescription());
             root.fireEvent(new NotificationEvent(new Notification(borrowingCountsResult.getMessage(), borrowingCountsResult.getDescription(), Notification.Type.ALERT_ERROR)));
             return;
         }

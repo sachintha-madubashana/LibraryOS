@@ -5,10 +5,8 @@ import io.github.sachintha_madubashana.libraryos.model.BorrowingRecord;
 import io.github.sachintha_madubashana.libraryos.repository.BorrowingRepository;
 import io.github.sachintha_madubashana.libraryos.service.SampleData;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class InMemoryBorrowingRepository implements BorrowingRepository {
     private final List<BorrowingRecord> borrowings;
@@ -39,13 +37,8 @@ public class InMemoryBorrowingRepository implements BorrowingRepository {
     }
 
     @Override
-    public Integer countAll() {
-        return borrowings.size();
-    }
-
-    @Override
     public BorrowingRecord findLast() {
-        return borrowings.isEmpty() ? null : borrowings.get(borrowings.size() - 1);
+        return borrowings.isEmpty() ? null : borrowings.getLast();
     }
 
     @Override
@@ -84,25 +77,20 @@ public class InMemoryBorrowingRepository implements BorrowingRepository {
     }
 
     @Override
-    public List<BorrowingRecord> findActiveLoans() {
-        return borrowings.stream().filter(borrowingRecord -> !borrowingRecord.getStatus().equals(BorrowStatus.RETURNED)).toList();
+    public List<BorrowingRecord> findByStatuses(List<BorrowStatus> statuses) {
+        if (statuses == null) return new ArrayList<>();
+
+        return borrowings.stream()
+                .filter(borrowingRecord -> statuses.contains(borrowingRecord.getStatus()))
+                .toList();
     }
 
-    @Override
-    public List<BorrowingRecord> findAllOverdue() {
-        return borrowings.stream().filter(borrowingRecord -> borrowingRecord.getStatus().equals(BorrowStatus.OVERDUE)).toList();
-    }
-
-    @Override
-    public List<BorrowingRecord> findByStatus(BorrowStatus status) {
-        if (status == null) return new ArrayList<>();
-
-        return borrowings.stream().filter(borrowingRecord -> borrowingRecord.getStatus().equals(status)).toList();
-    }
-
-    //TODO: Implement this method to count the number of borrowings for each status in the provided list of statuses.
     @Override
     public Map<BorrowStatus, Long> countByStatuses(List<BorrowStatus> statuses) {
-        return Map.of();
+        if (statuses == null) return new EnumMap<>(BorrowStatus.class);
+
+        return borrowings.stream()
+                .filter(borrowingRecord -> statuses.contains(borrowingRecord.getStatus()))
+                .collect(Collectors.groupingBy(BorrowingRecord::getStatus, Collectors.counting()));
     }
 }

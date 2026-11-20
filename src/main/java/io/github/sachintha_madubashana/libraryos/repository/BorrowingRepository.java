@@ -15,15 +15,6 @@ public interface BorrowingRepository {
     boolean update(BorrowingRecord borrowingRecord);
     boolean deleteById(String id);
     BorrowingRecord findLast();
-    List<BorrowingRecord> findByStatus(BorrowStatus status);
+    List<BorrowingRecord> findByStatuses(List<BorrowStatus> statuses);
     Map<BorrowStatus, Long> countByStatuses(List<BorrowStatus> statuses);
-    //Need to Delete this method
-    // --- IGNORE ---
-    List<BorrowingRecord> findActiveLoans();
-    //Need to Delete this method
-    // --- IGNORE ---
-    List<BorrowingRecord> findAllOverdue();
-    //Need to Delete this method
-    // --- IGNORE ---
-    Integer countAll();
 }

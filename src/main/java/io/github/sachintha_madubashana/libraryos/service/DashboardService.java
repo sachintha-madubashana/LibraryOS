@@ -91,21 +91,4 @@ public class DashboardService {
                 counts
         );
     }
-
-    public Result<Integer> countOverdueBorrowings() {
-        List<BorrowingRecord> borrowings = borrowingRepository.findAllOverdue();
-
-        if (borrowings == null) {
-            return Result.error(
-                    "Unable to retrieve Overdue Borrowing count",
-                    "The Overdue Borrowing count could not be loaded."
-            );
-        }
-
-        return Result.success(
-                "Overdue Borrowing count retrieved successfully",
-                "The Overdue Borrowing count has been loaded.",
-                borrowings.size()
-        );
-    }
 }

@@ -114,7 +114,7 @@ public class BorrowingService {
     }
 
     public Result<List<BorrowingRecord>> findActiveLoans() {
-        List<BorrowingRecord> activities = borrowingRepository.findActiveLoans();
+        List<BorrowingRecord> activities = borrowingRepository.findByStatuses(List.of(BorrowStatus.BORROWED, BorrowStatus.OVERDUE));
 
         if (activities == null) {
             return Result.error(
@@ -131,7 +131,7 @@ public class BorrowingService {
     }
 
     public Result<List<BorrowingRecord>> filterLoans(BorrowStatus status) {
-        List<BorrowingRecord> activities = borrowingRepository.findByStatus(status);
+        List<BorrowingRecord> activities = borrowingRepository.findByStatuses(List.of(status));
 
         if (activities == null) {
             return Result.error(

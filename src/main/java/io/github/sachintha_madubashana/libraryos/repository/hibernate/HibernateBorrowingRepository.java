@@ -7,10 +7,6 @@ import io.github.sachintha_madubashana.libraryos.database.entity.BorrowingStatus
 import io.github.sachintha_madubashana.libraryos.database.entity.MemberEntity;
 import io.github.sachintha_madubashana.libraryos.model.*;
 import io.github.sachintha_madubashana.libraryos.repository.BorrowingRepository;
-import jakarta.persistence.Tuple;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -51,16 +47,6 @@ public class HibernateBorrowingRepository implements BorrowingRepository {
                 records.add(toDto(entity));
             }
             return records;
-        }
-    }
-
-    //Need to Delete this method
-    // --- IGNORE ---
-    @Override
-    public Integer countAll() {
-        try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
-            Long count = session.createQuery("SELECT COUNT(*) FROM BorrowingRecordEntity", Long.class).uniqueResult();
-            return count != null ? count.intValue() : 0;
         }
     }
 
@@ -171,70 +157,73 @@ public class HibernateBorrowingRepository implements BorrowingRepository {
         }
     }
 
-    //Need to Delete this method
     @Override
-    public List<BorrowingRecord> findActiveLoans() {
+    public List<BorrowingRecord> findByStatuses(List<BorrowStatus> statuses) {
+        List<BorrowingRecord> records = new ArrayList<>();
+        if (statuses == null) return records;
+
+        StringBuilder query = new StringBuilder("FROM BorrowingRecordEntity WHERE 1=0");
+        Map<String, Object> params = appendStatuesToQuery(statuses, query);
+
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
-            List<BorrowingRecordEntity> entities = session
-                    .createQuery("FROM BorrowingRecordEntity WHERE status.id != :returnedId", BorrowingRecordEntity.class)
-                    .setParameter("returnedId", BorrowStatus.RETURNED.getValue())
-                    .list();
-            List<BorrowingRecord> records = new ArrayList<>();
-            for (BorrowingRecordEntity entity : entities) {
+            Query<BorrowingRecordEntity> sessionQuery = session.createQuery(query.toString(), BorrowingRecordEntity.class);
+            params.forEach(sessionQuery::setParameter);
+
+            List<BorrowingRecordEntity> entityRecords = sessionQuery.list();
+
+            for (BorrowingRecordEntity entity : entityRecords) {
                 records.add(toDto(entity));
             }
             return records;
         }
+
+//        //Criteria Query
+//        try(Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
+//            CriteriaBuilder cb = session.getCriteriaBuilder();
+//            CriteriaQuery<BorrowingRecordEntity> cq = cb.createQuery(BorrowingRecordEntity.class);
+//            var root = cq.from(BorrowingRecordEntity.class);
+//
+//            List<Predicate> predicates = new ArrayList<>();
+//            for (BorrowStatus status : statuses) {
+//                if (status != null) {
+//                    predicates.add(cb.equal(root.get("status").get("id"), status.getValue()));
+//                }
+//            }
+//
+//            if (!predicates.isEmpty()) {
+//                cq.where(cb.or(predicates.toArray(new Predicate[0])));
+//            }
+//
+//            List<BorrowingRecordEntity> entities = session.createQuery(cq).getResultList();
+//            for (BorrowingRecordEntity entity : entities) {
+//                records.add(toDto(entity));
+//            }
+//            return records;
+//        }
+
     }
 
-    //Need to Delete this method
-    @Override
-    public List<BorrowingRecord> findAllOverdue() {
-        try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
-            List<BorrowingRecordEntity> entities = session
-                    .createQuery("FROM BorrowingRecordEntity WHERE status.id = :overdueId", BorrowingRecordEntity.class)
-                    .setParameter("overdueId", BorrowStatus.OVERDUE.getValue())
-                    .list();
-            List<BorrowingRecord> records = new ArrayList<>();
-            for (BorrowingRecordEntity entity : entities) {
-                records.add(toDto(entity));
-            }
-            return records;
-        }
-    }
-
-    @Override
-    public List<BorrowingRecord> findByStatus(BorrowStatus status) {
-        if (status == null) return new ArrayList<>();
-
-        try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
-            List<BorrowingRecordEntity> entities = session
-                    .createQuery("FROM BorrowingRecordEntity WHERE status.id = :statusId", BorrowingRecordEntity.class)
-                    .setParameter("statusId", status.getValue())
-                    .list();
-            List<BorrowingRecord> records = new ArrayList<>();
-            for (BorrowingRecordEntity entity : entities) {
-                records.add(toDto(entity));
-            }
-            return records;
-        }
-    }
-
-    public Map<BorrowStatus, Long> countByStatuses(List<BorrowStatus> statuses){
-        Map<BorrowStatus, Long> counts = new EnumMap<>(BorrowStatus.class);
-        if (statuses == null || statuses.isEmpty()) {
-            return counts;
-        }
-
-        StringBuilder query = new StringBuilder("SELECT status.id, COUNT(*) FROM BorrowingRecordEntity WHERE 1=1");
+    private Map<String, Object> appendStatuesToQuery(List<BorrowStatus> statuses, StringBuilder query) {
         Map<String, Object> params = new HashMap<>();
 
-        for(BorrowStatus status : statuses){
+        for (BorrowStatus status : statuses) {
             if (status == null) continue;
 
             query.append(" OR status.id = :").append(status.name());
             params.put(status.name(), status.getValue());
         }
+        return params;
+    }
+
+    @Override
+    public Map<BorrowStatus, Long> countByStatuses(List<BorrowStatus> statuses) {
+        Map<BorrowStatus, Long> counts = new EnumMap<>(BorrowStatus.class);
+        if (statuses == null || statuses.isEmpty()) {
+            return counts;
+        }
+
+        StringBuilder query = new StringBuilder("SELECT status.id, COUNT(*) FROM BorrowingRecordEntity WHERE 1=0");
+        Map<String, Object> params = appendStatuesToQuery(statuses, query);
         query.append(" GROUP BY status.id");
 
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
