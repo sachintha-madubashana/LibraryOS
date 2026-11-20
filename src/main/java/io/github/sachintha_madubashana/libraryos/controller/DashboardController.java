@@ -1,12 +1,16 @@
 package io.github.sachintha_madubashana.libraryos.controller;
 
+import io.github.sachintha_madubashana.libraryos.common.result.Result;
 import io.github.sachintha_madubashana.libraryos.controller.component.ScrollableList;
 import io.github.sachintha_madubashana.libraryos.controller.component.StatsCard;
 import io.github.sachintha_madubashana.libraryos.controller.component.rows.BookAvailabilityRow;
 import io.github.sachintha_madubashana.libraryos.controller.component.rows.RecentActivityRow;
 import io.github.sachintha_madubashana.libraryos.event.NavigationEvent;
+import io.github.sachintha_madubashana.libraryos.event.NotificationEvent;
 import io.github.sachintha_madubashana.libraryos.model.Book;
+import io.github.sachintha_madubashana.libraryos.model.BorrowStatus;
 import io.github.sachintha_madubashana.libraryos.model.BorrowingRecord;
+import io.github.sachintha_madubashana.libraryos.model.Notification;
 import io.github.sachintha_madubashana.libraryos.navigation.ScenesManager;
 import io.github.sachintha_madubashana.libraryos.service.AppServices;
 import javafx.collections.FXCollections;
@@ -17,6 +21,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import org.kordamp.ikonli.feather.Feather;
+
+import java.util.Map;
 
 public class DashboardController {
 
@@ -95,9 +101,17 @@ public class DashboardController {
     }
 
     private void loadStatsCardData() {
+        Result<Map<BorrowStatus, Long>> borrowingCountsResult = AppServices.getInstance().getDashboardService().countBorrowings();
+        if (borrowingCountsResult.isError()) {
+            System.out.println("Error: " + borrowingCountsResult.getMessage() + " - " + borrowingCountsResult.getDescription());
+            root.fireEvent(new NotificationEvent(new Notification(borrowingCountsResult.getMessage(), borrowingCountsResult.getDescription(), Notification.Type.ALERT_ERROR)));
+            return;
+        }
+
+        Map<BorrowStatus, Long> borrowingCounts = borrowingCountsResult.getData();
         totalBook.setNumber(String.valueOf(AppServices.getInstance().getDashboardService().countBooks().getData()));
         totalMember.setNumber(String.valueOf(AppServices.getInstance().getDashboardService().countMembers().getData()));
-        totalBorrowing.setNumber(String.valueOf(AppServices.getInstance().getDashboardService().countBorrowings().getData()));
-        overDueBorrowing.setNumber(String.valueOf(AppServices.getInstance().getDashboardService().countOverdueBorrowings().getData()));
+        totalBorrowing.setNumber(String.valueOf(borrowingCounts.get(BorrowStatus.BORROWED)));
+        overDueBorrowing.setNumber(String.valueOf(borrowingCounts.get(BorrowStatus.OVERDUE)));
     }
 }

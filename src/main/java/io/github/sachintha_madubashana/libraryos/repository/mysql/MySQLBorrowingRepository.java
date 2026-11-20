@@ -7,6 +7,7 @@ import io.github.sachintha_madubashana.libraryos.repository.BorrowingRepository;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class MySQLBorrowingRepository implements BorrowingRepository{
@@ -218,5 +219,11 @@ public class MySQLBorrowingRepository implements BorrowingRepository{
         if (status == null) return new ArrayList<>();
 
         return getBorrowingRecords("SELECT * FROM borrowing_records WHERE status = '" + status.name() + "'");
+    }
+
+    // TODO: Implement this method in MySQLBorrowingRepository
+    @Override
+    public Map<BorrowStatus, Long> countByStatuses(List<BorrowStatus> statuses) {
+        return Map.of();
     }
 }

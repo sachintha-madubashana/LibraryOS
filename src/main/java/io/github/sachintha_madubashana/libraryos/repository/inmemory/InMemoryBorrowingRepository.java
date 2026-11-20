@@ -7,6 +7,7 @@ import io.github.sachintha_madubashana.libraryos.service.SampleData;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class InMemoryBorrowingRepository implements BorrowingRepository {
@@ -97,5 +98,11 @@ public class InMemoryBorrowingRepository implements BorrowingRepository {
         if (status == null) return new ArrayList<>();
 
         return borrowings.stream().filter(borrowingRecord -> borrowingRecord.getStatus().equals(status)).toList();
+    }
+
+    //TODO: Implement this method to count the number of borrowings for each status in the provided list of statuses.
+    @Override
+    public Map<BorrowStatus, Long> countByStatuses(List<BorrowStatus> statuses) {
+        return Map.of();
     }
 }

@@ -26,4 +26,13 @@ public enum BorrowStatus {
         }
         throw new IllegalArgumentException("No constant with text " + status + " found");
     }
+
+    public static BorrowStatus fromValue(int value) {
+        for (BorrowStatus b : BorrowStatus.values()) {
+            if (b.getValue() == value) {
+                return b;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + value + " found");
+    }
 }
