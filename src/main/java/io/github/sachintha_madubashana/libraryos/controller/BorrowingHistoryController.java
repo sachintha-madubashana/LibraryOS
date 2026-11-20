@@ -48,7 +48,6 @@ public class BorrowingHistoryController {
     InputField searchInput;
 
     ObservableList<BorrowingRecord> borrowings;
-    private Button selectedFilterBtn;
 
     @FXML
     private void initialize() {
@@ -77,7 +76,6 @@ public class BorrowingHistoryController {
         });
         popup.setOnSuggestionSelected(selectedStudent -> {
             searchInput.setInputValue(selectedStudent.toString());
-//            table.setItems(filtered);
         });
     }
 
@@ -165,12 +163,12 @@ public class BorrowingHistoryController {
     }
 
     private void selectButton(Button button) {
-        button.getStyleClass().remove("button-secondary");
-        button.getStyleClass().add("button-primary");
+        button.getStyleClass().clear();
+        button.getStyleClass().addAll("button", "button-primary");
     }
 
     private void deselectButton(Button button) {
-        button.getStyleClass().remove("button-primary");
-        button.getStyleClass().add("button-secondary");
+        button.getStyleClass().clear();
+        button.getStyleClass().addAll("button", "button-secondary");
     }
 }
