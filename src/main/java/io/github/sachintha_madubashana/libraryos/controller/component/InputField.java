@@ -286,6 +286,7 @@ public class InputField extends VBox {
 
     // Focus
     private void updateFocus(boolean focused) {
+        this.setFocused(focused);
         if (focused) {
             if (!container.getStyleClass().contains("input-box-focused")) {
                 container.getStyleClass().add("input-box-focused");

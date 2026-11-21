@@ -5,10 +5,8 @@ import io.github.sachintha_madubashana.libraryos.controller.component.InputField
 import io.github.sachintha_madubashana.libraryos.controller.component.Pagination;
 import io.github.sachintha_madubashana.libraryos.controller.component.table.DataColumn;
 import io.github.sachintha_madubashana.libraryos.controller.component.table.DataTable;
-import io.github.sachintha_madubashana.libraryos.model.Book;
-import io.github.sachintha_madubashana.libraryos.model.BorrowStatus;
-import io.github.sachintha_madubashana.libraryos.model.BorrowingRecord;
-import io.github.sachintha_madubashana.libraryos.model.Member;
+import io.github.sachintha_madubashana.libraryos.event.NotificationEvent;
+import io.github.sachintha_madubashana.libraryos.model.*;
 import io.github.sachintha_madubashana.libraryos.service.AppServices;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
@@ -17,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -49,33 +48,62 @@ public class BorrowingHistoryController {
 
     ObservableList<BorrowingRecord> borrowings;
 
+    AutocompletePopup<BorrowingRecord> popup;
+
+    List<BorrowingRecord> filtered;
+
     @FXML
     private void initialize() {
         borrowings = FXCollections.observableArrayList();
         initiateButtonActions();
+
         filterBorrowings(BorrowStatus.ALL);
-        selectButton(allBtn);
         generateTable();
-        AutocompletePopup<BorrowingRecord> popup = new AutocompletePopup<>();
+
+        popup = new AutocompletePopup<>();
+        initListener();
+    }
+
+    private void initListener() {
         searchInput.setOnInputChange((obs, oldValue, newValue) -> {
-            if (newValue == null || newValue.isBlank()) {
-                popup.hide();
-                return;
-            }
-
-            List<BorrowingRecord> filtered = borrowings.stream()
-                    .filter(br -> br.getRecordId().toLowerCase().contains(newValue.trim().toLowerCase()))
-                    .toList();
-            popup.setSuggestions(filtered);
-
-            if (!filtered.isEmpty()) {
-                popup.showBelow(searchInput);
-            } else {
-                popup.hide();
+            search(newValue);
+        });
+        searchInput.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                showSearchedResult(null);
             }
         });
         popup.setOnSuggestionSelected(selectedStudent -> {
             searchInput.setInputValue(selectedStudent.toString());
+            showSearchedResult(selectedStudent);
+        });
+        searchInput.focusedProperty().addListener((observable, oldValue, isFocused) -> {
+            if (Boolean.TRUE.equals(isFocused) && filtered != null && !filtered.isEmpty() && !popup.isShowing() && !searchInput.getInputValue().isBlank()) {
+                    popup.showBelow(searchInput);
+                }
+
+        });
+    }
+
+    private void initiateButtonActions() {
+        allBtn.setOnAction(_ -> {
+            filterBorrowings(BorrowStatus.ALL);
+        });
+
+        borrowed.setOnAction(_ -> {
+            filterBorrowings(BorrowStatus.BORROWED);
+        });
+
+        returnedBtn.setOnAction(_ -> {
+            filterBorrowings(BorrowStatus.RETURNED);
+        });
+
+        overDueBtn.setOnAction(_ -> {
+            filterBorrowings(BorrowStatus.OVERDUE);
+        });
+
+        searchBtn.setOnAction(_ -> {
+            showSearchedResult(null);
         });
     }
 
@@ -123,40 +151,70 @@ public class BorrowingHistoryController {
         root.getChildren().addAll(table, paginationContainer);
     }
 
-    private void initiateButtonActions() {
-        allBtn.setOnAction(event -> {
-            resetButtonStyles(borrowed, returnedBtn, overDueBtn);
+    private void search(String value) {
+        if (value == null || value.isBlank()) {
             filterBorrowings(BorrowStatus.ALL);
-            selectButton(allBtn);
-        });
+            popup.hide();
+            return;
+        }
 
-        borrowed.setOnAction(event -> {
-            resetButtonStyles(allBtn, returnedBtn, overDueBtn);
-            filterBorrowings(BorrowStatus.BORROWED);
-            selectButton(borrowed);
-        });
+//        String[] terms = value.trim().toLowerCase().split("[\\s-]+");
+//        List<BorrowingRecord> filtered = borrowings.stream()
+//                .filter(br -> Arrays.stream(terms).allMatch(term ->
+//                        br.getRecordId().toLowerCase().contains(term) ||
+//                                br.getMember().getFullName().toLowerCase().contains(term) ||
+//                                br.getBook().getTitle().toLowerCase().contains(term)))
+//                .toList();
+        filtered = AppServices.getInstance().getBorrowingHistoryService().searchBorrowings(value).getData();
+        popup.setSuggestions(filtered);
 
-        returnedBtn.setOnAction(event -> {
-            resetButtonStyles(allBtn, borrowed, overDueBtn);
-            filterBorrowings(BorrowStatus.RETURNED);
-            selectButton(returnedBtn);
-        });
-
-        overDueBtn.setOnAction(event -> {
-            resetButtonStyles(allBtn, borrowed, returnedBtn);
-            filterBorrowings(BorrowStatus.OVERDUE);
-            selectButton(overDueBtn);
-        });
-    }
-
-    private void filterBorrowings(BorrowStatus status) {
-        switch (status) {
-            case BORROWED, OVERDUE, RETURNED -> borrowings.setAll(AppServices.getInstance().getBorrowingHistoryService().filterLoans(status).getData());
-            default -> borrowings.setAll(AppServices.getInstance().getBorrowingHistoryService().getBorrowings().getData());
+        if (!filtered.isEmpty()) {
+            popup.showBelow(searchInput);
+        } else {
+            popup.hide();
         }
     }
 
-    private void resetButtonStyles(Button ... buttons) {
+    private void showSearchedResult(BorrowingRecord borrowRecord) {
+        String value = searchInput.getInputValue();
+        if (value.isBlank()) {
+            root.fireEvent(new NotificationEvent(new Notification("Empty search query", "The search query cannot be empty.", Notification.Type.ALERT_WARNING)));
+            return;
+        }
+
+        if (borrowRecord != null) {
+            borrowings.setAll(borrowRecord);
+        }
+
+        if (filtered == null || filtered.isEmpty()) {
+            root.fireEvent(new NotificationEvent(new Notification("No results found", "No borrowing records found for the search term: " + value, Notification.Type.ALERT_INFO)));
+            return;
+        }
+
+        borrowings.setAll(filtered);
+    }
+
+    private void filterBorrowings(BorrowStatus status) {
+        buttonSelectorByStatus(status);
+        switch (status) {
+            case BORROWED, OVERDUE, RETURNED ->
+                    borrowings.setAll(AppServices.getInstance().getBorrowingHistoryService().filterLoans(status).getData());
+            default ->
+                    borrowings.setAll(AppServices.getInstance().getBorrowingHistoryService().getBorrowings().getData());
+        }
+    }
+
+    private void buttonSelectorByStatus(BorrowStatus status) {
+        resetButtonStyles(allBtn, borrowed, returnedBtn, overDueBtn);
+        switch (status) {
+            case BORROWED -> selectButton(borrowed);
+            case RETURNED -> selectButton(returnedBtn);
+            case OVERDUE -> selectButton(overDueBtn);
+            default -> selectButton(allBtn);
+        }
+    }
+
+    private void resetButtonStyles(Button... buttons) {
         for (Button button : buttons) {
             deselectButton(button);
         }

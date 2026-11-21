@@ -159,23 +159,12 @@ public class HibernateBorrowingRepository implements BorrowingRepository {
 
     @Override
     public List<BorrowingRecord> findByStatuses(List<BorrowStatus> statuses) {
-        List<BorrowingRecord> records = new ArrayList<>();
-        if (statuses == null) return records;
+        if (statuses == null) return  new ArrayList<>();
 
         StringBuilder query = new StringBuilder("FROM BorrowingRecordEntity WHERE 1=0");
         Map<String, Object> params = appendStatuesToQuery(statuses, query);
 
-        try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
-            Query<BorrowingRecordEntity> sessionQuery = session.createQuery(query.toString(), BorrowingRecordEntity.class);
-            params.forEach(sessionQuery::setParameter);
-
-            List<BorrowingRecordEntity> entityRecords = sessionQuery.list();
-
-            for (BorrowingRecordEntity entity : entityRecords) {
-                records.add(toDto(entity));
-            }
-            return records;
-        }
+        return getBorrowingRecords(query, params);
 
 //        //Criteria Query
 //        try(Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
@@ -238,6 +227,42 @@ public class HibernateBorrowingRepository implements BorrowingRepository {
                 counts.put(BorrowStatus.fromValue(statusId), count);
             }
             return counts;
+        }
+    }
+
+    @Override
+    public List<BorrowingRecord> searchBorrowings(List<String> terms) {
+        if (terms == null || terms.isEmpty()) return new ArrayList<>();
+
+        StringBuilder query = new StringBuilder("FROM BorrowingRecordEntity WHERE 1=1");
+        Map<String, Object> params = new HashMap<>();
+
+        for (int idx = 0; idx < terms.size(); idx++) {
+            if (terms.get(idx) == null || terms.get(idx).isBlank()) continue;
+            String paramKey = "t" + idx;
+            query.append(" AND (recordId LIKE :").append(paramKey);
+            query.append(" OR LOWER(member.fullName) LIKE :").append(paramKey).append("_name");
+            query.append(" OR LOWER(book.title) LIKE :").append(paramKey).append("_title)");
+            String likeValue = "%" + terms.get(idx).toLowerCase() + "%";
+            params.put(paramKey, likeValue);
+            params.put(paramKey + "_name", likeValue);
+            params.put(paramKey + "_title", likeValue);
+        }
+        query.append(" ORDER BY recordId DESC");
+
+        return getBorrowingRecords(query, params);
+    }
+
+    private List<BorrowingRecord> getBorrowingRecords(StringBuilder query, Map<String, Object> params) {
+        List<BorrowingRecord> records = new ArrayList<>();
+        try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
+            Query<BorrowingRecordEntity> sessionQuery = session.createQuery(query.toString(), BorrowingRecordEntity.class);
+            params.forEach(sessionQuery::setParameter);
+            List<BorrowingRecordEntity> entities = sessionQuery.list();
+            for (BorrowingRecordEntity entity : entities) {
+                records.add(toDto(entity));
+            }
+            return records;
         }
     }
 

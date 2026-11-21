@@ -17,4 +17,5 @@ public interface BorrowingRepository {
     BorrowingRecord findLast();
     List<BorrowingRecord> findByStatuses(List<BorrowStatus> statuses);
     Map<BorrowStatus, Long> countByStatuses(List<BorrowStatus> statuses);
+    List<BorrowingRecord> searchBorrowings(List<String> terms);
 }

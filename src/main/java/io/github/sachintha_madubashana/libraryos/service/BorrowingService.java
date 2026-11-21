@@ -5,6 +5,7 @@ import io.github.sachintha_madubashana.libraryos.model.BorrowStatus;
 import io.github.sachintha_madubashana.libraryos.model.BorrowingRecord;
 import io.github.sachintha_madubashana.libraryos.repository.BorrowingRepository;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class BorrowingService {
@@ -144,6 +145,24 @@ public class BorrowingService {
                 "Borrowing Records retrieved successfully",
                 "The Borrowing Record list has been loaded.",
                 activities
+        );
+    }
+
+    public Result<List<BorrowingRecord>> searchBorrowings(String query) {
+        if (query == null || query.isBlank()) {
+            return Result.error(
+                    "Empty search query",
+                    "The search query cannot be empty."
+            );
+        }
+
+        String[] terms = query.trim().toLowerCase().split("[\\s-]+");
+        List<BorrowingRecord> results = borrowingRepository.searchBorrowings(Arrays.asList(terms));
+
+        return Result.success(
+                "Search complete",
+                "The search has been completed.",
+                results
         );
     }
 }
