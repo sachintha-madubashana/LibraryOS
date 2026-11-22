@@ -236,4 +236,41 @@ public class MySQLBorrowingRepository implements BorrowingRepository{
 
         return statusCountMap;
     }
+
+    @Override
+    public List<BorrowingRecord> searchBorrowings(List<String> terms) {
+        if (terms == null || terms.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        String baseQuery = "SELECT book.`id` AS book_id, `borrowing_code`,`issue_date`,`due_date`, `retuned_date`, `book_code`, `title`, `author`, `published_year`, `total_copies`, `available_copies`, `category_id`, `category`, member.`id` AS member_id, `member_code`, `name`, `email`,`phone`, `address`,`joined_date`, `status`  FROM borrowing_record INNER JOIN `book` ON `book_id` = `book`.`id` INNER JOIN `member` ON `member_id` = `member`.`id` INNER JOIN `borrowing_status` ON `borrowing_status_id` = `borrowing_status`.`id` INNER JOIN `category` ON book.category_id = category.id WHERE 1=1";
+
+        StringBuilder query = new StringBuilder(baseQuery);
+        List<String> paramValues = new ArrayList<>();
+
+        for (String term : terms) {
+            if (term == null || term.isBlank()) continue;
+            query.append(" AND (borrowing_code LIKE ? OR LOWER(name) LIKE ? OR LOWER(title) LIKE ?)");
+            String likeValue = "%" + term.toLowerCase() + "%";
+            paramValues.add(likeValue);
+            paramValues.add(likeValue);
+            paramValues.add(likeValue);
+        }
+        query.append(" ORDER BY borrowing_code DESC");
+
+        List<BorrowingRecord> records = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(query.toString())) {
+            for (int i = 0; i < paramValues.size(); i++) {
+                statement.setString(i + 1, paramValues.get(i));
+            }
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                records.add(createBorrowingRecordObj(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to search borrowing records.", e);
+        }
+
+        return records;
+    }
 }

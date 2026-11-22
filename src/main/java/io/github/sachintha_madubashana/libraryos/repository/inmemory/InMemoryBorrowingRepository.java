@@ -93,4 +93,20 @@ public class InMemoryBorrowingRepository implements BorrowingRepository {
                 .filter(borrowingRecord -> statuses.contains(borrowingRecord.getStatus()))
                 .collect(Collectors.groupingBy(BorrowingRecord::getStatus, Collectors.counting()));
     }
+
+    @Override
+    public List<BorrowingRecord> searchBorrowings(List<String> terms) {
+        if (terms == null || terms.isEmpty()) return new ArrayList<>();
+
+        for(String term : terms) {
+            if (term == null || term.isBlank()) continue;
+            terms.set(terms.indexOf(term), term.toLowerCase());
+        }
+
+        return borrowings.stream()
+                .filter(br -> terms.stream().allMatch(term -> br.getRecordId().toLowerCase().contains(term) ||
+                       br.getMember().getFullName().toLowerCase().contains(term) ||
+                       br.getBook().getTitle().toLowerCase().contains(term)))
+                .toList();
+    }
 }

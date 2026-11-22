@@ -158,13 +158,6 @@ public class BorrowingHistoryController {
             return;
         }
 
-//        String[] terms = value.trim().toLowerCase().split("[\\s-]+");
-//        List<BorrowingRecord> filtered = borrowings.stream()
-//                .filter(br -> Arrays.stream(terms).allMatch(term ->
-//                        br.getRecordId().toLowerCase().contains(term) ||
-//                                br.getMember().getFullName().toLowerCase().contains(term) ||
-//                                br.getBook().getTitle().toLowerCase().contains(term)))
-//                .toList();
         filtered = AppServices.getInstance().getBorrowingHistoryService().searchBorrowings(value).getData();
         popup.setSuggestions(filtered);
 
