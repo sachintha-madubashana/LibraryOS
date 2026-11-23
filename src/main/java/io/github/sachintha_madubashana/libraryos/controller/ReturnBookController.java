@@ -4,10 +4,13 @@ import io.github.sachintha_madubashana.libraryos.Launcher;
 import io.github.sachintha_madubashana.libraryos.common.result.Result;
 import io.github.sachintha_madubashana.libraryos.controller.component.*;
 import io.github.sachintha_madubashana.libraryos.controller.component.rows.ActiveLoanRow;
+import io.github.sachintha_madubashana.libraryos.event.NotificationEvent;
 import io.github.sachintha_madubashana.libraryos.event.ReturnBookSelectEvent;
 import io.github.sachintha_madubashana.libraryos.model.BorrowStatus;
 import io.github.sachintha_madubashana.libraryos.model.BorrowingRecord;
+import io.github.sachintha_madubashana.libraryos.model.Notification;
 import io.github.sachintha_madubashana.libraryos.service.AppServices;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -46,6 +49,9 @@ public class ReturnBookController {
 
     @FXML
     private VBox column3;
+
+    @FXML
+    private Label countLabel;
 
     @FXML
     private VBox alertContainer;
@@ -135,6 +141,8 @@ public class ReturnBookController {
         loadEmptyInfoCards();
         column3.setSpacing(8);
 
+        countLabel.textProperty().bind(Bindings.concat("Active Loans: " , Bindings.size(borrowingList)));
+
         initializeSearchInput();
         borrowingList.setAll(AppServices.getInstance().getBorrowingHistoryService().findActiveLoans().getData());
     }
@@ -155,10 +163,16 @@ public class ReturnBookController {
 
     private void search(String values){
         if(values == null || values.isEmpty()){
+            root.fireEvent(new NotificationEvent(new Notification("Empty search query", "The search query cannot be empty.", Notification.Type.ALERT_WARNING)));
             return;
         }
-        filtered = AppServices.getInstance().getBorrowingHistoryService().searchBorrowings(values).getData();
+        filtered = AppServices.getInstance().getBorrowingHistoryService().searchBorrowings(values, List.of(BorrowStatus.BORROWED, BorrowStatus.OVERDUE)).getData();
         borrowingList.setAll(filtered);
+
+        if(filtered.isEmpty()){
+            root.fireEvent(new NotificationEvent(new Notification("No results found", "No borrowing records found for the search query.", Notification.Type.ALERT_INFO)));
+
+        }
     }
 
     private void selectEventHandler(ReturnBookSelectEvent event) {

@@ -52,6 +52,8 @@ public class BorrowingHistoryController {
 
     List<BorrowingRecord> filtered;
 
+    BorrowStatus currentFilterStatus = BorrowStatus.ALL;
+
     @FXML
     private void initialize() {
         borrowings = FXCollections.observableArrayList();
@@ -152,12 +154,12 @@ public class BorrowingHistoryController {
 
     private void search(String value) {
         if (value == null || value.isBlank()) {
-            filterBorrowings(BorrowStatus.ALL);
+            filterBorrowings(currentFilterStatus);
             popup.hide();
             return;
         }
 
-        filtered = AppServices.getInstance().getBorrowingHistoryService().searchBorrowings(value).getData();
+        filtered = AppServices.getInstance().getBorrowingHistoryService().searchBorrowings(value, List.of(currentFilterStatus)).getData();
         popup.setSuggestions(filtered);
 
         if (!filtered.isEmpty()) {
@@ -188,6 +190,7 @@ public class BorrowingHistoryController {
 
     private void filterBorrowings(BorrowStatus status) {
         buttonSelectorByStatus(status);
+        currentFilterStatus = status;
         switch (status) {
             case BORROWED, OVERDUE, RETURNED ->
                     borrowings.setAll(AppServices.getInstance().getBorrowingHistoryService().filterLoans(status).getData());
@@ -197,6 +200,9 @@ public class BorrowingHistoryController {
     }
 
     private void buttonSelectorByStatus(BorrowStatus status) {
+        if (filtered != null) {
+            filtered.clear();
+        }
         resetButtonStyles(allBtn, borrowed, returnedBtn, overDueBtn);
         switch (status) {
             case BORROWED -> selectButton(borrowed);

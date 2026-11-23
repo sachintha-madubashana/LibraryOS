@@ -115,7 +115,7 @@ public class BorrowingService {
     }
 
     public Result<List<BorrowingRecord>> findActiveLoans() {
-        List<BorrowingRecord> activities = borrowingRepository.findByStatuses(List.of(BorrowStatus.BORROWED, BorrowStatus.OVERDUE));
+        List<BorrowingRecord> activities = borrowingRepository.searchBorrowingsWithStatuses(List.of(), List.of(BorrowStatus.BORROWED, BorrowStatus.OVERDUE));
 
         if (activities == null) {
             return Result.error(
@@ -132,7 +132,7 @@ public class BorrowingService {
     }
 
     public Result<List<BorrowingRecord>> filterLoans(BorrowStatus status) {
-        List<BorrowingRecord> activities = borrowingRepository.findByStatuses(List.of(status));
+        List<BorrowingRecord> activities = borrowingRepository.searchBorrowingsWithStatuses(List.of(), List.of(status));
 
         if (activities == null) {
             return Result.error(
@@ -148,7 +148,7 @@ public class BorrowingService {
         );
     }
 
-    public Result<List<BorrowingRecord>> searchBorrowings(String query) {
+    public Result<List<BorrowingRecord>> searchBorrowings(String query, List<BorrowStatus> status) {
         if (query == null || query.isBlank()) {
             return Result.error(
                     "Empty search query",
@@ -157,7 +157,7 @@ public class BorrowingService {
         }
 
         String[] terms = query.trim().toLowerCase().split("[\\s-]+");
-        List<BorrowingRecord> results = borrowingRepository.searchBorrowings(Arrays.asList(terms));
+        List<BorrowingRecord> results = borrowingRepository.searchBorrowingsWithStatuses(List.of(terms), status);
 
         return Result.success(
                 "Search complete",

@@ -157,50 +157,22 @@ public class HibernateBorrowingRepository implements BorrowingRepository {
         }
     }
 
-    @Override
-    public List<BorrowingRecord> findByStatuses(List<BorrowStatus> statuses) {
-        if (statuses == null) return  new ArrayList<>();
-
-        StringBuilder query = new StringBuilder("FROM BorrowingRecordEntity WHERE 1=0");
-        Map<String, Object> params = appendStatuesToQuery(statuses, query);
-
-        return getBorrowingRecords(query, params);
-
-//        //Criteria Query
-//        try(Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
-//            CriteriaBuilder cb = session.getCriteriaBuilder();
-//            CriteriaQuery<BorrowingRecordEntity> cq = cb.createQuery(BorrowingRecordEntity.class);
-//            var root = cq.from(BorrowingRecordEntity.class);
-//
-//            List<Predicate> predicates = new ArrayList<>();
-//            for (BorrowStatus status : statuses) {
-//                if (status != null) {
-//                    predicates.add(cb.equal(root.get("status").get("id"), status.getValue()));
-//                }
-//            }
-//
-//            if (!predicates.isEmpty()) {
-//                cq.where(cb.or(predicates.toArray(new Predicate[0])));
-//            }
-//
-//            List<BorrowingRecordEntity> entities = session.createQuery(cq).getResultList();
-//            for (BorrowingRecordEntity entity : entities) {
-//                records.add(toDto(entity));
-//            }
-//            return records;
-//        }
-
-    }
-
     private Map<String, Object> appendStatuesToQuery(List<BorrowStatus> statuses, StringBuilder query) {
         Map<String, Object> params = new HashMap<>();
+        boolean isFirst = true;
 
         for (BorrowStatus status : statuses) {
             if (status == null) continue;
 
-            query.append(" OR status.id = :").append(status.name());
+            if (isFirst) {
+                query.append(" AND (status.id = :").append(status.name());
+                isFirst = false;
+            } else {
+                query.append(" OR status.id = :").append(status.name());
+            }
             params.put(status.name(), status.getValue());
         }
+        query.append(")");
         return params;
     }
 
@@ -211,7 +183,7 @@ public class HibernateBorrowingRepository implements BorrowingRepository {
             return counts;
         }
 
-        StringBuilder query = new StringBuilder("SELECT status.id, COUNT(*) FROM BorrowingRecordEntity WHERE 1=0");
+        StringBuilder query = new StringBuilder("SELECT status.id, COUNT(*) FROM BorrowingRecordEntity WHERE 1=1");
         Map<String, Object> params = appendStatuesToQuery(statuses, query);
         query.append(" GROUP BY status.id");
 
@@ -231,8 +203,8 @@ public class HibernateBorrowingRepository implements BorrowingRepository {
     }
 
     @Override
-    public List<BorrowingRecord> searchBorrowings(List<String> terms) {
-        if (terms == null || terms.isEmpty()) return new ArrayList<>();
+    public List<BorrowingRecord> searchBorrowingsWithStatuses(List<String> terms, List<BorrowStatus> statuses) {
+        if (terms == null || statuses == null) return new ArrayList<>();
 
         StringBuilder query = new StringBuilder("FROM BorrowingRecordEntity WHERE 1=1");
         Map<String, Object> params = new HashMap<>();
@@ -248,6 +220,11 @@ public class HibernateBorrowingRepository implements BorrowingRepository {
             params.put(paramKey + "_name", likeValue);
             params.put(paramKey + "_title", likeValue);
         }
+
+        if (!statuses.isEmpty() && !statuses.contains(BorrowStatus.ALL)) {
+            params.putAll(appendStatuesToQuery(statuses, query));
+        }
+
         query.append(" ORDER BY recordId DESC");
 
         return getBorrowingRecords(query, params);

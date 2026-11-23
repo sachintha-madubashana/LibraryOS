@@ -12,6 +12,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import org.kordamp.ikonli.feather.Feather;
 
 import java.util.function.Function;
 
@@ -42,6 +43,17 @@ public class ScrollableList<T> extends VBox {
 
         VBox.setVgrow(listView, Priority.ALWAYS);
         getChildren().add(listView);
+
+        //Empty State
+        EmptyInfoCard emptyInfoCard = new EmptyInfoCard("No items to display", "There are no items available in this list.", Feather.SLASH, InfoCard.LayoutType.LARGE);
+        listView.setPlaceholder(emptyInfoCard);
+        listView.getItems().addListener((javafx.collections.ListChangeListener<T>) change -> {
+            if (listView.getItems().isEmpty()) {
+                getChildren().add(emptyInfoCard);
+            } else {
+                getChildren().remove(emptyInfoCard);
+            }
+        });
     }
 
     public ScrollableList(Function<T, Node> itemFactory) {
