@@ -79,9 +79,8 @@ public class BorrowingHistoryController {
         });
         searchInput.focusedProperty().addListener((observable, oldValue, isFocused) -> {
             if (Boolean.TRUE.equals(isFocused) && filtered != null && !filtered.isEmpty() && !popup.isShowing() && !searchInput.getInputValue().isBlank()) {
-                    popup.showBelow(searchInput);
-                }
-
+                popup.showBelow(searchInput);
+            }
         });
     }
 

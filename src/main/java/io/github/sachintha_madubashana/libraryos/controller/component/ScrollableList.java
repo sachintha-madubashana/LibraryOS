@@ -90,7 +90,7 @@ public class ScrollableList<T> extends VBox {
     }
 
     public void setItems(ObservableList<T> newItems) {
-        listView.getItems().setAll(newItems);
+        listView.setItems(newItems);
     }
 
     public void addItems(ObservableList<T> newItems) {

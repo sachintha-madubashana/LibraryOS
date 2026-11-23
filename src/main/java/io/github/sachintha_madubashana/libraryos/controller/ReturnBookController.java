@@ -14,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -21,13 +22,18 @@ import org.kordamp.ikonli.feather.Feather;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Objects;
 
 public class ReturnBookController {
 
     @FXML
     private HBox root;
+
+    @FXML
+    private InputField searchInput;
 
     @FXML
     private Button searchBtn;
@@ -65,12 +71,15 @@ public class ReturnBookController {
     @FXML
     private Button confirmReturnButton;
 
-    private ScrollableList<BorrowingRecord> recentActivityList;
+    private ScrollableList<BorrowingRecord> scrollableList;
+
+    ObservableList<BorrowingRecord> borrowingList;
+    List<BorrowingRecord> filtered;
 
     @FXML
     private void handleConfirmReturn() {
         LocalDate returnDate = returnDatePicker.getDateValue();
-        BorrowingRecord selectedRecord = recentActivityList.getSelectedItem();
+        BorrowingRecord selectedRecord = scrollableList.getSelectedItem();
 
         if (returnDate == null) {
             AlertMessage alert = new AlertMessage("Return Date Required", "Please select a return date.", AlertMessage.Type.WARNING);
@@ -92,38 +101,64 @@ public class ReturnBookController {
             alert.showIn(column2);
         }
 
-        recentActivityList.getItems().remove(selectedRecord);
+        scrollableList.getItems().remove(selectedRecord);
         clearSelectedLoanDetails();
-        recentActivityList.unSelectItem();
+        scrollableList.unSelectItem();
         loadEmptyInfoCards();
         confirmReturnButton.setDisable(true);
     }
 
     @FXML
     private void initialize() {
-        returnDatePicker.setDateValue(LocalDate.now());
+        borrowingList = FXCollections.observableArrayList();
+
+        returnDatePicker.setDateValue(LocalDate.now(ZoneId.systemDefault()));
 
         FontIcon fontIcon = new FontIcon(Feather.SEARCH);
         fontIcon.setIconSize(20);
         fontIcon.getStyleClass().add("button-icon");
         searchBtn.setGraphic(fontIcon);
 
-        recentActivityList = new ScrollableList<>(ActiveLoanRow::new);
-        ObservableList<BorrowingRecord> items = FXCollections.observableArrayList(AppServices.getInstance().getBorrowingHistoryService().findActiveLoans().getData());
-        recentActivityList.setItems(items);
-        recentActivityList.setMaxHeight(Double.MAX_VALUE);
-        VBox.setVgrow(recentActivityList, Priority.ALWAYS);
-        recentActivityList.getListView().setOnMouseClicked(event -> {
+        scrollableList = new ScrollableList<>(ActiveLoanRow::new);
+        scrollableList.setItems(borrowingList);
+        scrollableList.setMaxHeight(Double.MAX_VALUE);
+        VBox.setVgrow(scrollableList, Priority.ALWAYS);
+        scrollableList.getListView().setOnMouseClicked(event -> {
             clearSelectedLoanDetails();
             loadEmptyInfoCards();
         });
 
-        column1.getChildren().add(recentActivityList);
+        column1.getChildren().add(scrollableList);
         confirmReturnButton.setDisable(true);
 
         root.addEventHandler(ReturnBookSelectEvent.RETURN_BOOK_SELECT, this::selectEventHandler);
         loadEmptyInfoCards();
         column3.setSpacing(8);
+
+        initializeSearchInput();
+        borrowingList.setAll(AppServices.getInstance().getBorrowingHistoryService().findActiveLoans().getData());
+    }
+
+    private void initializeSearchInput() {
+        searchInput.setOnInputChange((obs, oldValue, newValue) -> {
+            search(newValue);
+        });
+        searchInput.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                search(searchInput.getInputValue());
+            }
+        });
+        searchBtn.setOnAction(event -> {
+            search(searchInput.getInputValue());
+        });
+    }
+
+    private void search(String values){
+        if(values == null || values.isEmpty()){
+            return;
+        }
+        filtered = AppServices.getInstance().getBorrowingHistoryService().searchBorrowings(values).getData();
+        borrowingList.setAll(filtered);
     }
 
     private void selectEventHandler(ReturnBookSelectEvent event) {
