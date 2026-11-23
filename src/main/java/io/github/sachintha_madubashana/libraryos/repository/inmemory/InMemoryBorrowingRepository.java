@@ -77,15 +77,6 @@ public class InMemoryBorrowingRepository implements BorrowingRepository {
     }
 
     @Override
-    public List<BorrowingRecord> findByStatuses(List<BorrowStatus> statuses) {
-        if (statuses == null) return new ArrayList<>();
-
-        return borrowings.stream()
-                .filter(borrowingRecord -> statuses.contains(borrowingRecord.getStatus()))
-                .toList();
-    }
-
-    @Override
     public Map<BorrowStatus, Long> countByStatuses(List<BorrowStatus> statuses) {
         if (statuses == null) return new EnumMap<>(BorrowStatus.class);
 
@@ -95,18 +86,29 @@ public class InMemoryBorrowingRepository implements BorrowingRepository {
     }
 
     @Override
-    public List<BorrowingRecord> searchBorrowings(List<String> terms) {
-        if (terms == null || terms.isEmpty()) return new ArrayList<>();
+    public List<BorrowingRecord> searchBorrowingsWithStatuses(List<String> terms, List<BorrowStatus> statuses) {
+        List<BorrowingRecord> result = new ArrayList<>();
+        if (terms == null || statuses == null) return result;
 
-        for(String term : terms) {
-            if (term == null || term.isBlank()) continue;
-            terms.set(terms.indexOf(term), term.toLowerCase());
-        }
-
-        return borrowings.stream()
-                .filter(br -> terms.stream().allMatch(term -> br.getRecordId().toLowerCase().contains(term) ||
-                       br.getMember().getFullName().toLowerCase().contains(term) ||
-                       br.getBook().getTitle().toLowerCase().contains(term)))
+        List<String> cleanTerms = terms.stream()
+                .filter(term -> term != null && !term.isBlank())
+                .map(String::toLowerCase)
                 .toList();
+
+        boolean filterByStatus = !statuses.isEmpty() && !statuses.contains(BorrowStatus.ALL);
+
+        result.addAll(borrowings.stream()
+                .filter(br -> {
+                    if (filterByStatus && !statuses.contains(br.getStatus())) {
+                        return false;
+                    }
+                    return cleanTerms.stream().allMatch(term ->
+                            (br.getRecordId() != null && br.getRecordId().toLowerCase().contains(term)) ||
+                            (br.getMember() != null && br.getMember().getFullName() != null && br.getMember().getFullName().toLowerCase().contains(term)) ||
+                            (br.getBook() != null && br.getBook().getTitle() != null && br.getBook().getTitle().toLowerCase().contains(term))
+                    );
+                }).toList());
+
+        return result;
     }
 }

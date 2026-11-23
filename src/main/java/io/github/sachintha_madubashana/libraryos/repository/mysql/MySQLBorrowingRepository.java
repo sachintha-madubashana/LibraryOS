@@ -186,23 +186,6 @@ public class MySQLBorrowingRepository implements BorrowingRepository{
     }
 
     @Override
-    public List<BorrowingRecord> findByStatuses(List<BorrowStatus> statuses) {
-        if(statuses == null || statuses.isEmpty()) {
-            throw new IllegalArgumentException("Statuses list cannot be null or empty.");
-        }
-
-        StringBuilder query = new StringBuilder("SELECT book.`id` AS book_id, `borrowing_code`,`issue_date`,`due_date`, `retuned_date`, `book_code`, `title`, `author`, `published_year`, `total_copies`, `available_copies`, `category_id`, `category`, member.`id` AS member_id, `member_code`, `name`, `email`,`phone`, `address`,`joined_date`, `status`  FROM borrowing_record INNER JOIN `book` ON `book_id` = `book`.`id` INNER JOIN `member` ON `member_id` = `member`.`id` INNER JOIN `borrowing_status` ON `borrowing_status_id` = `borrowing_status`.`id` INNER JOIN `category` ON book.category_id = category.id WHERE 1=0");
-        String[] params = new String[statuses.size()];
-
-        for (int i = 0; i < statuses.size(); i++) {
-            query.append(" OR borrowing_status_id = ?");
-            params[i] = String.valueOf(statuses.get(i).getValue());
-        }
-
-        return getBorrowingRecords(query.toString(), params);
-    }
-
-    @Override
     public Map<BorrowStatus, Long> countByStatuses(List<BorrowStatus> statuses) {
         if(statuses == null || statuses.isEmpty()) {
             throw new IllegalArgumentException("Statuses list cannot be null or empty.");
@@ -238,39 +221,48 @@ public class MySQLBorrowingRepository implements BorrowingRepository{
     }
 
     @Override
-    public List<BorrowingRecord> searchBorrowings(List<String> terms) {
-        if (terms == null || terms.isEmpty()) {
-            return new ArrayList<>();
-        }
+    public List<BorrowingRecord> searchBorrowingsWithStatuses(List<String> terms, List<BorrowStatus> statuses) {
+        if (terms == null || statuses == null) return new ArrayList<>();
 
         String baseQuery = "SELECT book.`id` AS book_id, `borrowing_code`,`issue_date`,`due_date`, `retuned_date`, `book_code`, `title`, `author`, `published_year`, `total_copies`, `available_copies`, `category_id`, `category`, member.`id` AS member_id, `member_code`, `name`, `email`,`phone`, `address`,`joined_date`, `status`  FROM borrowing_record INNER JOIN `book` ON `book_id` = `book`.`id` INNER JOIN `member` ON `member_id` = `member`.`id` INNER JOIN `borrowing_status` ON `borrowing_status_id` = `borrowing_status`.`id` INNER JOIN `category` ON book.category_id = category.id WHERE 1=1";
 
         StringBuilder query = new StringBuilder(baseQuery);
-        List<String> paramValues = new ArrayList<>();
+        List<String> params = new ArrayList<>();
 
         for (String term : terms) {
             if (term == null || term.isBlank()) continue;
             query.append(" AND (borrowing_code LIKE ? OR LOWER(name) LIKE ? OR LOWER(title) LIKE ?)");
             String likeValue = "%" + term.toLowerCase() + "%";
-            paramValues.add(likeValue);
-            paramValues.add(likeValue);
-            paramValues.add(likeValue);
+            params.add(likeValue);
+            params.add(likeValue);
+            params.add(likeValue);
         }
+
+        if (!statuses.isEmpty() && !statuses.contains(BorrowStatus.ALL)) {
+            params.addAll(appendStatuesToQuery(statuses, query));
+        }
+
         query.append(" ORDER BY borrowing_code DESC");
 
-        List<BorrowingRecord> records = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement(query.toString())) {
-            for (int i = 0; i < paramValues.size(); i++) {
-                statement.setString(i + 1, paramValues.get(i));
-            }
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                records.add(createBorrowingRecordObj(resultSet));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed to search borrowing records.", e);
-        }
+        return getBorrowingRecords(query.toString(), params.toArray(new String[0]));
+    }
 
-        return records;
+    private List<String> appendStatuesToQuery(List<BorrowStatus> statuses, StringBuilder query) {
+        List<String> params = new ArrayList<>();
+        boolean isFirst = true;
+
+        for (BorrowStatus status : statuses) {
+            if (status == null) continue;
+
+            if (isFirst) {
+                query.append(" AND (borrowing_status_id = ?");
+                isFirst = false;
+            } else {
+                query.append(" OR borrowing_status_id = ?");
+            }
+            params.add(String.valueOf(status.getValue()));
+        }
+        query.append(")");
+        return params;
     }
 }
