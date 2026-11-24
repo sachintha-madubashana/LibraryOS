@@ -33,8 +33,16 @@ public class MemberService {
                 ));
     }
 
-    public Result<List<Member>> getMembers(){
-        List<Member> members = memberRepository.findAll();
+    public Result<List<Member>> getMembers(String query){
+        if(query == null) {
+            return Result.error(
+                    "Invalid search terms",
+                    "Please provide valid search terms."
+            );
+        }
+
+        String[] terms = query.trim().toLowerCase().split("[\\s-]+");
+        List<Member> members = memberRepository.find(List.of(terms));
 
         if (members == null) {
             return Result.error(
@@ -112,19 +120,18 @@ public class MemberService {
     }
 
     public Result<String> generateMemberId() {
-        List<Member> members = memberRepository.findAll();
-        String newMemberId = getNewMemberId(0);
+        Member lastMember = memberRepository.findLast();
+        String newMemberCode = getNewMemberId(0);
 
-        if (!members.isEmpty()) {
-            Member lastMember = members.get(members.size() - 1);
-            int memberCount = Integer.parseInt(lastMember.getCode().substring(2));
-            newMemberId = getNewMemberId(memberCount);
+        if (lastMember != null) {
+            int lastCode = Integer.parseInt(lastMember.getCode().substring(2));
+            newMemberCode = getNewMemberId(lastCode);
         }
 
         return Result.success(
-                "Member id generated successfully",
-                "The member id has been generated.",
-                newMemberId
+                "Member Code generated successfully",
+                "The member code has been generated.",
+                newMemberCode
         );
     }
 

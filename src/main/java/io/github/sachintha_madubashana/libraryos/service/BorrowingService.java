@@ -159,6 +159,13 @@ public class BorrowingService {
         String[] terms = query.trim().toLowerCase().split("[\\s-]+");
         List<BorrowingRecord> results = borrowingRepository.searchBorrowingsWithStatuses(List.of(terms), status);
 
+        if (results == null) {
+            return Result.error(
+                    "Unable to retrieve Borrowing Records",
+                    "The Borrowing Record list could not be loaded."
+            );
+        }
+
         return Result.success(
                 "Search complete",
                 "The search has been completed.",

@@ -8,9 +8,7 @@ import io.github.sachintha_madubashana.libraryos.repository.MemberRepository;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class HibernateMemberRepository implements MemberRepository {
 
@@ -32,14 +30,42 @@ public class HibernateMemberRepository implements MemberRepository {
     }
 
     @Override
-    public List<Member> findAll() {
+    public List<Member> find(List<String> terms) {
+        if(terms == null) return new ArrayList<>();
+
+        StringBuilder query = new StringBuilder("FROM MemberEntity WHERE 1=1");
+        Map<String, Object> parameters = new HashMap<>();
+
+        for(int idx = 0; idx < terms.size(); idx++) {
+            String term = terms.get(idx);
+            if (term != null && !term.isBlank()) {
+                query.append(" AND (LOWER(code) LIKE :term").append(idx)
+                     .append(" OR LOWER(fullName) LIKE :term").append(idx)
+                     .append(" OR LOWER(email) LIKE :term").append(idx).append(")");
+                parameters.put("term" + idx, "%" + term.toLowerCase() + "%");
+            }
+        }
+
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
-            List<MemberEntity> entities = session.createQuery("FROM MemberEntity", MemberEntity.class).list();
+            List<MemberEntity> entities = session.createQuery(query.toString(), MemberEntity.class)
+                    .setProperties(parameters)
+                    .getResultList();
             List<Member> members = new ArrayList<>();
             for (MemberEntity entity : entities) {
                 members.add(toDto(entity));
             }
             return members;
+        }
+    }
+
+    @Override
+    public Member findLast() {
+        try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
+            MemberEntity entity = session.createQuery("FROM MemberEntity ORDER BY id DESC", MemberEntity.class)
+                    .setMaxResults(1)
+                    .uniqueResult();
+            if (entity != null) return toDto(entity);
+            return null;
         }
     }
 

@@ -8,7 +8,8 @@ import java.util.Optional;
 public interface MemberRepository {
     Optional<Member> findById(String id);
     boolean existsById(String id);
-    List<Member> findAll();
+    List<Member> find(List<String> terms);
+    Member findLast();
     boolean save(Member member);
     boolean update(Member member);
     boolean deleteById(String id);

@@ -12,7 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
 import javafx.util.StringConverter;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.function.Consumer;
 
 public class AutocompletePopup<T> extends Popup {
@@ -20,21 +20,16 @@ public class AutocompletePopup<T> extends Popup {
     private static final double CELL_HEIGHT = 38;
     private final VBox container;
     private final ListView<T> listView;
-    private final ObservableList<T> suggestions;
     private StringConverter<T> converter;
     private Consumer<T> onSuggestionSelected;
     private int maxVisibleRows = 6;
 
     public AutocompletePopup() {
-        suggestions = FXCollections.observableArrayList();
-
         container = new VBox();
         container.getStyleClass().addAll("autocomplete-popup");
 
         listView = new ListView<>();
         listView.getStyleClass().add("autocomplete-list");
-
-        listView.setItems(suggestions);
 
         listView.setFixedCellSize(CELL_HEIGHT);
         listView.setFocusTraversable(false);
@@ -87,29 +82,35 @@ public class AutocompletePopup<T> extends Popup {
     }
 
     public void addSuggestion(T item) {
-        suggestions.add(item);
+        listView.getItems().add(item);
         updatePopupHeight();
     }
 
     public void clearSuggestions() {
-        suggestions.clear();
+        listView.getItems().clear();
         hide();
     }
 
     public ObservableList<T> getSuggestions() {
-        return suggestions;
+        return listView.getItems();
     }
 
     // SUGGESTIONS
-    public void setSuggestions(Collection<T> items) {
-        suggestions.setAll(items);
+    public void setSuggestions(ObservableList<T> items) {
+        listView.setItems(items);
+        listView.getSelectionModel().clearSelection();
+        updatePopupHeight();
+    }
+
+    public void setSuggestions(List<T> items) {
+        listView.setItems(FXCollections.observableArrayList(items));
         listView.getSelectionModel().clearSelection();
         updatePopupHeight();
     }
 
     // DISPLAY
     public void showBelow(Node anchor) {
-        if (suggestions.isEmpty()) {
+        if (listView.getItems().isEmpty()) {
             hide();
             return;
         }
@@ -142,7 +143,7 @@ public class AutocompletePopup<T> extends Popup {
     }
 
     private void updatePopupHeight() {
-        int visibleRows = Math.min(suggestions.size(), maxVisibleRows);
+        int visibleRows = Math.min(listView.getItems().size(), maxVisibleRows);
 
         double height = visibleRows * CELL_HEIGHT;
 

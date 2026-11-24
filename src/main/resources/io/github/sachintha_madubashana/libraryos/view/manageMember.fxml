@@ -8,11 +8,11 @@
    <children>
       <HBox alignment="CENTER_LEFT" maxHeight="50.0" prefHeight="40.0" spacing="8.0">
          <children>
-            <Label alignment="CENTER" prefHeight="18.0" prefWidth="42.0" text="SORT" />
+            <Label prefHeight="18.0" prefWidth="63.0" text="SORT" />
          <DropdownSelect fx:id="sort" maxWidth="-Infinity" prefWidth="200.0" />
             <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-          <InputField fx:id="usernameField" errorMessage="" iconEnabled="false" iconLiteral="" inputType="TEXT" promptText="Search by name, ID, or email..." required="true" />
-            <Button alignment="CENTER" mnemonicParsing="false" prefWidth="100.0" styleClass="button-primary" text="Search" textAlignment="CENTER" />
+          <InputField fx:id="searchField" errorMessage="" iconEnabled="false" iconLiteral="" inputType="TEXT" promptText="Search by name, ID, or email..." required="true" />
+            <Button fx:id="searchBtn" alignment="CENTER" mnemonicParsing="false" prefWidth="100.0" styleClass="button-primary" text="Search" textAlignment="CENTER" />
          </children>
       </HBox>
    </children>
