@@ -144,7 +144,7 @@ public class HibernateMemberRepository implements MemberRepository {
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
             Long count = session.createQuery("SELECT COUNT(*) FROM MemberEntity", Long.class)
                     .uniqueResult();
-            return count != null ? count.intValue() : 0;
+            return count != null ? count : 0;
         }
     }
 
