@@ -9,6 +9,7 @@ import io.github.sachintha_madubashana.libraryos.controller.component.Pagination
 import io.github.sachintha_madubashana.libraryos.controller.component.table.DataColumn;
 import io.github.sachintha_madubashana.libraryos.controller.component.table.DataTable;
 import io.github.sachintha_madubashana.libraryos.model.Book;
+import io.github.sachintha_madubashana.libraryos.model.Category;
 import io.github.sachintha_madubashana.libraryos.service.AppServices;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,6 +25,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 import java.util.Objects;
+import java.util.function.Function;
 
 public class AddBookController {
 
@@ -92,10 +94,10 @@ public class AddBookController {
         table.setMinHeight(360);
 
         table.addColumns(
-                DataColumn.of("ID", Book::getId).width(70),
+                DataColumn.of("ID", ((Function<Book, String>) Book::getCode).andThen(String::toUpperCase)).width(70),
                 DataColumn.of("TITLE", Book::getTitle).width(240),
                 DataColumn.of("AUTHOR", Book::getAuthor).width(220),
-                DataColumn.of("CATEGORY", Book::getCategory).width(180),
+                DataColumn.of("CATEGORY",((Function<Book, Category>) Book::getCategory).andThen(Category::getName)).width(180),
                 DataColumn.of("QTY", Book::getTotalCopies).width(80)
         );
 

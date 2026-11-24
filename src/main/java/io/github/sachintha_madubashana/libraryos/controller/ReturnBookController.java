@@ -213,7 +213,7 @@ public class ReturnBookController {
     }
 
     private void loadSelectedLoanDetailes(BorrowingRecord data) {
-        recordIdLabel.setText(data.getRecordId());
+        recordIdLabel.setText(data.getRecordId().toUpperCase());
         bookTitleLabel.setText(data.getBook().getTitle());
         borrowedDateLabel.setText(data.getIssueDate().toString());
         dueDateLabel.setText(data.getDueDate().toString());

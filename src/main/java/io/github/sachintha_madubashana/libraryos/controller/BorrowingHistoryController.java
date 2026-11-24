@@ -113,7 +113,7 @@ public class BorrowingHistoryController {
         table.setMinHeight(360);
 
         table.addColumns(
-                DataColumn.of("RECORD ID", BorrowingRecord::getRecordId).width(100),
+                DataColumn.of("RECORD ID", ((Function<BorrowingRecord, String>)BorrowingRecord::getRecordId).andThen(String::toUpperCase)).width(100),
                 DataColumn.of("MEMBER", (((Function<BorrowingRecord, Member>) BorrowingRecord::getMember).andThen(Member::getFullName))).width(170),
                 DataColumn.of("BOOK TITLE", (((Function<BorrowingRecord, Book>) BorrowingRecord::getBook).andThen(Book::getTitle))).width(240),
                 DataColumn.of("ISSUE DATE", BorrowingRecord::getIssueDate).width(120),

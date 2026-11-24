@@ -22,6 +22,7 @@ import org.kordamp.ikonli.feather.Feather;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.util.List;
+import java.util.function.Function;
 
 public class ManageMemberController {
 
@@ -125,7 +126,7 @@ public class ManageMemberController {
         table.setMinHeight(360);
 
         table.addColumns(
-                DataColumn.of("MEMBER ID", Member::getCode).minWidth(80),
+                DataColumn.of("MEMBER ID", ((Function<Member, String>) Member::getCode).andThen(String::toUpperCase)).minWidth(80),
                 DataColumn.of("FULL NAME", Member::getFullName).minWidth(100),
                 DataColumn.of("EMAIL", Member::getEmail).minWidth(200),
                 DataColumn.of("PHONE", Member::getPhone).minWidth(90),
