@@ -57,10 +57,10 @@ public class DashboardService {
         );
     }
 
-    public Result<Integer> countMembers() {
-        List<Member> members = memberRepository.findAll();
+    public Result<Long> countMembers() {
+        Long count = memberRepository.count();
 
-        if (members == null) {
+        if (count == null || count < 0) {
             return Result.error(
                     "Unable to retrieve Member count",
                     "The Member count could not be loaded."
@@ -70,7 +70,7 @@ public class DashboardService {
         return Result.success(
                 "Member count retrieved successfully",
                 "The Member count has been loaded.",
-                members.size()
+                count
         );
     }
 

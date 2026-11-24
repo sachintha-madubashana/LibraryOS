@@ -52,7 +52,7 @@ public class MySQLMemberRepository implements MemberRepository{
     }
 
     @Override
-    public List<Member> findAll() {
+    public List<Member> find(List<String> terms) {
         List<Member> members = new ArrayList<>();
         String query = "SELECT `id`, `member_code` , `name`, `email`, `phone`, `address`,`joined_date` FROM `member`";
 
@@ -78,6 +78,33 @@ public class MySQLMemberRepository implements MemberRepository{
         }
 
         return members;
+    }
+
+    @Override
+    public Member findLast() {
+
+        String query = "SELECT `id`, `member_code`, `name`, `email`, `phone`, `address`,`joined_date` FROM `member` ORDER BY `id` DESC LIMIT 1";
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return new Member(
+                            resultSet.getInt("id"),
+                            resultSet.getString("member_code"),
+                            resultSet.getString("name"),
+                            resultSet.getString("email"),
+                            resultSet.getString("phone"),
+                            resultSet.getString("address"),
+                            resultSet.getDate("joined_date").toLocalDate()
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to find last member.", e);
+        }
+
+        return null;
     }
 
     @Override
@@ -142,5 +169,20 @@ public class MySQLMemberRepository implements MemberRepository{
         } catch (SQLException e) {
             throw new RuntimeException("Failed to delete member.", e);
         }
+    }
+
+    @Override
+    public Long count() {
+        String query = "SELECT COUNT(*) AS total FROM `member`";
+
+        try(PreparedStatement statement = connection.prepareStatement(query)){
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getLong("total");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to count members.", e);
+        }
+        return 0L;
     }
 }

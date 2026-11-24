@@ -32,8 +32,18 @@ public class InMemoryMemberRepository implements MemberRepository {
     }
 
     @Override
-    public List<Member> findAll() {
+    public List<Member> find(List<String> terms) {
         return List.copyOf(members);
+    }
+
+    @Override
+    public Long count() {
+        return (long) members.size();
+    }
+
+    @Override
+    public Member findLast() {
+        return members.isEmpty() ? null : members.getLast();
     }
 
     @Override

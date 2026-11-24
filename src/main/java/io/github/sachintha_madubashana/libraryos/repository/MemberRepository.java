@@ -13,4 +13,5 @@ public interface MemberRepository {
     boolean save(Member member);
     boolean update(Member member);
     boolean deleteById(String id);
+    Long count();
 }
