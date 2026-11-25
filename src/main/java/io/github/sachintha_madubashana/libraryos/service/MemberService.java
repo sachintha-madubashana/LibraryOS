@@ -2,6 +2,7 @@ package io.github.sachintha_madubashana.libraryos.service;
 
 import io.github.sachintha_madubashana.libraryos.common.result.Result;
 import io.github.sachintha_madubashana.libraryos.model.Member;
+import io.github.sachintha_madubashana.libraryos.model.SortingValue;
 import io.github.sachintha_madubashana.libraryos.repository.MemberRepository;
 
 import java.util.List;
@@ -33,7 +34,7 @@ public class MemberService {
                 ));
     }
 
-    public Result<List<Member>> getMembers(String query){
+    public Result<List<Member>> getMembers(String query, SortingValue sortingValue){
         if(query == null) {
             return Result.error(
                     "Invalid search terms",
@@ -42,7 +43,7 @@ public class MemberService {
         }
 
         String[] terms = query.trim().toLowerCase().split("[\\s-]+");
-        List<Member> members = memberRepository.find(List.of(terms));
+        List<Member> members = memberRepository.find(List.of(terms), sortingValue);
 
         if (members == null) {
             return Result.error(

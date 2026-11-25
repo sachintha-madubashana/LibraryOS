@@ -3,6 +3,7 @@ package io.github.sachintha_madubashana.libraryos.repository.hibernate;
 import io.github.sachintha_madubashana.libraryos.database.HibernateSessionFactory;
 import io.github.sachintha_madubashana.libraryos.database.entity.MemberEntity;
 import io.github.sachintha_madubashana.libraryos.model.Member;
+import io.github.sachintha_madubashana.libraryos.model.SortingValue;
 import io.github.sachintha_madubashana.libraryos.repository.MemberRepository;
 
 import org.hibernate.Session;
@@ -30,8 +31,8 @@ public class HibernateMemberRepository implements MemberRepository {
     }
 
     @Override
-    public List<Member> find(List<String> terms) {
-        if(terms == null) return new ArrayList<>();
+    public List<Member> find(List<String> terms, SortingValue sortingValue) {
+        if(terms == null || sortingValue == null) return new ArrayList<>();
 
         StringBuilder query = new StringBuilder("FROM MemberEntity WHERE 1=1");
         Map<String, Object> parameters = new HashMap<>();
@@ -44,6 +45,13 @@ public class HibernateMemberRepository implements MemberRepository {
                      .append(" OR LOWER(email) LIKE :term").append(idx).append(")");
                 parameters.put("term" + idx, "%" + term.toLowerCase() + "%");
             }
+        }
+
+        switch (sortingValue) {
+            case ID_ASCENDING -> query.append(" ORDER BY code ASC");
+            case ID_DESCENDING -> query.append(" ORDER BY code DESC");
+            case NAME_ASCENDING -> query.append(" ORDER BY fullName ASC");
+            case NAME_DESCENDING -> query.append(" ORDER BY fullName DESC");
         }
 
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {

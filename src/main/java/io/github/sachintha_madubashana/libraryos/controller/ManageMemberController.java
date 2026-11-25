@@ -9,6 +9,7 @@ import io.github.sachintha_madubashana.libraryos.controller.component.table.Data
 import io.github.sachintha_madubashana.libraryos.event.NotificationEvent;
 import io.github.sachintha_madubashana.libraryos.model.Member;
 import io.github.sachintha_madubashana.libraryos.model.Notification;
+import io.github.sachintha_madubashana.libraryos.model.SortingValue;
 import io.github.sachintha_madubashana.libraryos.service.AppServices;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -49,8 +50,8 @@ public class ManageMemberController {
         members = FXCollections.observableArrayList();
         popup = new AutocompletePopup<>();
 
-        sort.getItems().addAll("Member ID", "Name");
-        sort.setValue("Member ID");
+        sort.getItems().addAll(SortingValue.ID_ASCENDING.getDisplayName(), SortingValue.ID_DESCENDING.getDisplayName(), SortingValue.NAME_ASCENDING.getDisplayName(), SortingValue.NAME_DESCENDING.getDisplayName());
+        sort.setValue(SortingValue.ID_ASCENDING.getDisplayName());
         generateTable();
 
         loadMembers();
@@ -76,11 +77,14 @@ public class ManageMemberController {
                 popup.showBelow(searchField);
             }
         });
+        sort.setOnSelectionChanged(event -> {
+            loadMembers();
+        });
     }
 
     private void loadMembers() {
         members.clear();
-        members.addAll(AppServices.getInstance().getMemberService().getMembers("").getData());
+        members.addAll(AppServices.getInstance().getMemberService().getMembers("", SortingValue.getSortingValue(sort.getValue())).getData());
     }
 
     private void search(String searchTerm) {
@@ -90,7 +94,7 @@ public class ManageMemberController {
             return;
         }
 
-        filtered = AppServices.getInstance().getMemberService().getMembers(searchTerm).getData();
+        filtered = AppServices.getInstance().getMemberService().getMembers(searchTerm, SortingValue.getSortingValue(sort.getValue())).getData();
         popup.setSuggestions(filtered);
 
         if (!filtered.isEmpty()) {
@@ -108,7 +112,7 @@ public class ManageMemberController {
             return;
         }
 
-        if(selectedMember != null) {
+        if (selectedMember != null) {
             members.setAll(selectedMember);
             return;
         }

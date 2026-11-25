@@ -58,7 +58,7 @@ public class IssueBookController {
         issueDateInput.setDateValue(LocalDate.now(ZoneId.systemDefault()));
         dueDateInput.setDateValue(LocalDate.now(ZoneId.systemDefault()).plusDays(7));
 
-        Result<List<Member>> memberResult = AppServices.getInstance().getMemberService().getMembers("");
+        Result<List<Member>> memberResult = AppServices.getInstance().getMemberService().getMembers("", SortingValue.ID_ASCENDING);
 
         if (memberResult.isError()) {
             showNotification(new Notification(memberResult.getMessage(), memberResult.getDescription(), Notification.Type.ALERT_ERROR));
