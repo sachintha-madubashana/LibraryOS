@@ -115,7 +115,7 @@ public class MemberService {
     }
 
     public Result<String> generateMemberId() {
-        Member lastMember = memberRepository.findLast();
+        Member lastMember = memberRepository.findLast().orElse(null);
         String newMemberCode = getNewMemberId(0);
 
         if (lastMember != null) {

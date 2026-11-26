@@ -58,8 +58,8 @@ public class InMemoryMemberRepository implements MemberRepository {
     }
 
     @Override
-    public Member findLast() {
-        return members.isEmpty() ? null : members.getLast();
+    public Optional<Member> findLast() {
+        return members.isEmpty() ? Optional.empty() : Optional.of(members.getLast());
     }
 
     @Override

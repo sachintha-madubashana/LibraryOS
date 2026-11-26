@@ -10,7 +10,7 @@ public interface MemberRepository {
     Optional<Member> findById(String id);
     boolean existsById(String id);
     List<Member> find(List<String> terms, SortingValue sortingValue);
-    Member findLast();
+    Optional<Member> findLast();
     boolean save(Member member);
     boolean update(Member member);
     boolean deleteById(String id);

@@ -67,13 +67,13 @@ public class HibernateMemberRepository implements MemberRepository {
     }
 
     @Override
-    public Member findLast() {
+    public Optional<Member> findLast() {
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
             MemberEntity entity = session.createQuery("FROM MemberEntity ORDER BY id DESC", MemberEntity.class)
                     .setMaxResults(1)
                     .uniqueResult();
-            if (entity != null) return toDto(entity);
-            return null;
+            if (entity != null) return Optional.of(toDto(entity));
+            return Optional.empty();
         }
     }
 

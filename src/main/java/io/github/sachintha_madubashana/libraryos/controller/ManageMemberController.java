@@ -13,6 +13,7 @@ import io.github.sachintha_madubashana.libraryos.model.Notification;
 import io.github.sachintha_madubashana.libraryos.model.SortingValue;
 import io.github.sachintha_madubashana.libraryos.service.AppServices;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -160,8 +161,9 @@ public class ManageMemberController {
                 }
         );
 
-        Label paginationLabel = new Label("Showing 6 of 6 members");
+        Label paginationLabel = new Label();
         paginationLabel.getStyleClass().add("text-caption");
+        paginationLabel.textProperty().bind(Bindings.size(members).asString("Showing %d members"));
         paginationLabel.setAlignment(Pos.CENTER_LEFT);
         paginationLabel.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(paginationLabel, Priority.ALWAYS);

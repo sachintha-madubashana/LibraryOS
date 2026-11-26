@@ -136,7 +136,7 @@ public class BorrowingHistoryController {
         );
 
         Label paginationLabel = new Label();
-        paginationLabel.textProperty().bind(Bindings.size(borrowings).asString().concat(" records shown"));
+        paginationLabel.textProperty().bind(Bindings.size(borrowings).asString(" %d records shown"));
         paginationLabel.getStyleClass().add("text-caption");
         paginationLabel.setAlignment(Pos.CENTER_LEFT);
         paginationLabel.setMaxWidth(Double.MAX_VALUE);
