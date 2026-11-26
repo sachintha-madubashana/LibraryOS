@@ -35,14 +35,8 @@ public class MemberService {
     }
 
     public Result<List<Member>> getMembers(String query, SortingValue sortingValue){
-        if(query == null) {
-            return Result.error(
-                    "Invalid search terms",
-                    "Please provide valid search terms."
-            );
-        }
-
-        String[] terms = query.trim().toLowerCase().split("[\\s-]+");
+        String trimmedQuery = query == null ? "" : query.trim();
+        String[] terms = trimmedQuery.isEmpty() ? new String[0] : trimmedQuery.toLowerCase().split("[\\s-]+");
         List<Member> members = memberRepository.find(List.of(terms), sortingValue);
 
         if (members == null) {

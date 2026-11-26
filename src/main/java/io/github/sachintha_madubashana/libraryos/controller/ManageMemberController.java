@@ -1,5 +1,6 @@
 package io.github.sachintha_madubashana.libraryos.controller;
 
+import io.github.sachintha_madubashana.libraryos.common.result.Result;
 import io.github.sachintha_madubashana.libraryos.controller.component.AutocompletePopup;
 import io.github.sachintha_madubashana.libraryos.controller.component.DropdownSelect;
 import io.github.sachintha_madubashana.libraryos.controller.component.InputField;
@@ -11,6 +12,7 @@ import io.github.sachintha_madubashana.libraryos.model.Member;
 import io.github.sachintha_madubashana.libraryos.model.Notification;
 import io.github.sachintha_madubashana.libraryos.model.SortingValue;
 import io.github.sachintha_madubashana.libraryos.service.AppServices;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -84,7 +86,12 @@ public class ManageMemberController {
 
     private void loadMembers() {
         members.clear();
-        members.addAll(AppServices.getInstance().getMemberService().getMembers("", SortingValue.getSortingValue(sort.getValue())).getData());
+        Result<List<Member>> result = AppServices.getInstance().getMemberService().getMembers(null, SortingValue.getSortingValue(sort.getValue()));
+        if (result.isError()) {
+            Platform.runLater(() -> root.fireEvent(new NotificationEvent(new Notification(result.getMessage(), result.getDescription(), Notification.Type.ALERT_ERROR))));
+            return;
+        }
+        members.addAll(result.getData());
     }
 
     private void search(String searchTerm) {
