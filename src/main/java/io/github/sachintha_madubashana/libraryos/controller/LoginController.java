@@ -5,7 +5,7 @@ import io.github.sachintha_madubashana.libraryos.controller.component.AlertMessa
 import io.github.sachintha_madubashana.libraryos.controller.component.InputField;
 import io.github.sachintha_madubashana.libraryos.model.User;
 import io.github.sachintha_madubashana.libraryos.navigation.WindowManager;
-import io.github.sachintha_madubashana.libraryos.service.AuthenticationService;
+import io.github.sachintha_madubashana.libraryos.service.AppServices;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -37,11 +37,8 @@ public class LoginController {
     @FXML
     private VBox errorContainer;
 
-    private AuthenticationService authenticationService;
-
     @FXML
     private void initialize() {
-        authenticationService = new AuthenticationService();
         usernameField.setOnKeyPressed(this::focusPasswordField);
         passwordField.setOnKeyPressed(this::handleRootKeyPressed);
 
@@ -62,7 +59,7 @@ public class LoginController {
 
     private void onLoginButtonClick() {
         User credential = new User(usernameField.getInputValue(), passwordField.getInputValue());
-        Result<User> result = authenticationService.authenticate(credential);
+        Result<User> result = AppServices.getInstance().getAuthenticationService().authenticate(credential);
         if (result.isSuccess()) {
             try {
                 Stage stage = (Stage) loinBtn.getScene().getWindow();

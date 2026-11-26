@@ -3,13 +3,13 @@ module io.github.sachintha_madubashana.libraryos {
     requires javafx.fxml;
 
     requires org.kordamp.ikonli.javafx;
-    requires spring.security.crypto;
     requires org.kordamp.ikonli.feather;
     requires org.kordamp.ikonli.core;
     requires java.sql;
     requires org.hibernate.orm.core;
     requires jakarta.persistence;
     requires java.naming;
+    requires password4j;
 
     opens io.github.sachintha_madubashana.libraryos.controller to javafx.fxml;
     opens io.github.sachintha_madubashana.libraryos.controller.component to javafx.fxml;

@@ -1,30 +1,30 @@
 package io.github.sachintha_madubashana.libraryos.service;
 
-import io.github.sachintha_madubashana.libraryos.database.DatabaseConnection;
-import io.github.sachintha_madubashana.libraryos.database.HibernateSessionFactory;
 import io.github.sachintha_madubashana.libraryos.repository.BookRepository;
 import io.github.sachintha_madubashana.libraryos.repository.BorrowingRepository;
 import io.github.sachintha_madubashana.libraryos.repository.MemberRepository;
+import io.github.sachintha_madubashana.libraryos.repository.UserRepository;
 import io.github.sachintha_madubashana.libraryos.repository.hibernate.HibernateBookRepository;
 import io.github.sachintha_madubashana.libraryos.repository.hibernate.HibernateBorrowingRepository;
 import io.github.sachintha_madubashana.libraryos.repository.hibernate.HibernateMemberRepository;
-import io.github.sachintha_madubashana.libraryos.repository.mysql.MySQLBookRepository;
-import io.github.sachintha_madubashana.libraryos.repository.mysql.MySQLBorrowingRepository;
-import io.github.sachintha_madubashana.libraryos.repository.mysql.MySQLMemberRepository;
+import io.github.sachintha_madubashana.libraryos.repository.hibernate.HibernateUserRepository;
 
 public class AppServices {
 
     private static AppServices INSTANCE;
+    private final AuthenticationService authenticationService;
     private final BookService bookService;
     private final BorrowingService borrowingService;
     private final MemberService memberService;
     private final DashboardService dashboardService;
 
     private AppServices() {
+        UserRepository userRepository = new HibernateUserRepository();
         BookRepository bookRepository = new HibernateBookRepository();
         BorrowingRepository borrowingRepository = new HibernateBorrowingRepository();
         MemberRepository memberRepository = new HibernateMemberRepository();
 
+        authenticationService = new AuthenticationService(userRepository);
         bookService = new BookService(bookRepository);
         borrowingService = new BorrowingService(borrowingRepository);
         memberService = new MemberService(memberRepository);
@@ -36,6 +36,10 @@ public class AppServices {
             INSTANCE = new AppServices();
         }
         return INSTANCE;
+    }
+
+    public AuthenticationService getAuthenticationService() {
+        return authenticationService;
     }
 
     public BookService getBookService() {

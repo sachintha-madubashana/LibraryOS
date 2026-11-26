@@ -45,6 +45,7 @@ public class HibernateSessionFactory {
             configuration.setProperty("hibernate.show_sql", "false");
             configuration.setProperty("hibernate.hbm2ddl.auto", prop.getProperty("hibernate.ddl-auto", "validate"));
 
+            configuration.addAnnotatedClass(UserEntity.class);
             configuration.addAnnotatedClass(CategoryEntity.class);
             configuration.addAnnotatedClass(BookEntity.class);
             configuration.addAnnotatedClass(MemberEntity.class);
