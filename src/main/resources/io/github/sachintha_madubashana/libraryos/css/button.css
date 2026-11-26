@@ -3,10 +3,10 @@
    --------------------------------------------------------- */
 /* Base Button */
 .button {
-    -fx-background-color: -fx-secondary;
-    -fx-text-fill: -fx-secondary-foreground;
+    /*-fx-background-color: -fx-secondary;*/
+    /*-fx-text-fill: -fx-secondary-foreground;*/
 
-    -fx-border-color: transparent;
+    /*-fx-border-color: transparent;*/
     -fx-border-width: 1px;
 
     -fx-background-radius: 8px;
@@ -17,22 +17,22 @@
     -fx-padding: 8px 16px;
 }
 
-/* Base States */
-.button:hover {
-    -fx-background-color: -fx-secondary-hover;
-}
+/*!* Base States *!*/
+/*.button:hover {*/
+/*    -fx-background-color: -fx-secondary-hover;*/
+/*}*/
 
-.button:pressed {
-    -fx-background-color: -fx-secondary-active;
-}
+/*.button:pressed {*/
+/*    -fx-background-color: -fx-secondary-active;*/
+/*}*/
 
-.button:focused {
-    -fx-border-color: -fx-ring;
-}
+/*.button:focused {*/
+/*    -fx-border-color: -fx-ring;*/
+/*}*/
 
-.button:disabled {
-    -fx-opacity: 0.5;
-}
+/*.button:disabled {*/
+/*    -fx-opacity: 0.5;*/
+/*}*/
 
 /* Primary */
 .button-primary {

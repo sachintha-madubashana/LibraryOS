@@ -9,19 +9,21 @@ import io.github.sachintha_madubashana.libraryos.model.*;
 import io.github.sachintha_madubashana.libraryos.repository.BorrowingRepository;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class HibernateBorrowingRepository implements BorrowingRepository {
+
+    private static final String FIND_BY_RECORD_ID_QUERY =
+            "FROM BorrowingRecordEntity WHERE recordId = :code";
 
     @Override
     public Optional<BorrowingRecord> findById(String code) {
         if (code == null || code.isEmpty()) return Optional.empty();
 
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
-            BorrowingRecordEntity entity = session.createQuery("FROM BorrowingRecordEntity WHERE recordId = :code", BorrowingRecordEntity.class)
+            BorrowingRecordEntity entity = session.createQuery(FIND_BY_RECORD_ID_QUERY, BorrowingRecordEntity.class)
                     .setParameter("code", code)
                     .uniqueResult();
             if (entity != null) return Optional.of(toDto(entity));
@@ -45,15 +47,6 @@ public class HibernateBorrowingRepository implements BorrowingRepository {
                 records.add(toDto(entity));
             }
             return records;
-        }
-    }
-
-    @Override
-    public Integer countAll() {
-        try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
-            Long count = session.createQuery("SELECT COUNT(*) FROM BorrowingRecordEntity", Long.class)
-                    .uniqueResult();
-            return count != null ? count.intValue() : 0;
         }
     }
 
@@ -113,7 +106,7 @@ public class HibernateBorrowingRepository implements BorrowingRepository {
         Transaction transaction = null;
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
             BorrowingRecordEntity entity = session
-                    .createQuery("FROM BorrowingRecordEntity WHERE recordId = :code", BorrowingRecordEntity.class)
+                    .createQuery(FIND_BY_RECORD_ID_QUERY, BorrowingRecordEntity.class)
                     .setParameter("code", borrowingRecord.getRecordId())
                     .uniqueResult();
             if (entity == null) return false;
@@ -148,7 +141,7 @@ public class HibernateBorrowingRepository implements BorrowingRepository {
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
 
             BorrowingRecordEntity entity = session
-                    .createQuery("FROM BorrowingRecordEntity WHERE recordId = :code", BorrowingRecordEntity.class)
+                    .createQuery(FIND_BY_RECORD_ID_QUERY, BorrowingRecordEntity.class)
                     .setParameter("code", code)
                     .uniqueResult();
 
@@ -164,29 +157,85 @@ public class HibernateBorrowingRepository implements BorrowingRepository {
         }
     }
 
-    @Override
-    public List<BorrowingRecord> findActiveLoans() {
-        try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
-            List<BorrowingRecordEntity> entities = session
-                    .createQuery("FROM BorrowingRecordEntity WHERE status.id != :returnedId", BorrowingRecordEntity.class)
-                    .setParameter("returnedId", BorrowStatus.RETURNED.getValue())
-                    .list();
-            List<BorrowingRecord> records = new ArrayList<>();
-            for (BorrowingRecordEntity entity : entities) {
-                records.add(toDto(entity));
+    private Map<String, Object> appendStatuesToQuery(List<BorrowStatus> statuses, StringBuilder query) {
+        Map<String, Object> params = new HashMap<>();
+        boolean isFirst = true;
+
+        for (BorrowStatus status : statuses) {
+            if (status == null) continue;
+
+            if (isFirst) {
+                query.append(" AND (status.id = :").append(status.name());
+                isFirst = false;
+            } else {
+                query.append(" OR status.id = :").append(status.name());
             }
-            return records;
+            params.put(status.name(), status.getValue());
+        }
+        query.append(")");
+        return params;
+    }
+
+    @Override
+    public Map<BorrowStatus, Long> countByStatuses(List<BorrowStatus> statuses) {
+        Map<BorrowStatus, Long> counts = new EnumMap<>(BorrowStatus.class);
+        if (statuses == null || statuses.isEmpty()) {
+            return counts;
+        }
+
+        StringBuilder query = new StringBuilder("SELECT status.id, COUNT(*) FROM BorrowingRecordEntity WHERE 1=1");
+        Map<String, Object> params = appendStatuesToQuery(statuses, query);
+        query.append(" GROUP BY status.id");
+
+        try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
+            Query<Object[]> sessionQuery = session.createQuery(query.toString(), Object[].class);
+            params.forEach(sessionQuery::setParameter);
+
+            List<Object[]> result = sessionQuery.getResultList();
+
+            for (var row : result) {
+                Integer statusId = (Integer) row[0];
+                Long count = (Long) row[1];
+                counts.put(BorrowStatus.fromValue(statusId), count);
+            }
+            return counts;
         }
     }
 
     @Override
-    public List<BorrowingRecord> findAllOverdue() {
+    public List<BorrowingRecord> searchBorrowingsWithStatuses(List<String> terms, List<BorrowStatus> statuses) {
+        if (terms == null || statuses == null) return new ArrayList<>();
+
+        StringBuilder query = new StringBuilder("FROM BorrowingRecordEntity WHERE 1=1");
+        Map<String, Object> params = new HashMap<>();
+
+        for (int idx = 0; idx < terms.size(); idx++) {
+            if (terms.get(idx) == null || terms.get(idx).isBlank()) continue;
+            String paramKey = "t" + idx;
+            query.append(" AND (recordId LIKE :").append(paramKey);
+            query.append(" OR LOWER(member.fullName) LIKE :").append(paramKey).append("_name");
+            query.append(" OR LOWER(book.title) LIKE :").append(paramKey).append("_title)");
+            String likeValue = "%" + terms.get(idx).toLowerCase() + "%";
+            params.put(paramKey, likeValue);
+            params.put(paramKey + "_name", likeValue);
+            params.put(paramKey + "_title", likeValue);
+        }
+
+        if (!statuses.isEmpty() && !statuses.contains(BorrowStatus.ALL)) {
+            params.putAll(appendStatuesToQuery(statuses, query));
+        }
+
+        query.append(" ORDER BY recordId DESC");
+
+        return getBorrowingRecords(query, params);
+    }
+
+    private List<BorrowingRecord> getBorrowingRecords(StringBuilder query, Map<String, Object> params) {
+        List<BorrowingRecord> records = new ArrayList<>();
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
-            List<BorrowingRecordEntity> entities = session
-                    .createQuery("FROM BorrowingRecordEntity WHERE status.id = :overdueId", BorrowingRecordEntity.class)
-                    .setParameter("overdueId", BorrowStatus.OVERDUE.getValue())
-                    .list();
-            List<BorrowingRecord> records = new ArrayList<>();
+            Query<BorrowingRecordEntity> sessionQuery = session.createQuery(query.toString(), BorrowingRecordEntity.class);
+            params.forEach(sessionQuery::setParameter);
+            List<BorrowingRecordEntity> entities = sessionQuery.list();
             for (BorrowingRecordEntity entity : entities) {
                 records.add(toDto(entity));
             }

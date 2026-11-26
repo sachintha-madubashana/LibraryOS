@@ -1,9 +1,11 @@
 package io.github.sachintha_madubashana.libraryos.service;
 
 import io.github.sachintha_madubashana.libraryos.common.result.Result;
+import io.github.sachintha_madubashana.libraryos.model.BorrowStatus;
 import io.github.sachintha_madubashana.libraryos.model.BorrowingRecord;
 import io.github.sachintha_madubashana.libraryos.repository.BorrowingRepository;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class BorrowingService {
@@ -113,7 +115,7 @@ public class BorrowingService {
     }
 
     public Result<List<BorrowingRecord>> findActiveLoans() {
-        List<BorrowingRecord> activities = borrowingRepository.findActiveLoans();
+        List<BorrowingRecord> activities = borrowingRepository.searchBorrowingsWithStatuses(List.of(), List.of(BorrowStatus.BORROWED, BorrowStatus.OVERDUE));
 
         if (activities == null) {
             return Result.error(
@@ -126,6 +128,48 @@ public class BorrowingService {
                 "Borrowing Records retrieved successfully",
                 "The Borrowing Record list has been loaded.",
                 activities
+        );
+    }
+
+    public Result<List<BorrowingRecord>> filterLoans(BorrowStatus status) {
+        List<BorrowingRecord> activities = borrowingRepository.searchBorrowingsWithStatuses(List.of(), List.of(status));
+
+        if (activities == null) {
+            return Result.error(
+                    "Unable to retrieve Borrowing Records",
+                    "The Borrowing Record list could not be loaded."
+            );
+        }
+
+        return Result.success(
+                "Borrowing Records retrieved successfully",
+                "The Borrowing Record list has been loaded.",
+                activities
+        );
+    }
+
+    public Result<List<BorrowingRecord>> searchBorrowings(String query, List<BorrowStatus> status) {
+        if (query == null || query.isBlank()) {
+            return Result.error(
+                    "Empty search query",
+                    "The search query cannot be empty."
+            );
+        }
+
+        String[] terms = query.trim().toLowerCase().split("[\\s-]+");
+        List<BorrowingRecord> results = borrowingRepository.searchBorrowingsWithStatuses(List.of(terms), status);
+
+        if (results == null) {
+            return Result.error(
+                    "Unable to retrieve Borrowing Records",
+                    "The Borrowing Record list could not be loaded."
+            );
+        }
+
+        return Result.success(
+                "Search complete",
+                "The search has been completed.",
+                results
         );
     }
 }

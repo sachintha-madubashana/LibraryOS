@@ -2,6 +2,7 @@ package io.github.sachintha_madubashana.libraryos.repository.mysql;
 
 import io.github.sachintha_madubashana.libraryos.database.DatabaseConnection;
 import io.github.sachintha_madubashana.libraryos.model.Member;
+import io.github.sachintha_madubashana.libraryos.model.SortingValue;
 import io.github.sachintha_madubashana.libraryos.repository.MemberRepository;
 
 import java.sql.*;
@@ -9,10 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class MySQLMemberRepository implements MemberRepository{
+public class MySQLMemberRepository implements MemberRepository {
     private final Connection connection;
 
-    public MySQLMemberRepository(){
+    public MySQLMemberRepository() {
         this.connection = DatabaseConnection.getConnection();
     }
 
@@ -22,23 +23,10 @@ public class MySQLMemberRepository implements MemberRepository{
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, code);
-
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    Member member = new Member(
-                            resultSet.getInt("id"),
-                            resultSet.getString("member_code"),
-                            resultSet.getString("name"),
-                            resultSet.getString("email"),
-                            resultSet.getString("phone"),
-                            resultSet.getString("address"),
-                            resultSet.getDate("joined_date").toLocalDate()
-                    );
-
-                    return Optional.of(member);
-                }
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return Optional.of(getMembersFromResultSet(resultSet));
             }
-
         } catch (SQLException e) {
             throw new RuntimeException("Failed to find book.", e);
         }
@@ -52,43 +40,69 @@ public class MySQLMemberRepository implements MemberRepository{
     }
 
     @Override
-    public List<Member> findAll() {
-        List<Member> members = new ArrayList<>();
-        String query = "SELECT `id`, `member_code` , `name`, `email`, `phone`, `address`,`joined_date` FROM `member`";
+    public List<Member> find(List<String> terms, SortingValue sortingValue) {
+        if (terms == null || sortingValue == null) return new ArrayList<>();
 
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
+        StringBuilder query = new StringBuilder("SELECT `id`, `member_code`, `name`, `email`, `phone`, `address`,`joined_date` FROM `member` WHERE 1=1");
+        List<String> params = new ArrayList<>();
 
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    Member member = new Member(
-                            resultSet.getInt("id"),
-                            resultSet.getString("member_code"),
-                            resultSet.getString("name"),
-                            resultSet.getString("email"),
-                            resultSet.getString("phone"),
-                            resultSet.getString("address"),
-                            resultSet.getDate("joined_date").toLocalDate()
-                    );
-
-                    members.add(member);
-                }
+        for (String term : terms) {
+            if (term != null && !term.isBlank()) {
+                query.append(" AND (LOWER(member_code) LIKE ?")
+                        .append(" OR LOWER(name) LIKE ?")
+                        .append(" OR LOWER(email) LIKE ?").append(")");
+                String likeValue = "%" + term.toLowerCase() + "%";
+                params.add(likeValue);
+                params.add(likeValue);
+                params.add(likeValue);
             }
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed to find book.", e);
         }
 
-        return members;
+        switch (sortingValue) {
+            case ID_DESCENDING -> query.append(" ORDER BY `member_code` DESC");
+            case NAME_ASCENDING -> query.append(" ORDER BY `name` ASC");
+            case NAME_DESCENDING -> query.append(" ORDER BY `name` DESC");
+            default -> query.append(" ORDER BY `member_code` ASC");
+        }
+
+        try (PreparedStatement statement = connection.prepareStatement(query.toString())) {
+            for (int i = 0; i < params.size(); i++) {
+                statement.setString(i + 1, params.get(i));
+            }
+            ResultSet resultSet = statement.executeQuery();
+            List<Member> members = new ArrayList<>();
+            while (resultSet.next()) {
+                members.add(getMembersFromResultSet(resultSet));
+            }
+            return members;
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to find Member.", e);
+        }
+    }
+
+    @Override
+    public Optional<Member> findLast() {
+        String query = "SELECT `id`, `member_code`, `name`, `email`, `phone`, `address`,`joined_date` FROM `member` ORDER BY `id` DESC LIMIT 1";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return Optional.of(getMembersFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to find last member.", e);
+        }
+        return Optional.empty();
     }
 
     @Override
     public boolean save(Member member) {
-        if(member == null || existsById(member.getCode())) {
+        if (member == null || existsById(member.getCode())) {
             return false;
         }
 
         String query = "INSERT INTO `member` (`member_code`, `name`, `email`, `phone`, `address`, `joined_date`) VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (PreparedStatement statement = connection.prepareStatement(query)){
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, member.getCode());
             statement.setString(2, member.getFullName());
             statement.setString(3, member.getEmail());
@@ -105,13 +119,13 @@ public class MySQLMemberRepository implements MemberRepository{
 
     @Override
     public boolean update(Member member) {
-        if(member == null || member.getId() == null) {
+        if (member == null || member.getId() == null) {
             return false;
         }
 
         String query = "UPDATE `member` SET `name` = ?, `email` = ?, `phone` = ?, `address` = ?, `joined_date` = ? WHERE `member_code` = ?";
 
-        try (PreparedStatement statement = connection.prepareStatement(query)){
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, member.getFullName());
             statement.setString(2, member.getEmail());
             statement.setString(3, member.getPhone());
@@ -128,19 +142,50 @@ public class MySQLMemberRepository implements MemberRepository{
 
     @Override
     public boolean deleteById(String code) {
-        if(code == null) {
+        if (code == null) {
             return false;
         }
 
         String query = "DELETE FROM `member` WHERE `member_code` = ?";
 
-        try (PreparedStatement statement = connection.prepareStatement(query)){
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, code);
 
             int rowsAffected = statement.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
             throw new RuntimeException("Failed to delete member.", e);
+        }
+    }
+
+    @Override
+    public Long count() {
+        String query = "SELECT COUNT(*) AS total FROM `member`";
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getLong("total");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to count members.", e);
+        }
+        return 0L;
+    }
+
+    private Member getMembersFromResultSet(ResultSet resultSet) {
+        try {
+            return new Member(
+                    resultSet.getInt("id"),
+                    resultSet.getString("member_code"),
+                    resultSet.getString("name"),
+                    resultSet.getString("email"),
+                    resultSet.getString("phone"),
+                    resultSet.getString("address"),
+                    resultSet.getDate("joined_date").toLocalDate()
+            );
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to get member from result set.", e);
         }
     }
 }

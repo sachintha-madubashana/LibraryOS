@@ -7,7 +7,6 @@ import io.github.sachintha_madubashana.libraryos.repository.UserRepository;
 import io.github.sachintha_madubashana.libraryos.repository.hibernate.HibernateBookRepository;
 import io.github.sachintha_madubashana.libraryos.repository.hibernate.HibernateBorrowingRepository;
 import io.github.sachintha_madubashana.libraryos.repository.hibernate.HibernateMemberRepository;
-import io.github.sachintha_madubashana.libraryos.repository.hibernate.HibernateUserRepository;
 
 public class AppServices {
 

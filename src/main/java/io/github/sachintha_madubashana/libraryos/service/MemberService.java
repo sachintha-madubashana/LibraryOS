@@ -2,6 +2,7 @@ package io.github.sachintha_madubashana.libraryos.service;
 
 import io.github.sachintha_madubashana.libraryos.common.result.Result;
 import io.github.sachintha_madubashana.libraryos.model.Member;
+import io.github.sachintha_madubashana.libraryos.model.SortingValue;
 import io.github.sachintha_madubashana.libraryos.repository.MemberRepository;
 
 import java.util.List;
@@ -33,8 +34,10 @@ public class MemberService {
                 ));
     }
 
-    public Result<List<Member>> getMembers(){
-        List<Member> members = memberRepository.findAll();
+    public Result<List<Member>> getMembers(String query, SortingValue sortingValue){
+        String trimmedQuery = query == null ? "" : query.trim();
+        String[] terms = trimmedQuery.isEmpty() ? new String[0] : trimmedQuery.toLowerCase().split("[\\s-]+");
+        List<Member> members = memberRepository.find(List.of(terms), sortingValue);
 
         if (members == null) {
             return Result.error(
@@ -112,19 +115,18 @@ public class MemberService {
     }
 
     public Result<String> generateMemberId() {
-        List<Member> members = memberRepository.findAll();
-        String newMemberId = getNewMemberId(0);
+        Member lastMember = memberRepository.findLast().orElse(null);
+        String newMemberCode = getNewMemberId(0);
 
-        if (!members.isEmpty()) {
-            Member lastMember = members.get(members.size() - 1);
-            int memberCount = Integer.parseInt(lastMember.getCode().substring(2));
-            newMemberId = getNewMemberId(memberCount);
+        if (lastMember != null) {
+            int lastCode = Integer.parseInt(lastMember.getCode().substring(2));
+            newMemberCode = getNewMemberId(lastCode);
         }
 
         return Result.success(
-                "Member id generated successfully",
-                "The member id has been generated.",
-                newMemberId
+                "Member Code generated successfully",
+                "The member code has been generated.",
+                newMemberCode
         );
     }
 

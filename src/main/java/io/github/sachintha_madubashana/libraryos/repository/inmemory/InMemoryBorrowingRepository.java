@@ -5,9 +5,8 @@ import io.github.sachintha_madubashana.libraryos.model.BorrowingRecord;
 import io.github.sachintha_madubashana.libraryos.repository.BorrowingRepository;
 import io.github.sachintha_madubashana.libraryos.service.SampleData;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class InMemoryBorrowingRepository implements BorrowingRepository {
     private final List<BorrowingRecord> borrowings;
@@ -38,13 +37,8 @@ public class InMemoryBorrowingRepository implements BorrowingRepository {
     }
 
     @Override
-    public Integer countAll() {
-        return borrowings.size();
-    }
-
-    @Override
     public BorrowingRecord findLast() {
-        return borrowings.isEmpty() ? null : borrowings.get(borrowings.size() - 1);
+        return borrowings.isEmpty() ? null : borrowings.getLast();
     }
 
     @Override
@@ -83,12 +77,38 @@ public class InMemoryBorrowingRepository implements BorrowingRepository {
     }
 
     @Override
-    public List<BorrowingRecord> findActiveLoans() {
-        return borrowings.stream().filter(borrowingRecord -> !borrowingRecord.getStatus().equals(BorrowStatus.RETURNED)).toList();
+    public Map<BorrowStatus, Long> countByStatuses(List<BorrowStatus> statuses) {
+        if (statuses == null) return new EnumMap<>(BorrowStatus.class);
+
+        return borrowings.stream()
+                .filter(borrowingRecord -> statuses.contains(borrowingRecord.getStatus()))
+                .collect(Collectors.groupingBy(BorrowingRecord::getStatus, Collectors.counting()));
     }
 
     @Override
-    public List<BorrowingRecord> findAllOverdue() {
-        return borrowings.stream().filter(borrowingRecord -> borrowingRecord.getStatus().equals(BorrowStatus.OVERDUE)).toList();
+    public List<BorrowingRecord> searchBorrowingsWithStatuses(List<String> terms, List<BorrowStatus> statuses) {
+        List<BorrowingRecord> result = new ArrayList<>();
+        if (terms == null || statuses == null) return result;
+
+        List<String> cleanTerms = terms.stream()
+                .filter(term -> term != null && !term.isBlank())
+                .map(String::toLowerCase)
+                .toList();
+
+        boolean filterByStatus = !statuses.isEmpty() && !statuses.contains(BorrowStatus.ALL);
+
+        result.addAll(borrowings.stream()
+                .filter(br -> {
+                    if (filterByStatus && !statuses.contains(br.getStatus())) {
+                        return false;
+                    }
+                    return cleanTerms.stream().allMatch(term ->
+                            (br.getRecordId() != null && br.getRecordId().toLowerCase().contains(term)) ||
+                            (br.getMember() != null && br.getMember().getFullName() != null && br.getMember().getFullName().toLowerCase().contains(term)) ||
+                            (br.getBook() != null && br.getBook().getTitle() != null && br.getBook().getTitle().toLowerCase().contains(term))
+                    );
+                }).toList());
+
+        return result;
     }
 }

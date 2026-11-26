@@ -3,14 +3,13 @@ package io.github.sachintha_madubashana.libraryos.repository.hibernate;
 import io.github.sachintha_madubashana.libraryos.database.HibernateSessionFactory;
 import io.github.sachintha_madubashana.libraryos.database.entity.MemberEntity;
 import io.github.sachintha_madubashana.libraryos.model.Member;
+import io.github.sachintha_madubashana.libraryos.model.SortingValue;
 import io.github.sachintha_madubashana.libraryos.repository.MemberRepository;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class HibernateMemberRepository implements MemberRepository {
 
@@ -32,14 +31,49 @@ public class HibernateMemberRepository implements MemberRepository {
     }
 
     @Override
-    public List<Member> findAll() {
+    public List<Member> find(List<String> terms, SortingValue sortingValue) {
+        if(terms == null || sortingValue == null) return new ArrayList<>();
+
+        StringBuilder query = new StringBuilder("FROM MemberEntity WHERE 1=1");
+        Map<String, Object> parameters = new HashMap<>();
+
+        for(int idx = 0; idx < terms.size(); idx++) {
+            String term = terms.get(idx);
+            if (term != null && !term.isBlank()) {
+                query.append(" AND (LOWER(code) LIKE :term").append(idx)
+                     .append(" OR LOWER(fullName) LIKE :term").append(idx)
+                     .append(" OR LOWER(email) LIKE :term").append(idx).append(")");
+                parameters.put("term" + idx, "%" + term.toLowerCase() + "%");
+            }
+        }
+
+        switch (sortingValue) {
+            case ID_ASCENDING -> query.append(" ORDER BY code ASC");
+            case ID_DESCENDING -> query.append(" ORDER BY code DESC");
+            case NAME_ASCENDING -> query.append(" ORDER BY fullName ASC");
+            case NAME_DESCENDING -> query.append(" ORDER BY fullName DESC");
+        }
+
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
-            List<MemberEntity> entities = session.createQuery("FROM MemberEntity", MemberEntity.class).list();
+            List<MemberEntity> entities = session.createQuery(query.toString(), MemberEntity.class)
+                    .setProperties(parameters)
+                    .getResultList();
             List<Member> members = new ArrayList<>();
             for (MemberEntity entity : entities) {
                 members.add(toDto(entity));
             }
             return members;
+        }
+    }
+
+    @Override
+    public Optional<Member> findLast() {
+        try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
+            MemberEntity entity = session.createQuery("FROM MemberEntity ORDER BY id DESC", MemberEntity.class)
+                    .setMaxResults(1)
+                    .uniqueResult();
+            if (entity != null) return Optional.of(toDto(entity));
+            return Optional.empty();
         }
     }
 
@@ -110,6 +144,15 @@ public class HibernateMemberRepository implements MemberRepository {
         } catch (Exception e) {
             if (transaction != null) transaction.rollback();
             throw new RuntimeException("Failed to delete member.", e);
+        }
+    }
+
+    @Override
+    public Long count() {
+        try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
+            Long count = session.createQuery("SELECT COUNT(*) FROM MemberEntity", Long.class)
+                    .uniqueResult();
+            return count != null ? count : 0;
         }
     }
 

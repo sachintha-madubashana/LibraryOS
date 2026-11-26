@@ -1,6 +1,7 @@
 package io.github.sachintha_madubashana.libraryos.model;
 
 public enum BorrowStatus {
+    ALL(0),
     BORROWED(1),
     RETURNED(2),
     OVERDUE(3);
@@ -24,5 +25,14 @@ public enum BorrowStatus {
             }
         }
         throw new IllegalArgumentException("No constant with text " + status + " found");
+    }
+
+    public static BorrowStatus fromValue(int value) {
+        for (BorrowStatus b : BorrowStatus.values()) {
+            if (b.getValue() == value) {
+                return b;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + value + " found");
     }
 }

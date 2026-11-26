@@ -4,16 +4,20 @@ import io.github.sachintha_madubashana.libraryos.Launcher;
 import io.github.sachintha_madubashana.libraryos.common.result.Result;
 import io.github.sachintha_madubashana.libraryos.controller.component.*;
 import io.github.sachintha_madubashana.libraryos.controller.component.rows.ActiveLoanRow;
+import io.github.sachintha_madubashana.libraryos.event.NotificationEvent;
 import io.github.sachintha_madubashana.libraryos.event.ReturnBookSelectEvent;
 import io.github.sachintha_madubashana.libraryos.model.BorrowStatus;
 import io.github.sachintha_madubashana.libraryos.model.BorrowingRecord;
+import io.github.sachintha_madubashana.libraryos.model.Notification;
 import io.github.sachintha_madubashana.libraryos.service.AppServices;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -21,13 +25,18 @@ import org.kordamp.ikonli.feather.Feather;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Objects;
 
 public class ReturnBookController {
 
     @FXML
     private HBox root;
+
+    @FXML
+    private InputField searchInput;
 
     @FXML
     private Button searchBtn;
@@ -40,6 +49,9 @@ public class ReturnBookController {
 
     @FXML
     private VBox column3;
+
+    @FXML
+    private Label countLabel;
 
     @FXML
     private VBox alertContainer;
@@ -65,12 +77,15 @@ public class ReturnBookController {
     @FXML
     private Button confirmReturnButton;
 
-    private ScrollableList<BorrowingRecord> recentActivityList;
+    private ScrollableList<BorrowingRecord> scrollableList;
+
+    ObservableList<BorrowingRecord> borrowingList;
+    List<BorrowingRecord> filtered;
 
     @FXML
     private void handleConfirmReturn() {
         LocalDate returnDate = returnDatePicker.getDateValue();
-        BorrowingRecord selectedRecord = recentActivityList.getSelectedItem();
+        BorrowingRecord selectedRecord = scrollableList.getSelectedItem();
 
         if (returnDate == null) {
             AlertMessage alert = new AlertMessage("Return Date Required", "Please select a return date.", AlertMessage.Type.WARNING);
@@ -92,38 +107,72 @@ public class ReturnBookController {
             alert.showIn(column2);
         }
 
-        recentActivityList.getItems().remove(selectedRecord);
+        scrollableList.getItems().remove(selectedRecord);
         clearSelectedLoanDetails();
-        recentActivityList.unSelectItem();
+        scrollableList.unSelectItem();
         loadEmptyInfoCards();
         confirmReturnButton.setDisable(true);
     }
 
     @FXML
     private void initialize() {
-        returnDatePicker.setDateValue(LocalDate.now());
+        borrowingList = FXCollections.observableArrayList();
+
+        returnDatePicker.setDateValue(LocalDate.now(ZoneId.systemDefault()));
 
         FontIcon fontIcon = new FontIcon(Feather.SEARCH);
         fontIcon.setIconSize(20);
         fontIcon.getStyleClass().add("button-icon");
         searchBtn.setGraphic(fontIcon);
 
-        recentActivityList = new ScrollableList<>(ActiveLoanRow::new);
-        ObservableList<BorrowingRecord> items = FXCollections.observableArrayList(AppServices.getInstance().getBorrowingHistoryService().findActiveLoans().getData());
-        recentActivityList.setItems(items);
-        recentActivityList.setMaxHeight(Double.MAX_VALUE);
-        VBox.setVgrow(recentActivityList, Priority.ALWAYS);
-        recentActivityList.getListView().setOnMouseClicked(event -> {
+        scrollableList = new ScrollableList<>(ActiveLoanRow::new);
+        scrollableList.setItems(borrowingList);
+        scrollableList.setMaxHeight(Double.MAX_VALUE);
+        VBox.setVgrow(scrollableList, Priority.ALWAYS);
+        scrollableList.getListView().setOnMouseClicked(event -> {
             clearSelectedLoanDetails();
             loadEmptyInfoCards();
         });
 
-        column1.getChildren().add(recentActivityList);
+        column1.getChildren().add(scrollableList);
         confirmReturnButton.setDisable(true);
 
         root.addEventHandler(ReturnBookSelectEvent.RETURN_BOOK_SELECT, this::selectEventHandler);
         loadEmptyInfoCards();
         column3.setSpacing(8);
+
+        countLabel.textProperty().bind(Bindings.concat("Active Loans: " , Bindings.size(borrowingList)));
+
+        initializeSearchInput();
+        borrowingList.setAll(AppServices.getInstance().getBorrowingHistoryService().findActiveLoans().getData());
+    }
+
+    private void initializeSearchInput() {
+        searchInput.setOnInputChange((obs, oldValue, newValue) -> {
+            search(newValue);
+        });
+        searchInput.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                search(searchInput.getInputValue());
+            }
+        });
+        searchBtn.setOnAction(event -> {
+            search(searchInput.getInputValue());
+        });
+    }
+
+    private void search(String values){
+        if(values == null || values.isEmpty()){
+            root.fireEvent(new NotificationEvent(new Notification("Empty search query", "The search query cannot be empty.", Notification.Type.ALERT_WARNING)));
+            return;
+        }
+        filtered = AppServices.getInstance().getBorrowingHistoryService().searchBorrowings(values, List.of(BorrowStatus.BORROWED, BorrowStatus.OVERDUE)).getData();
+        borrowingList.setAll(filtered);
+
+        if(filtered.isEmpty()){
+            root.fireEvent(new NotificationEvent(new Notification("No results found", "No borrowing records found for the search query.", Notification.Type.ALERT_INFO)));
+
+        }
     }
 
     private void selectEventHandler(ReturnBookSelectEvent event) {
@@ -164,7 +213,7 @@ public class ReturnBookController {
     }
 
     private void loadSelectedLoanDetailes(BorrowingRecord data) {
-        recordIdLabel.setText(data.getRecordId());
+        recordIdLabel.setText(data.getRecordId().toUpperCase());
         bookTitleLabel.setText(data.getBook().getTitle());
         borrowedDateLabel.setText(data.getIssueDate().toString());
         dueDateLabel.setText(data.getDueDate().toString());

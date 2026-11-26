@@ -1,8 +1,10 @@
 package io.github.sachintha_madubashana.libraryos.repository;
 
+import io.github.sachintha_madubashana.libraryos.model.BorrowStatus;
 import io.github.sachintha_madubashana.libraryos.model.BorrowingRecord;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface BorrowingRepository {
@@ -12,8 +14,7 @@ public interface BorrowingRepository {
     boolean save(BorrowingRecord borrowingRecord);
     boolean update(BorrowingRecord borrowingRecord);
     boolean deleteById(String id);
-    List<BorrowingRecord> findActiveLoans();
-    List<BorrowingRecord> findAllOverdue();
-    Integer countAll();
     BorrowingRecord findLast();
+    Map<BorrowStatus, Long> countByStatuses(List<BorrowStatus> statuses);
+    List<BorrowingRecord> searchBorrowingsWithStatuses(List<String> terms, List<BorrowStatus> statuses);
 }

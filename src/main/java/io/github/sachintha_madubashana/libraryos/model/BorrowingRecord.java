@@ -57,4 +57,9 @@ public class BorrowingRecord implements Serializable {
     public void setStatus(BorrowStatus status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return recordId.toUpperCase() + " - " + member.getFullName() + " - " + book.getTitle();
+    }
 }

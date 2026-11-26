@@ -1,0 +1,81 @@
+/* ---------------------------------------------------------
+   AUTOCOMPLETE POPUP
+   --------------------------------------------------------- */
+.autocomplete-popup {
+    -fx-background-color: -fx-popover;
+    -fx-border-color: -fx-border;
+    -fx-border-width: 1px;
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-effect: dropshadow(three-pass-box,rgba(0, 0, 0, 0.12),12,0,0,4);
+    -fx-padding: 4px;
+}
+
+/*    SUGGESTION LIST    */
+.autocomplete-popup .autocomplete-list {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+}
+
+/*    LIST CELLS    */
+.autocomplete-popup .autocomplete-list .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-popover-foreground;
+    -fx-font-family: "Inter";
+    -fx-font-size: 13px;
+    -fx-padding: 0 10px;
+    -fx-background-radius: 5px;
+    -fx-alignment: CENTER_LEFT;
+}
+
+/*    HOVER    */
+.autocomplete-popup .autocomplete-list .list-cell:hover {
+    -fx-background-color: -fx-accent;
+    -fx-text-fill: -fx-accent-foreground;
+}
+
+
+/* SELECTED */
+.autocomplete-popup .autocomplete-list .list-cell:selected {
+    -fx-background-color: -fx-accent;
+    -fx-text-fill: -fx-accent-foreground;
+}
+
+
+/*    EMPTY CELLS    */
+.autocomplete-popup .autocomplete-list .list-cell:empty {
+    -fx-background-color: transparent;
+}
+
+
+/* SCROLLBAR    */
+.autocomplete-popup .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-pref-width: 6px;
+}
+
+.autocomplete-popup .scroll-bar .track {
+    -fx-background-color: transparent;
+}
+
+.autocomplete-popup .scroll-bar .thumb {
+    -fx-background-color: -fx-border;
+    -fx-background-radius: 999px;
+}
+
+.autocomplete-popup .scroll-bar .thumb:hover {
+    -fx-background-color: -fx-muted-foreground;
+}
+
+.autocomplete-popup .scroll-bar .increment-button,
+.autocomplete-popup .scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.autocomplete-popup .scroll-bar .increment-arrow,
+.autocomplete-popup .scroll-bar .decrement-arrow {
+    -fx-shape: "";
+    -fx-padding: 0;
+}
