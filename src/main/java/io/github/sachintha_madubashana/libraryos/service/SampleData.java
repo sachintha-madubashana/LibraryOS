@@ -7,12 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SampleData {
+    private static final List<User> users = new ArrayList<>();
     private static final List<Book> books = new ArrayList<>();
     private static final List<BorrowingRecord> borrowingRecords = new ArrayList<>();
     private static final List<Member> members = new ArrayList<>();
     private static final List<Category> categories = new ArrayList<>();
 
     static {
+        createUsers();
         createCategories();
         createBooks();
         createMembers();
@@ -21,6 +23,15 @@ public class SampleData {
 
     private SampleData() {
     }
+
+    private static void createUsers() {
+        users.add(new User("admin", "$2a$12$9.g7Y2zY0leOKA3puWtiDOzyDkjsUf8tXhr3A0GmxRlZ7CFFRdfJm"));
+    }
+
+    public static List<User> getUsers() {
+        return users;
+    }
+
     private static void createCategories() {
         categories.add(new Category(1, "Fiction"));
         categories.add(new Category(2, "Non-Fiction"));

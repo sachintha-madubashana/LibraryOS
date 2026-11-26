@@ -4,7 +4,6 @@ import io.github.sachintha_madubashana.libraryos.model.Member;
 import io.github.sachintha_madubashana.libraryos.model.SortingValue;
 import io.github.sachintha_madubashana.libraryos.repository.MemberRepository;
 import io.github.sachintha_madubashana.libraryos.service.SampleData;
-import javafx.collections.FXCollections;
 
 import java.util.Comparator;
 import java.util.List;
@@ -14,7 +13,7 @@ public class InMemoryMemberRepository implements MemberRepository {
     private final List<Member> members;
 
     public InMemoryMemberRepository() {
-        members = FXCollections.observableArrayList(SampleData.getMembers());
+        members = new ArrayList<>(SampleData.getMembers());
     }
 
     @Override
